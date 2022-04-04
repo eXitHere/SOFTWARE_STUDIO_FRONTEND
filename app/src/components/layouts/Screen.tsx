@@ -8,7 +8,7 @@ type ScreenProps = {
 export const Screen = ({ children, overflowHidden = false }: ScreenProps) => {
   return (
     <div
-      className={classnames('min-h-screen w-screen m-0', {
+      className={classnames('flex items-center flex-col min-h-screen w-screen m-0 bg-primary-main', {
         'overflow-hidden': overflowHidden,
       })}
     >
