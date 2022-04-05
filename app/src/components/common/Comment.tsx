@@ -1,21 +1,21 @@
-import like from "../../assets/images/like.png"
-type BlogComponent = {
+import { useState } from 'react'
+import profile1 from '../../assets/images/profile1.jpeg'
+import like from '../../assets/images/like.png'
+
+type CommentComponent = {
   onClick: () => void
-  // onChange: () => void
-  // handleLogout: () => void
+  onChange: () => void
 }
 
-type BlogComponentProps = {
-  
+type CommentProps = {
   name: string
   photo: string
-  topic: string
-  exText: string
+  text: string
   like: number
   date: string
-  
 }
-const BlogComponent = (props: BlogComponentProps) => {
+
+const Comment = (props: CommentProps) => {
   return (
     <div className="flex flex-col w-4/5 mb-4 bg-primary-lightest rounded-2xl">
       <div className="flex items-center justify-between h-36 ">
@@ -24,8 +24,8 @@ const BlogComponent = (props: BlogComponentProps) => {
           <p className="pt-2">{props.name}</p>
         </div>
         <div className="w-4/6 h-full p-5">
-          <p className="text-xl font-bold">{props.topic}</p>
-          <p className="py-2 text-md">{props.exText}</p>
+          <p className="text-xl font-bold"></p>
+          <p className="py-2 text-md">{props.text}</p>
         </div>
         <div className="flex flex-col items-center justify-center w-1/6 h-full p-5 rounded-2xl">
           <button className="w-16 h-12">
@@ -39,4 +39,4 @@ const BlogComponent = (props: BlogComponentProps) => {
   )
 }
 
-export default BlogComponent
+export default Comment

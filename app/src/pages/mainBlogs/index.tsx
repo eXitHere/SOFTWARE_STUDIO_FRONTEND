@@ -3,7 +3,7 @@ import Navbar from 'components/common/Navbar'
 import Tag from 'components/common/Tag'
 import BlogComponent from 'components/common/BlogComponent'
 import profile1 from '../../assets/images/profile1.jpeg'
-export const Blogs = () => {
+export const MainBlogs = () => {
   const dataset = [
     {
       id: '001',
@@ -48,7 +48,7 @@ export const Blogs = () => {
   ]
   return (
     <Screen>
-      <Navbar />
+      <Navbar isBoards={true}/>
       <Tag />
       {dataset.map(data => {
         return  <BlogComponent key = {data.id} name = {data.name} photo = {data.photo} topic = {data.topic}  exText = {data.exText} like = {data.like} date = {data.date}/>
@@ -57,4 +57,4 @@ export const Blogs = () => {
   )
 }
 
-export default Blogs
+export default MainBlogs
