@@ -1,17 +1,20 @@
-import {useState} from "react"
-import profile1 from '../../assets/images/profile1.jpeg'
-import searchIcon from '../../assets/images/searchIcon.png'
-type Navbar = {
-  onClick: () => void
-  onChange: () => void
-  handleLogout: () => void
-}
-const Navbar = () => {
-  const [search,setSearch] = useState("")
+import { useState } from 'react'
+import profile1 from 'assets/images/profile1.jpeg'
+import searchIcon from 'assets/images/searchIcon.png'
+
+// type Navbar = {
+//   onClick: () => void
+//   onChange: () => void
+//   handleLogout: () => void
+// }
+
+export const Navbar = () => {
+  const [search, setSearch] = useState('')
 
   const handleLogout = () => {
-    console.log("Log Out")
+    console.log('Log Out')
   }
+
   return (
     <div className="flex items-center justify-between w-full p-2 px-8 bg-primary-main">
       <p className="text-3xl text-white">ThammaTip</p>
@@ -39,5 +42,3 @@ const Navbar = () => {
     </div>
   )
 }
-
-export default Navbar

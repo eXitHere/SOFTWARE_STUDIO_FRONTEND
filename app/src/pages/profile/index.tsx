@@ -1,11 +1,7 @@
 import { Screen } from 'components/layouts/Screen'
 
 export const Profile = () => {
-  return (
-    <Screen>
-      
-    </Screen>
-  )
+  return <Screen>profile</Screen>
 }
 
 export default Profile
