@@ -2,9 +2,9 @@ import { Screen } from 'components/layouts/Screen'
 import { Navbar } from 'components/common/Navbar'
 import { Tag } from 'components/common/Tag'
 import { BlogCard } from 'components/common/BlogCard'
-
+import { useState } from 'react'
 import profile1 from 'assets/images/profile1.jpeg'
-
+import searchIcon from 'assets/images/searchIcon.png'
 import { Blog } from 'types'
 
 // Mock data
@@ -52,9 +52,23 @@ const blogs: Blog[] = [
 ]
 
 export const MainBlogs = () => {
+  const [search, setSearch] = useState('')
+  const handleSearch = (e: any) => {
+    e.preventDefault()
+    console.log(search)
+  }
   return (
     <Screen>
       <Navbar isBoards={true} />
+      <form onSubmit={handleSearch} className="flex items-center justify-center w-5/6 h-10 mt-16 md:hidden">
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="p-1 mx-2 rounded-md w-72"
+        />
+        <img onClick={handleSearch} src={searchIcon} className="w-8 h-8 mx-2" />
+      </form>
       <Tag />
       {blogs.map(({ id, ...rest }) => {
         return <BlogCard key={id} {...rest} />

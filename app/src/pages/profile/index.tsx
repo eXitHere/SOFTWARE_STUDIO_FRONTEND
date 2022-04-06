@@ -1,4 +1,4 @@
-import { BlogCard } from 'components/common/BlogCard'
+import { BlogProfileCard } from 'components/common/BlogProfileCard'
 import { Screen } from 'components/layouts/Screen'
 
 import profile1 from 'assets/images/profile1.jpeg'
@@ -62,12 +62,12 @@ export const Profile = () => {
         </div>
       </div>
       {/* กระทู้ทั้งหมดของฉัน */}
-      <div className="flex flex-col items-center">
-        <div className="flex flex-col w-4/5 mt-4 mb-4">
+      <div className="flex flex-col items-center w-full">
+        <div className="flex flex-col w-3/5 mt-4 md:w-4/5">
           <p className="text-xl text-white">กระทู้ทั้งหมดของฉัน</p>
         </div>
         {blogs.map(({ id, ...rest }) => {
-          return <BlogCard key={id} {...rest} />
+          return <BlogProfileCard key={id} {...rest} />
         })}
       </div>
     </Screen>
