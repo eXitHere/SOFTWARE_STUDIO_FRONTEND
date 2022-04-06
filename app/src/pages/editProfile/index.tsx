@@ -47,12 +47,12 @@ export const EditProfile = () => {
 
   return (
     <Screen>
-      <p className="mt-12 text-3xl text-white">แก้ไขข้อมูลส่วนตัว</p>
+      <p className="mt-12 text-2xl font-bold text-white md:text-3xl">แก้ไขข้อมูลส่วนตัว</p>
       <label htmlFor="image-upload">
         <img src={image} className="w-32 h-32 m-4 rounded-full cursor-pointer" />
       </label>
       <input type="file" id="image-upload" onChange={imageHandler} hidden />
-      <form className="flex flex-col w-96">
+      <form className="flex flex-col w-80 md:w-96">
         <p className="pb-3 text-lg text-white">ชื่อผู้ใช้</p>
         <input value={username} onChange={handleUsernameChange} className="w-full h-8 p-2 mb-5 rounded-lg" />
         <p className="pb-3 text-lg text-white">ชื่อใช้แสดง</p>
