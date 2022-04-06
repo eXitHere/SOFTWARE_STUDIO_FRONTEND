@@ -1,7 +1,7 @@
-import { useState } from 'react'
-import profile1 from '../../assets/images/profile1.jpeg'
-import like from '../../assets/images/like.png'
-const Story = () => {
+import profile1 from 'assets/images/profile1.jpeg'
+import like from 'assets/images/like.png'
+
+export const Story = () => {
   return (
     <div className="flex w-full h-full mt-28">
       <div className="w-1/6">
@@ -53,5 +53,3 @@ const Story = () => {
     </div>
   )
 }
-
-export default Story

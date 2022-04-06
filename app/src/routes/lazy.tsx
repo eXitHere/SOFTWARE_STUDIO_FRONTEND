@@ -1,4 +1,5 @@
 import { lazy, ReactNode, Suspense } from 'react'
+
 import Fallback from 'pages/fallback'
 
 const WrappedSuspense = ({ children }: { children: ReactNode }) => (

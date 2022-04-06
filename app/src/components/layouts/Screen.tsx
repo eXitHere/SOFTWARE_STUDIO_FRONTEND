@@ -5,6 +5,7 @@ type ScreenProps = {
   children: ReactNode
   overflowHidden?: boolean
 }
+
 export const Screen = ({ children, overflowHidden = false }: ScreenProps) => {
   return (
     <div

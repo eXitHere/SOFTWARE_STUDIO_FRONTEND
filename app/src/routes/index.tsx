@@ -1,31 +1,36 @@
 import { BrowserRouter, RouteObject, useRoutes } from 'react-router-dom'
+
 import { Blog, MainBlogs, Home, EditProfile, CreateBlog } from 'routes/lazy'
+import { Path } from 'routes/path'
+
 import NotFound from 'pages/404'
 
 const routes: RouteObject[] = [
   {
-    path: '/',
+    path: Path.Home,
     children: [
       { index: true, element: <Home /> },
       {
-        path: '/mainBlogs',
+        path: Path.MainBlogs,
         children: [
           { index: true, element: <MainBlogs /> },
-          { path: '/mainBlogs/:id', element: <Blog /> },
+          { path: `${Path.MainBlogs}/:id`, element: <Blog /> },
         ],
       },
       {
-        path: '/editProfile',
+        path: Path.EditProfile,
         children: [{ index: true, element: <EditProfile /> }],
       },
       {
-        path: '/createBlog',
-        children: [{ index: true, element: <CreateBlog/> }],
+        path: Path.CreateBlog,
+        children: [{ index: true, element: <CreateBlog /> }],
       },
       { path: '*', element: <NotFound /> },
     ],
   },
 ]
+
+export { Path }
 
 const Routes = () => {
   return useRoutes(routes)

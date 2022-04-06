@@ -1,10 +1,14 @@
 import { Screen } from 'components/layouts/Screen'
-import Story from 'components/common/Story'
-import PostComment from 'components/common/PostComment'
-import Comment from 'components/common/Comment'
-import profile1 from '../../assets/images/profile1.jpeg'
-import Navbar from 'components/common/Navbar'
-const dataset = [
+import { Story } from 'components/common/Story'
+import { PostComment } from 'components/common/PostComment'
+import { CommentCard } from 'components/common/CommentCard'
+import { Navbar } from 'components/common/Navbar'
+
+import profile1 from 'assets/images/profile1.jpeg'
+
+import { Comment } from 'types'
+
+const Comments: Comment[] = [
   {
     id: '001',
     name: 'User101',
@@ -22,10 +26,11 @@ const dataset = [
     date: '9/4/22',
   },
 ]
+
 const Blog = () => {
   return (
     <Screen>
-      <Navbar isBoards={false}/>
+      <Navbar isBoards={false} />
       <Story />
       <div className="flex flex-col w-4/5 mt-4 mb-4">
         <p className="text-xl font-semibold text-white">เพิ่มความเห็น</p>
@@ -34,17 +39,8 @@ const Blog = () => {
       <div className="flex flex-col w-4/5 mt-4 mb-4">
         <p className="text-xl font-semibold text-white">ความเห็นทั้งหมด</p>
       </div>
-      {dataset.map((data) => {
-        return (
-          <Comment
-            key={data.id}
-            name={data.name}
-            photo={data.photo}
-            text={data.text}
-            like={data.like}
-            date={data.date}
-          />
-        )
+      {Comments.map(({ id, ...rest }) => {
+        return <CommentCard key={id} {...rest} />
       })}
     </Screen>
   )

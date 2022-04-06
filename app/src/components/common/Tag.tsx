@@ -1,18 +1,20 @@
-import { useState } from 'react'
-import book from '../../assets/images/book.png'
-import monk from '../../assets/images/monk.png'
-import temple from '../../assets/images/temple.png'
-import candle from '../../assets/images/candle.png'
-import calendar from '../../assets/images/calendar.png'
-type Tag = {
-  onClick: () => void
-  handleLogout: () => void
-  handleCategory: (catName: string) => void
-}
-const Tag = () => {
+import book from 'assets/images/book.png'
+import monk from 'assets/images/monk.png'
+import temple from 'assets/images/temple.png'
+import candle from 'assets/images/candle.png'
+import calendar from 'assets/images/calendar.png'
+
+// type Tag = {
+//   onClick: () => void
+//   handleLogout: () => void
+//   handleCategory: (catName: string) => void
+// }
+
+export const Tag = () => {
   const handleCategory = (catName: string) => {
     console.log(catName)
   }
+
   return (
     <div className="flex flex-col w-4/5 p-2 mb-4 mt-28 rounded-xl bg-primary-light">
       <p className="pl-2 font-semibold">หมวดหมู่ : </p>
@@ -56,5 +58,3 @@ const Tag = () => {
     </div>
   )
 }
-
-export default Tag
