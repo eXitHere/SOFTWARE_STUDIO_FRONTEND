@@ -28,7 +28,7 @@ export type Comment = {
 }
 
 export type Category = {
-  categoryID:  string
+  categoryID: string
   categoryName: string
   logo: string
 }

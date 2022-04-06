@@ -2,7 +2,7 @@ import { Screen } from 'components/layouts/Screen'
 import { Navbar } from 'components/common/Navbar'
 import { Tag } from 'components/common/Tag'
 import { BlogCard } from 'components/common/BlogCard'
-import { useState } from 'react'
+import { FormEvent, useState } from 'react'
 import profile1 from 'assets/images/profile1.jpeg'
 import searchIcon from 'assets/images/searchIcon.png'
 import { Blog } from 'types'
@@ -53,10 +53,12 @@ const blogs: Blog[] = [
 
 export const MainBlogs = () => {
   const [search, setSearch] = useState('')
-  const handleSearch = (e: any) => {
+
+  const handleSearch = (e: FormEvent) => {
     e.preventDefault()
     console.log(search)
   }
+
   return (
     <Screen>
       <Navbar isBoards={true} />
