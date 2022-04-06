@@ -8,10 +8,6 @@ import { Path } from 'routes'
 
 type NavbarProps = {
   isBoards: boolean
-  // onClick: () => void
-  // onChange: () => void
-  // handleLogout: () => void
-  // handleSearch: () => void
 }
 
 export const Navbar = ({ isBoards }: NavbarProps) => {
