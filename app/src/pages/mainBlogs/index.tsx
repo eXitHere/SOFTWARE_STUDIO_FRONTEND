@@ -1,5 +1,7 @@
-import { BlogCard } from 'components/common/BlogCard'
 import { Screen } from 'components/layouts/Screen'
+import { Navbar } from 'components/common/Navbar'
+import { Tag } from 'components/common/Tag'
+import { BlogCard } from 'components/common/BlogCard'
 
 import profile1 from 'assets/images/profile1.jpeg'
 
@@ -49,29 +51,16 @@ const blogs: Blog[] = [
   },
 ]
 
-export const Profile = () => {
+export const MainBlogs = () => {
   return (
     <Screen>
-      <div className="flex flex-col items-center justify-center w-full">
-        <img src={profile1} className="mt-8 mb-2 rounded-full w-36 h-36"></img>
-        <p className="p-2 text-3xl font-bold text-white">UserName</p>
-        <p className="p-2 text-xl font-semibold text-white">กระทู้ : 1</p>
-        <div>
-          <button className="h-16 m-4 font-semibold bg-primary-lightest rounded-xl w-36">แก้ไขบัญชีผู้ใช้</button>
-          <button className="h-16 m-4 font-semibold bg-primary-lightest rounded-xl w-36">ตั้งกระทู้ใหม่ +</button>
-        </div>
-      </div>
-      {/* กระทู้ทั้งหมดของฉัน */}
-      <div className="flex flex-col items-center">
-        <div className="flex flex-col w-4/5 mt-4 mb-4">
-          <p className="text-xl text-white">กระทู้ทั้งหมดของฉัน</p>
-        </div>
-        {blogs.map(({ id, ...rest }) => {
-          return <BlogCard key={id} {...rest} />
-        })}
-      </div>
+      <Navbar isBoards={true} />
+      <Tag />
+      {blogs.map(({ id, ...rest }) => {
+        return <BlogCard key={id} {...rest} />
+      })}
     </Screen>
   )
 }
 
-export default Profile
+export default MainBlogs
