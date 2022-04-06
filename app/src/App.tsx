@@ -1,10 +1,14 @@
 import { AppRoutes } from 'routes'
+import { ThemeProvider } from 'contexts/store'
 
 import 'styles/tailwind.css'
 
-// * Add all provider here
 const App = () => {
-  return <AppRoutes />
+  return (
+    <ThemeProvider>
+      <AppRoutes />
+    </ThemeProvider>
+  )
 }
 
 export default App
