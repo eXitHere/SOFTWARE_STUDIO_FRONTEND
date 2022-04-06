@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { FormEvent, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import profile1 from 'assets/images/profile1.jpeg'
@@ -17,11 +17,11 @@ export const Navbar = ({ isBoards }: NavbarProps) => {
     console.log('Log Out')
   }
 
-  const handleSearch = (e: any) => {
+  const handleSearch = (e: FormEvent) => {
     e.preventDefault()
     console.log(search)
   }
-  
+
   return (
     <div className="fixed flex items-center justify-between w-full p-2 px-4 md:px-8 bg-primary-main">
       <Link to={Path.MainBlogs}>
