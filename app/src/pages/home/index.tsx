@@ -14,9 +14,9 @@ import { Blog } from 'types'
 const blogs: Blog[] = [
   {
     id: '001',
-    name: 'User101',
+    name: 'Soon_404',
     photo: profile1,
-    topic: 'Header 1',
+    topic: 'Header 1 Lorem ipsum dolor sit amet, consectetur adipisc',
     exText:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent maximus erat maximus, fringilla ipsum quis, vestibulum tellus. Vivamus non ultrices elit, at tristique lorem. Fusce non massa eget sapien mattis efficitur a a neque.',
     like: 100,
@@ -63,15 +63,20 @@ export const Home = () => {
         <p className="p-2 text-3xl font-bold text-white">UserName</p>
         <p className="p-2 text-xl font-semibold text-white">กระทู้ : 1</p>
         <div>
-          <button className="h-16 m-4 font-semibold bg-primary-lightest rounded-xl w-36">แก้ไขบัญชีผู้ใช้</button>
-          <button className="h-16 m-4 font-semibold bg-primary-lightest rounded-xl w-36">ตั้งกระทู้ใหม่ +</button>
+          <Link to={Path.EditProfile}>
+            <button className="h-16 m-4 font-semibold bg-primary-lightest rounded-xl w-36">แก้ไขบัญชีผู้ใช้</button>
+          </Link>
+          <Link to={Path.CreateBlog}>
+            <button className="h-16 m-4 font-semibold bg-primary-lightest rounded-xl w-36">ตั้งกระทู้ใหม่ +</button>
+          </Link>
         </div>
       </div>
       {/* กระทู้ทั้งหมดของฉัน */}
       <div className="flex flex-col items-center w-full">
-        <div className="flex flex-col w-3/5 mt-4 md:w-4/5">
+        <div className="flex flex-col my-4 md:w-3/5 w-80 lg:w-4/5">
           <p className="text-xl text-white">กระทู้ทั้งหมดของฉัน</p>
         </div>
+        {/* blogs list */}
         {blogs.map(({ id, ...rest }) => {
           return <BlogProfileCard key={id} {...rest} />
         })}

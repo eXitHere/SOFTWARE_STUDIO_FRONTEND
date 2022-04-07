@@ -23,11 +23,11 @@ export const Navbar = ({ isBoards }: NavbarProps) => {
   }
 
   return (
-    <div className="fixed flex items-center justify-between w-full p-2 px-4 md:px-8 bg-primary-main">
+    <div className="fixed z-10 flex items-center justify-between w-full p-2 px-4 md:px-8 bg-primary-main">
       <Link to={Path.MainBlogs}>
         <p className="text-lg font-bold text-white md:text-3xl">ThammaTip</p>
       </Link>
-      {isBoards ? (
+      {isBoards && (
         <form onSubmit={handleSearch} className="items-center hidden w-2/6 h-10 md:flex">
           <input
             type="text"
@@ -35,11 +35,9 @@ export const Navbar = ({ isBoards }: NavbarProps) => {
             onChange={(e) => setSearch(e.target.value)}
             className="w-full p-1 rounded-md"
           />
-          <img onClick={handleSearch} src={searchIcon} className="w-8 h-8 mx-2" />
+          <img onClick={handleSearch} src={searchIcon} className="w-8 h-8 mx-2 cursor-pointer" />
         </form>
-      ) : (
-        ''
-      )}
+      ) }
 
       <div className="flex items-center justify-center">
         <div className="flex items-center justify-center">
