@@ -4,17 +4,17 @@ import { Link } from 'react-router-dom'
 import { Screen } from 'components/layouts/Screen'
 
 import profile1 from 'assets/images/profile1.jpeg'
-
+import {ModalConfirm} from 'components/common/ModalConfirm'
 import { Path } from 'routes'
 
 export const EditProfile = () => {
-  const [username, setUsername] = useState('')
-  const [displayname, setDisplayname] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmpassword, setConfirmpassword] = useState('')
-
+  const [username, setUsername] = useState<string>('')
+  const [displayname, setDisplayname] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+  const [confirmpassword, setConfirmpassword] = useState<string>('')
   const [image, setImage] = useState<string>(profile1)
   const [file, setFile] = useState<File | null>()
+  const [modal,setModal] = useState<boolean>(false)
 
   const handleUsernameChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value)
@@ -30,6 +30,11 @@ export const EditProfile = () => {
 
   const handleConfirmpassword = (e: ChangeEvent<HTMLInputElement>) => {
     setConfirmpassword(e.target.value)
+  }
+
+  const handleDeleteUser = (e: ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault()
+    setModal(!modal)
   }
 
   const imageHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -62,21 +67,24 @@ export const EditProfile = () => {
         <p className="pb-3 text-lg text-white">ยืนยันรหัสผ่าน</p>
         <input value={confirmpassword} onChange={handleConfirmpassword} className="w-full h-8 p-2 mb-5 rounded-lg" />
         <div className="flex flex-col items-center justify-center w-full">
-          <button className="w-full h-12 mt-2 text-white bg-red-400 rounded-lg">ลบบัญชีผู้ใช้</button>
+          <button onClick={handleDeleteUser} className="w-full h-12 mt-2 text-white bg-red-400 rounded-lg">ลบบัญชีผู้ใช้</button>
           <div className="flex justify-between flex-roe">
             <Link to={Path.Home}>
               <button className="flex items-center justify-center w-20 h-12 p-4 m-4 text-white bg-gray-400 rounded-md">
                 ยกเลิก
               </button>
             </Link>
-            <Link to={Path.Home}>
-              <button className="flex items-center justify-center w-20 h-12 p-4 m-4 text-white bg-green-400 rounded-md">
+          
+              <button
+                className="flex items-center justify-center w-20 h-12 p-4 m-4 text-white bg-green-400 rounded-md"
+              >
                 บันทึก
               </button>
-            </Link>
+
           </div>
         </div>
       </form>
+      {modal ? <ModalConfirm/> : <div/>}
     </Screen>
   )
 }
