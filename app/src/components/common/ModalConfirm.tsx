@@ -1,46 +1,43 @@
-import { FormEvent, useState } from 'react'
+import { Modal } from 'types'
 
-export const ModalConfirm = () => {
-  return (
+type ModalProps = Pick<Modal, 'warningText' | 'close' | 'agree'>
+export const ModalConfirm = ({ warningText, close, agree}: ModalProps) => {
+  return ( 
     <div
       id="popup-modal"
-      className="fixed left-0 right-0 z-50 overflow-x-hidden overflow-y-auto top-60 md:inset-0 h-modal md:h-full"
+      className="fixed top-0 bottom-0 left-0 right-0 z-50 flex flex-col items-center justify-center w-screen h-screen backdrop-blur-lg"
     >
-      <div className="relative w-full h-full max-w-md p-4 md:h-auto">
-        <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
-          <div className="p-6 pt-6 text-center">
-            <svg
-              className="mx-auto mb-4 text-gray-400 w-14 h-14 dark:text-gray-200"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              ></path>
-            </svg>
-            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-              Are you sure you want to delete this product?
-            </h3>
-            <button
-              data-modal-toggle="popup-modal"
-              type="button"
-              className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
-            >
-              Yes, I'm sure
-            </button>
-            <button
-              data-modal-toggle="popup-modal"
-              type="button"
-              className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
-            >
-              No, cancel
-            </button>
-          </div>
+      <div className="flex flex-col items-center justify-center h-56 bg-white shadow rounded-2xl dark:bg-gray-700 w-96">
+        <div className="w-full p-6 pt-6 text-center">
+          <svg
+            className="mx-auto mb-4 text-gray-400 w-14 h-14 dark:text-gray-200"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            ></path>
+          </svg>
+          <h3 className="mb-5 text-lg font-normal text-white dark:text-white">{warningText}</h3>
+          <button onClick={close}
+            data-modal-toggle="popup-modal"
+            type="button"
+            className="text-white bg-red-600 hover:bg-red-800 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-8 justify-center w-24"
+          >
+            ยกเลิก
+          </button>
+          <button onClick={agree}
+            data-modal-toggle="popup-modal"
+            type="button"
+            className="text-white-500 hover:bg-green-600 rounded-lg text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-green-600 dark:text-white dark:hover:text-white dark:hover:bg-green-700 w-24"
+          >
+            ตกลง
+          </button>
         </div>
       </div>
     </div>
