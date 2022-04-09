@@ -1,26 +1,73 @@
 import { createContext, useState, FC } from 'react'
 
-interface IThemeContext {
-  theme: 'light' | 'dark'
-  toggle?: () => void
-}
+// interface IModalContext {
+//   content: React.ReactNode
+//   setContent: React.ReactNode
+//   isModalOpen: React.ReactNode
+//   setIsModalOpen: React.ReactNode
+//   open?: (content: React.ReactNode) => void
+//   close?: () => void
+//   agree?: () => void
+// }
+// export const ModalContext = createContext<IModalContext>({} as IModalContext)
+// export const ModalProvider: FC = ({children}) => {
+//   const [content, setContent] = useState<React.ReactNode>(null)
+//   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
-export const ThemeContext = createContext<IThemeContext>({} as IThemeContext)
-export const ThemeProvider: FC = ({ children }) => {
-  const [theme, setTheme] = useState<'light' | 'dark'>('dark')
+//   const open = (content: React.ReactNode) => {
+//     setContent(content)
+//     setIsModalOpen(true)
+//   }
 
-  const toggle = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark')
-  }
+//   const close = () => {
+//     setIsModalOpen(false)
+//     setContent(null)
+//   }
 
-  return (
-    <ThemeContext.Provider
-      value={{
-        theme,
-        toggle,
-      }}
-    >
-      {children}
-    </ThemeContext.Provider>
-  )
-}
+//   const agree = () => {
+//     setIsModalOpen(false)
+//     setContent(null)
+//     // logout to login page
+//   }
+//   return (
+//     <ModalContext.Provider
+//       value={{
+//         content,
+//         setContent,
+//         isModalOpen,
+//         setIsModalOpen,
+//         open,
+//         close,
+//         agree
+//       }}
+//     >
+//       {children}
+//     </ModalContext.Provider>
+//   )
+
+
+
+
+
+// interface IBlurContext {
+//   isBlur: Boolean
+//   handleBlur: () => void
+// }
+// export const BlurContext = createContext<IBlurContext>({} as IBlurContext)
+// export const BlurProvider: FC = ({children}) => {
+//   const [isBlur, setIsBlur] = useState<boolean>(false)
+//   const handleBlur = () => {
+//     setIsBlur(!isBlur)
+//   }
+//   return (
+//     <BlurContext.Provider
+//       value={{
+//         isBlur,
+//         handleBlur
+        
+//       }}
+//     >
+//       {children}
+//     </BlurContext.Provider>
+//   )
+// }

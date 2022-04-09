@@ -49,7 +49,7 @@ export const Tag = () => {
   }
 
   return (
-    <div className="flex flex-col p-2 mt-2 mb-4 w-80 md:w-3/5 lg:w-4/5 md:mt-28 rounded-xl bg-primary-light">
+    <div className="flex flex-col w-11/12 p-2 mt-2 mb-4 md:w-4/5 md:mt-28 rounded-xl bg-primary-light">
       <p className="pl-2 font-semibold">หมวดหมู่ : </p>
       <div className="flex items-center justify-around text-lg">
         {dataCategory.map((data) => {

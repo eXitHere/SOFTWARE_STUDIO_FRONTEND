@@ -28,20 +28,19 @@ export const PostComment = () => {
             <textarea
               value={commentText}
               onChange={handleChange}
-              rows={6}
+              rows={8}
               cols={50}
-              className="w-full h-20 p-4 rounded-xl"
+              className="w-full h-24 p-4 rounded-xl"
             />
-        </form>
+          </form>
         </div>
         {/* like + date */}
         <div className="flex flex-col items-center justify-center w-2/6 h-full p-1 pl-0 m-5 mr-0 md:w-1/4 md:p-5 rounded-2xl">
-          <button className="flex items-center justify-center w-20 h-12 p-4 font-bold bg-green-300 md:w-20 md:h-16 rounded-xl">
+          <button onClick={handleComment} className="flex items-center justify-center w-20 h-12 p-4 font-bold text-white bg-green-500 md:w-20 md:h-16 rounded-xl">
             ส่ง
           </button>
         </div>
       </div>
-    
     </div>
   )
 }

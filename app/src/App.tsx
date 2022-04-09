@@ -1,5 +1,5 @@
 import { AppRoutes } from 'routes'
-import { ThemeProvider } from 'contexts/store'
+import { ThemeProvider } from 'contexts/store2'
 
 import 'styles/tailwind.css'
 

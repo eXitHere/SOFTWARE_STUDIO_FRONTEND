@@ -6,8 +6,10 @@ import { FormEvent, useState } from 'react'
 import profile1 from 'assets/images/profile1.jpeg'
 import searchIcon from 'assets/images/searchIcon.png'
 import { Blog } from 'types'
-
 // Mock data
+// type x = string | number
+// type y = (string | number)[]
+// type z = Array<string | number>
 const blogs: Blog[] = [
   {
     id: '001',
@@ -62,14 +64,16 @@ export const MainBlogs = () => {
   return (
     <Screen>
       <Navbar isBoards={true} />
-      <form onSubmit={handleSearch} className="flex items-center justify-center w-5/6 h-10 mt-16 md:hidden">
+      <form onSubmit={handleSearch} className="flex items-center justify-around w-11/12 h-10 mt-16 ml-0 md:hidden">
         <input
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="p-1 mx-2 rounded-md w-72"
+          className="w-11/12 p-1 rounded-md"
         />
-        <img onClick={handleSearch} src={searchIcon} className="w-8 h-8 mx-2" />
+        <div className="flex justify-end w-1/12 ml-4">
+          <img onClick={handleSearch} src={searchIcon} className="w-8 h-8" />
+        </div>
       </form>
       <Tag />
       {blogs.map(({ id, ...rest }) => {

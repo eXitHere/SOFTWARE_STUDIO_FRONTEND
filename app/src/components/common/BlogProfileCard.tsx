@@ -3,12 +3,16 @@ import likeImg from 'assets/images/like.png'
 import unlikeImg from 'assets/images/unlike.png'
 import trash from 'assets/images/trash.png'
 import { BlogProfile } from 'types'
+import { ModalConfirm } from 'components/common/ModalConfirm'
 
 type BlogProfileCardProps = Pick<BlogProfile, 'date' | 'exText' | 'like' | 'name' | 'photo' | 'topic'>
 
 export const BlogProfileCard = ({ date, exText, like, name, photo, topic }: BlogProfileCardProps) => {
+  
   const [clickLike, setClickLike] = useState<boolean>(true)
   const [likePhoto, setLikePhoto] = useState<string>(unlikeImg)
+  const [content, setContent] = useState<React.ReactNode>(null)
+  const [, setIsModalOpen] = useState<boolean>(false)
   const handleLike = () => {
     setClickLike(!clickLike)
     if (clickLike === true) {
@@ -19,8 +23,30 @@ export const BlogProfileCard = ({ date, exText, like, name, photo, topic }: Blog
       setLikePhoto(unlikeImg)
     }
   }
+
+  const handleModal = () => {
+    open(<ModalConfirm warningText={'คุณแน่ใจใช่ไหมว่าต้องการลบกระทู้นี้'} close={close} agree={agree} />)
+  }
+
+  const open = (content: React.ReactNode) => {
+    setContent(content)
+    setIsModalOpen(true)
+  }
+
+  const close = () => {
+    setIsModalOpen(false)
+    setContent(null)
+
+  }
+
+  const agree = () => {
+    setIsModalOpen(false)
+    setContent(null)
+    // delete
+  }
+
   return (
-    <div className="relative flex flex-col mb-4 h-68 md:flex-row md:h-48 md:w-3/5 w-80 lg:w-4/5 lg:h-40 bg-primary-lightest rounded-2xl">
+    <div className="relative flex flex-col w-11/12 mb-4 h-68 md:flex-row md:h-40 md:w-4/5 bg-primary-lightest rounded-2xl">
       {/* profile picture + name */}
       <div className="flex flex-row items-center w-full h-full p-1 mr-4 md:justify-center md:w-1/6 md:flex-col lg:p-5 rounded-2xl">
         <img src={photo} className="w-12 h-12 mx-4 mt-2 bg-blue-300 rounded-full md:w-20 md:h-20 md:mx-0"></img>
@@ -42,9 +68,13 @@ export const BlogProfileCard = ({ date, exText, like, name, photo, topic }: Blog
         </div>
       </div>
       {/* delete button */}
-      <button className="absolute right-0 flex items-center justify-center w-8 h-8 mr-2 bg-red-400 bottom-3 rounded-xl">
+      <button
+        onClick={handleModal}
+        className="absolute right-0 flex items-center justify-center w-8 h-8 mr-2 bg-red-400 bottom-3 rounded-xl"
+      >
         <img src={trash} className="w-4 h-4"></img>
       </button>
+      {content}
     </div>
   )
 }
