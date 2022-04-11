@@ -12,7 +12,7 @@ export const CommentCard = ({ date, like, name, photo, text }: CommentCardProps)
   const [likePhoto, setLikePhoto] = useState<string>(unlikeImg)
   const [content, setContent] = useState<React.ReactNode>(null)
   const [, setIsModalOpen] = useState<boolean>(false)
-  
+
   const handleLike = () => {
     setClickLike(!clickLike)
     if (clickLike === true) {
@@ -67,7 +67,10 @@ export const CommentCard = ({ date, like, name, photo, text }: CommentCardProps)
       </div>
       {/* delete button */}
       {true && (
-        <button onClick={handleModal} className="absolute right-0 flex items-center justify-center w-8 h-8 mr-2 bg-red-400 bottom-3 rounded-xl">
+        <button
+          onClick={handleModal}
+          className="absolute right-0 flex items-center justify-center w-8 h-8 mr-2 bg-red-400 bottom-3 rounded-xl"
+        >
           <img src={trash} className="w-4 h-4"></img>
         </button>
       )}

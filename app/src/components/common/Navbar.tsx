@@ -53,8 +53,8 @@ export const Navbar = ({ isBoards }: NavbarProps) => {
           ออกจากระบบ
         </button> */}
         <button className="flex items-center justify-center w-12 h-12 m-4 mr-0 bg-red-400 rounded-xl">
-          <img src={LogoutIcon} onClick={handleLogout} className="w-6 h-6"/>
-        </button>  
+          <img src={LogoutIcon} onClick={handleLogout} className="w-6 h-6" />
+        </button>
       </div>
     </div>
   )
