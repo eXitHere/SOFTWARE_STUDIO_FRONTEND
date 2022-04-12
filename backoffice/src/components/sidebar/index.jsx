@@ -28,7 +28,7 @@ function Sidebar() {
     };
 
     return (
-        <div className="divide-y rounded-r-xl top-0 left-0 w-[20vw] bg-blue-600  p-2 text-white fixed h-full ">
+        <div className="divide-y rounded-r-xl top-0 left-0 w-[20vw] bg-blue-600  p-2 text-white h-full ">
             <div className="flex justify-center p-5 flex-col">
                 <div className="flex justify-center">
                     <Avatar name={user.name} />
