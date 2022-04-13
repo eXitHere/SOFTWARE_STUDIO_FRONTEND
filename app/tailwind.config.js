@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const plugin = require('tailwindcss/plugin')
+
 const palettes = {
   'primary-main': '#089bab',
   'primary-light': '#e1f5f6',
@@ -8,6 +11,7 @@ module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   presets: [],
   darkMode: 'media',
+
   theme: {
     screens: {
       sm: '640px',
@@ -954,5 +958,17 @@ module.exports = {
     'active',
     'disabled',
   ],
-  plugins: [],
+  plugins: [
+    plugin(function ({ addBase, theme }) {
+      addBase({
+        h1: { fontSize: theme('fontSize.2xl') },
+        h2: { fontSize: theme('fontSize.xl') },
+        h3: { fontSize: theme('fontSize.lg') },
+        h4: { fontSize: theme('fontSize.md') },
+        h5: { fontSize: theme('fontSize.sm') },
+        ul: { listStyleType: theme('listStyleType.disc') },
+        ol: { listStyleType: theme('listStyleType.decimal') },
+      })
+    }),
+  ],
 }

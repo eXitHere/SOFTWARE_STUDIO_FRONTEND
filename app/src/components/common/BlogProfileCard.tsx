@@ -8,7 +8,6 @@ import { ModalConfirm } from 'components/common/ModalConfirm'
 type BlogProfileCardProps = Pick<BlogProfile, 'date' | 'exText' | 'like' | 'name' | 'photo' | 'topic'>
 
 export const BlogProfileCard = ({ date, exText, like, name, photo, topic }: BlogProfileCardProps) => {
-  
   const [clickLike, setClickLike] = useState<boolean>(true)
   const [likePhoto, setLikePhoto] = useState<string>(unlikeImg)
   const [content, setContent] = useState<React.ReactNode>(null)
@@ -36,7 +35,6 @@ export const BlogProfileCard = ({ date, exText, like, name, photo, topic }: Blog
   const close = () => {
     setIsModalOpen(false)
     setContent(null)
-
   }
 
   const agree = () => {

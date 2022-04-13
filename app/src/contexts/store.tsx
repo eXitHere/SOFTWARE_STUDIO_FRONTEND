@@ -45,10 +45,6 @@ import { createContext, useState, FC } from 'react'
 //     </ModalContext.Provider>
 //   )
 
-
-
-
-
 // interface IBlurContext {
 //   isBlur: Boolean
 //   handleBlur: () => void
@@ -64,7 +60,7 @@ import { createContext, useState, FC } from 'react'
 //       value={{
 //         isBlur,
 //         handleBlur
-        
+
 //       }}
 //     >
 //       {children}

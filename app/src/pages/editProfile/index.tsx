@@ -33,9 +33,9 @@ export const EditProfile = () => {
     setConfirmpassword(e.target.value)
   }
 
-  function handleDeleteUser(e:MouseEvent<HTMLButtonElement>) {
+  function handleDeleteUser(e: MouseEvent<HTMLButtonElement>) {
     e.preventDefault()
-    open(<ModalConfirm warningText={"คุณแน่ใจใช่ไหมว่าต้องการลบบัญชีนี้"} close = {close} agree = {agree}/>)
+    open(<ModalConfirm warningText={'คุณแน่ใจใช่ไหมว่าต้องการลบบัญชีนี้'} close={close} agree={agree} />)
   }
 
   const open = (content: React.ReactNode) => {
@@ -69,7 +69,7 @@ export const EditProfile = () => {
 
   return (
     <Screen>
-      <div className='flex flex-col items-center justify-center'>
+      <div className="flex flex-col items-center justify-center">
         <p className="mt-12 text-2xl font-bold text-white md:text-3xl">แก้ไขข้อมูลส่วนตัว</p>
         <label htmlFor="image-upload">
           <img src={image} className="w-32 h-32 m-4 rounded-full cursor-pointer" />
