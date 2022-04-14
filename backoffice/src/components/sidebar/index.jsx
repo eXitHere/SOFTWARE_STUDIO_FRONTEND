@@ -9,10 +9,10 @@ function Button({ icon, text, to }) {
     return (
         <Link
             to={to}
-            className="w-full text-center p-5 bg-red-400 hover:cursor-pointer hover:opacity-90 inline-flex items-center"
+            className="w-full text-center p-5 hover:cursor-pointer hover:opacity-90 inline-flex items-center"
         >
             {icon}
-            <span className="ml-2 text-bold">{text}</span>
+            <span className="ml-2 font-bold text-xl">{text}</span>
         </Link>
     );
 }
@@ -29,7 +29,7 @@ function Sidebar() {
     };
 
     return (
-        <div className="divide-y rounded-r-xl top-0 left-0 w-[20vw] bg-blue-600  p-2 text-white h-full ">
+        <div className="divide-y rounded-r-xl top-0 left-0 w-[20vw] bg-primary p-2 text-white h-full ">
             <div className="flex justify-center p-5 flex-col">
                 <div className="flex justify-center">
                     <Avatar name={user.name} />

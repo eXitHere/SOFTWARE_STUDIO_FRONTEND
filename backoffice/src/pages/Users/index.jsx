@@ -8,7 +8,7 @@ function StatusButton({ currentStatus }) {
 function List({ columns, data }) {
     return (
         <table className="table-auto w-full shadow-md bg-white rounded">
-            <thead className="h-12 text-xl bg-gray-50 rounded-lg">
+            <thead className="h-12 text-xl bg-gray-50 rounded-lg text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     {columns.map((col, idx) => (
                         <th className="p-4 text-left font-bold" key={idx}>

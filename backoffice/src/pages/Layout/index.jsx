@@ -4,7 +4,7 @@ import Sidebar from '../../components/sidebar';
 
 function Layout() {
     return (
-        <div className="h-screen w-screen bg-primary flex justify-center items-center">
+        <div className="h-screen w-screen bg-white flex justify-center items-center">
             <Sidebar />
             <div className="w-full">
                 <Outlet />
