@@ -2,14 +2,13 @@ import { Screen } from 'components/layouts/Screen'
 import { Navbar } from 'components/common/Navbar'
 import { Tag } from 'components/common/Tag'
 import { BlogCard } from 'components/common/BlogCard'
-import { FormEvent, useState } from 'react'
+import { FormEvent, useState, useContext, useEffect } from 'react'
 import profile1 from 'assets/images/profile1.jpeg'
 import searchIcon from 'assets/images/searchIcon.png'
 import { Blog } from 'types'
-// Mock data
-// type x = string | number
-// type y = (string | number)[]
-// type z = Array<string | number>
+import { TagContext } from 'contexts/store'
+import axios, { AxiosResponse } from 'axios'
+
 const blogs: Blog[] = [
   {
     id: '001',
@@ -54,17 +53,35 @@ const blogs: Blog[] = [
 ]
 
 export const MainBlogs = () => {
+  const tagContext = useContext(TagContext)
   const [search, setSearch] = useState('')
+  const [globalBlogs, setGlobalBlogs] = useState({})
 
   const handleSearch = (e: FormEvent) => {
     e.preventDefault()
     console.log(search)
   }
 
+  const getUserBlogs = async () => {
+    try {
+      const response = await axios('')
+      setGlobalBlogs(JSON.stringify(response.data))
+      console.log(JSON.stringify(response.data))
+    }
+    catch (e){
+      console.log(e)
+    }
+    
+  }
+
+  useEffect(() => {
+    getUserBlogs()
+  }, [tagContext.category])
+
   return (
     <Screen>
       <Navbar isBoards={true} />
-      <form onSubmit={handleSearch} className="flex items-center justify-around w-11/12 h-10 mt-16 ml-0 md:hidden">
+      <form onSubmit={handleSearch} className="flex items-center justify-around w-11/12 h-10 mt-24 ml-0 md:hidden">
         <input
           type="text"
           value={search}

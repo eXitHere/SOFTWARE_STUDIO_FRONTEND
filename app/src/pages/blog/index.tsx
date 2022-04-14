@@ -1,5 +1,5 @@
 import { Screen } from 'components/layouts/Screen'
-import { Content} from 'components/common/Content'
+import { Content } from 'components/common/Content'
 import { PostComment } from 'components/common/PostComment'
 import { CommentCard } from 'components/common/CommentCard'
 import { Navbar } from 'components/common/Navbar'
@@ -28,18 +28,18 @@ const Comments: Comment[] = [
 const Blog = () => {
   return (
     <Screen>
-        <Navbar isBoards={false} />
-        <Content />
-        <div className="flex flex-col w-4/5 mt-4 mb-4">
-          <p className="text-xl font-semibold text-white">เพิ่มความเห็น</p>
-        </div>
-        <PostComment />
-        <div className="flex flex-col w-4/5 mt-4 mb-4">
-          <p className="text-xl font-semibold text-white">ความเห็นทั้งหมด</p>
-        </div>
-        {Comments.map(({ id, ...rest }) => {
-          return <CommentCard key={id} {...rest} />
-        })}
+      <Navbar isBoards={false} />
+      <Content />
+      <div className="flex flex-col w-4/5 mt-4 mb-4">
+        <p className="text-xl font-semibold text-white">เพิ่มความเห็น</p>
+      </div>
+      <PostComment />
+      <div className="flex flex-col w-4/5 mt-4 mb-4">
+        <p className="text-xl font-semibold text-white">ความเห็นทั้งหมด</p>
+      </div>
+      {Comments.map(({ id, ...rest }) => {
+        return <CommentCard key={id} {...rest} />
+      })}
     </Screen>
   )
 }

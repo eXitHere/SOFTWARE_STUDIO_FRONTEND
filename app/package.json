@@ -10,14 +10,22 @@
     "lint": "eslint --quiet \"src/**/*.{js,jsx,ts,tsx}\""
   },
   "dependencies": {
+    "axios": "^0.26.1",
     "classnames": "^2.3.1",
+    "dompurify": "^2.3.6",
+    "draft-convert": "^2.1.12",
+    "draft-js": "^0.11.7",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-draft-wysiwyg": "^1.14.7",
     "react-router-dom": "6"
   },
   "devDependencies": {
+    "@types/dompurify": "^2.3.3",
+    "@types/draft-convert": "^2.1.4",
     "@types/react": "^17.0.33",
     "@types/react-dom": "^17.0.10",
+    "@types/react-draft-wysiwyg": "^1.13.4",
     "@typescript-eslint/eslint-plugin": "^5.17.0",
     "@typescript-eslint/parser": "^5.17.0",
     "@vitejs/plugin-react": "^1.0.7",
