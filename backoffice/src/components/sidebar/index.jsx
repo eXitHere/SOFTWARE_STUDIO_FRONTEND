@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Avatar from 'react-avatar';
-import { FaHome, FaUsers } from 'react-icons/fa';
+import { FaHome, FaUsers, FaBook } from 'react-icons/fa';
 
 // https://react-icons.github.io/react-icons/icons?name=fa
 
@@ -21,6 +21,7 @@ function Sidebar() {
     const nav = [
         { icon: <FaHome />, text: 'Home', to: '/' },
         { icon: <FaUsers />, text: 'Users', to: '/users' },
+        { icon: <FaBook />, text: 'Blogs', to: '/blogs' },
     ];
 
     const user = {

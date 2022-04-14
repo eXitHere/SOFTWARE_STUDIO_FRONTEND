@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import NoPage from './pages/NotFound';
 import Layout from './pages/Layout';
 import Users from './pages/Users';
+import Blogs from './pages/Blogs';
 
 function App() {
     const user = null;
@@ -20,6 +21,7 @@ function App() {
                         }
                     />
                     <Route path="users" element={<Users />} />
+                    <Route path="blogs" element={<Blogs />} />
                     <Route path="*" element={<NoPage />} />
                 </Route>
                 <Route path="login" element={<Login />} />
