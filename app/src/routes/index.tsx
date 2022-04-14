@@ -1,6 +1,6 @@
 import { BrowserRouter, RouteObject, useRoutes } from 'react-router-dom'
 
-import { Blog, MainBlogs, Home, EditProfile, CreateBlog } from 'routes/lazy'
+import { Blog, MainBlogs, Home, EditProfile, CreateBlog, Profile } from 'routes/lazy'
 import { Path } from 'routes/path'
 
 import NotFound from 'pages/404'
@@ -10,6 +10,10 @@ const routes: RouteObject[] = [
     path: Path.Home,
     children: [
       { index: true, element: <Home /> },
+      {
+        path: Path.Profile,
+        children: [{ index: true, element: <Profile/> }],
+      },
       {
         path: Path.MainBlogs,
         children: [

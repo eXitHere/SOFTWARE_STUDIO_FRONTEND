@@ -11,6 +11,7 @@ const RawBlog = lazy(() => import('pages/blog'))
 const RawMainBlogs = lazy(() => import('pages/mainBlogs'))
 const RawEditProfile = lazy(() => import('pages/editProfile'))
 const RawCreateBlog = lazy(() => import('pages/createBlog'))
+const RawProfile = lazy(() => import('pages/profile'))
 
 export const Home = () => (
   <WrappedSuspense>
@@ -39,5 +40,11 @@ export const EditProfile = () => (
 export const CreateBlog = () => (
   <WrappedSuspense>
     <RawCreateBlog />
+  </WrappedSuspense>
+)
+
+export const Profile = () => (
+  <WrappedSuspense>
+    <RawProfile />
   </WrappedSuspense>
 )

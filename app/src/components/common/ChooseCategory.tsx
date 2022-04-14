@@ -1,4 +1,4 @@
-import {useContext} from 'react'
+import { useContext, useState } from 'react'
 import book from 'assets/images/book.png'
 import monk from 'assets/images/monk.png'
 import temple from 'assets/images/temple.png'
@@ -6,8 +6,7 @@ import candle from 'assets/images/candle.png'
 import calendar from 'assets/images/calendar.png'
 import { Category } from 'types'
 import classNames from 'classnames'
-import {TagContext } from 'contexts/store'
-
+import { ChooseCat } from 'types'
 
 const dataCategory: Category[] = [
   {
@@ -37,26 +36,20 @@ const dataCategory: Category[] = [
   },
 ]
 
-export const Tag = () => {
-  const tagContext = useContext(TagContext)
-
-  const handleCategory = (catName: string) => {
-    tagContext.setCategory({name:catName})
-  }
-
+type CreateTagProps = Pick<ChooseCat, 'selectTag' | 'handleChoose'>
+export const ChooseCategory = ({ selectTag, handleChoose }: CreateTagProps) => {
   return (
-    <div className="flex flex-col w-11/12 p-2 mt-2 mb-4 lg:w-4/5 md:mt-28 rounded-xl bg-primary-light">
-      <p className="pl-2 font-semibold">หมวดหมู่ : </p>
-      <div className="flex items-center justify-around text-lg">
+    <div className="flex flex-col w-full p-2 mt-6 mb-4 bg-white rounded-xl">
+      <div className="flex items-center justify-around w-full text-lg">
         {dataCategory.map((data) => {
           return (
             <button
               key={data.categoryID}
-              onClick={() => handleCategory(data.categoryName)}
+              onClick={() => handleChoose(data.categoryName)}
               className={classNames(
                 'flex flex-col items-center justify-center w-16 h-20 md:w-32 md:h-32 mt-2 font-bold',
                 {
-                  'bg-yellow-300 rounded-lg': tagContext.category.name == data.categoryName,
+                  'bg-yellow-300 rounded-lg': selectTag == data.categoryName,
                 },
               )}
             >

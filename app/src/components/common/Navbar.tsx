@@ -1,16 +1,20 @@
-import { FormEvent, useState } from 'react'
+import { FormEvent, useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 
 import profile1 from 'assets/images/profile1.jpeg'
 import searchIcon from 'assets/images/searchIcon.png'
 import LogoutIcon from 'assets/icons/logoutIcon.png'
+
 import { Path } from 'routes'
+import { UserContext } from 'contexts/store'
 
 type NavbarProps = {
   isBoards: boolean
 }
 
 export const Navbar = ({ isBoards }: NavbarProps) => {
+  const userContext = useContext(UserContext)
+  
   const [search, setSearch] = useState('')
 
   const handleLogout = () => {
@@ -41,9 +45,9 @@ export const Navbar = ({ isBoards }: NavbarProps) => {
 
       <div className="flex items-center justify-center">
         <div className="flex items-center justify-center">
-          <p className={'text-white px-5 text-md md:text-xl'}>User001</p>
-          <Link to={Path.Home}>
-            <img src={profile1} className="w-12 h-12 bg-blue-300 rounded-full md:w-16 md:h-16"></img>
+          <p className={'text-white px-5 text-md md:text-xl'}>{userContext?.user?.displayname}</p>
+          <Link to={Path.Profile}>
+            <img src={userContext?.user?.photo} className="w-12 h-12 bg-blue-300 rounded-full md:w-16 md:h-16"></img>
           </Link>
         </div>
         {/* <button
@@ -52,9 +56,11 @@ export const Navbar = ({ isBoards }: NavbarProps) => {
         >
           ออกจากระบบ
         </button> */}
-        <button className="flex items-center justify-center w-12 h-12 m-4 mr-0 bg-red-400 rounded-xl">
-          <img src={LogoutIcon} onClick={handleLogout} className="w-6 h-6" />
-        </button>
+        <Link to={Path.Home}>
+          <button className="flex items-center justify-center w-12 h-12 m-4 mr-0 bg-red-400 rounded-xl">
+            <img src={LogoutIcon} onClick={handleLogout} className="w-6 h-6" />
+          </button>
+        </Link>
       </div>
     </div>
   )

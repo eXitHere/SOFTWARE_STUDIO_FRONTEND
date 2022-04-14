@@ -1,69 +1,44 @@
-import { createContext, useState, FC } from 'react'
+import React, { createContext, useState, FC, SetStateAction } from 'react'
+import {AuthUser,Tags} from 'types'
 
-// interface IModalContext {
-//   content: React.ReactNode
-//   setContent: React.ReactNode
-//   isModalOpen: React.ReactNode
-//   setIsModalOpen: React.ReactNode
-//   open?: (content: React.ReactNode) => void
-//   close?: () => void
-//   agree?: () => void
-// }
-// export const ModalContext = createContext<IModalContext>({} as IModalContext)
-// export const ModalProvider: FC = ({children}) => {
-//   const [content, setContent] = useState<React.ReactNode>(null)
-//   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+type UserContextType = {
+  user: AuthUser | null
+  setUser: React.Dispatch<React.SetStateAction<AuthUser | null>>
+}
 
-//   const open = (content: React.ReactNode) => {
-//     setContent(content)
-//     setIsModalOpen(true)
-//   }
+type UserContextProviderProps = {
+  children: React.ReactNode
+}
+export const UserContext = createContext<UserContextType | null>(null)
 
-//   const close = () => {
-//     setIsModalOpen(false)
-//     setContent(null)
-//   }
 
-//   const agree = () => {
-//     setIsModalOpen(false)
-//     setContent(null)
-//     // logout to login page
-//   }
-//   return (
-//     <ModalContext.Provider
-//       value={{
-//         content,
-//         setContent,
-//         isModalOpen,
-//         setIsModalOpen,
-//         open,
-//         close,
-//         agree
-//       }}
-//     >
-//       {children}
-//     </ModalContext.Provider>
-//   )
+export const UserContextProvider = ({children}: UserContextProviderProps) => {
+  const [user, setUser] = useState<AuthUser | null>(null)
+  return (
+    <UserContext.Provider value={{user, setUser}}>
+      {children}
+    </UserContext.Provider>
+  )}
+  
 
-// interface IBlurContext {
-//   isBlur: Boolean
-//   handleBlur: () => void
-// }
-// export const BlurContext = createContext<IBlurContext>({} as IBlurContext)
-// export const BlurProvider: FC = ({children}) => {
-//   const [isBlur, setIsBlur] = useState<boolean>(false)
-//   const handleBlur = () => {
-//     setIsBlur(!isBlur)
-//   }
-//   return (
-//     <BlurContext.Provider
-//       value={{
-//         isBlur,
-//         handleBlur
 
-//       }}
-//     >
-//       {children}
-//     </BlurContext.Provider>
-//   )
-// }
+  type TagContextType = {
+    category: Tags
+    setCategory: React.Dispatch<SetStateAction<Tags>>
+  }
+
+  type TagContextProviderProps = {
+    children: React.ReactNode
+  }
+  export const TagContext = createContext<TagContextType>({} as TagContextType)
+
+  export const TagContextProvider = ({children}: TagContextProviderProps) => {
+    const [category, setCategory] = useState<Tags>({name:"คำสอน"})
+    return (
+      <TagContext.Provider value={{category, setCategory}}>
+        {children}
+      </TagContext.Provider>
+    )
+  }
+
+

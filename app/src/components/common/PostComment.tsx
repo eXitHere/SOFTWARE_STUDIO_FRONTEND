@@ -15,7 +15,7 @@ export const PostComment = () => {
   }
 
   return (
-    <div className="relative flex flex-col h-68 md:flex-row md:h-48 md:w-3/5 w-80 lg:w-4/5 lg:h-40 bg-primary-lightest rounded-2xl">
+    <div className="relative flex flex-col w-11/12 h-68 md:flex-row md:h-48 lg:w-4/5 lg:h-40 bg-primary-lightest rounded-2xl">
       {/* profile picture + name */}
       <div className="flex flex-row items-center w-full h-full p-1 mr-4 md:justify-center md:w-1/6 md:flex-col lg:p-5 rounded-2xl">
         <img src={profile1} className="w-12 h-12 mx-4 mt-2 bg-blue-300 rounded-full md:w-20 md:h-20 md:mx-0"></img>
