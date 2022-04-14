@@ -1,7 +1,7 @@
 import { Anoucement } from 'types'
 
-type AnoucementProps = Pick<Anoucement, 'topic' | 'text' | 'close'>
-export const AnoucementModal = ({ topic, text, close }: AnoucementProps) => {
+type AnoucementProps = Pick<Anoucement, 'topic' | 'text' | 'close' | 'date'>
+export const AnoucementModal = ({ topic, text, close, date }: AnoucementProps) => {
   return (
     <div
       id="popup-anoucement"
@@ -9,7 +9,10 @@ export const AnoucementModal = ({ topic, text, close }: AnoucementProps) => {
     >
       <div className="relative flex flex-col items-center w-3/4 bg-white shadow rounded-2xl dark:bg-white">
         <p className="p-5 text-3xl font-normal">{topic}</p>
-        <p className="p-5 mb-5 text-lg font-normal">{text}</p>
+        <p className="p-5 text-lg font-normal">{text}</p>
+        <div className="w-full p-5 pt-0">
+          <p className="left-0 text-lg font-normal bottom-1">{date}</p>
+        </div>
         <button
           onClick={close}
           data-modal-toggle="popup-modal"

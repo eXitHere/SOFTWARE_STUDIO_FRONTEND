@@ -10,6 +10,7 @@
     "lint": "eslint --quiet \"src/**/*.{js,jsx,ts,tsx}\""
   },
   "dependencies": {
+    "axios": "^0.26.1",
     "classnames": "^2.3.1",
     "dompurify": "^2.3.6",
     "draft-convert": "^2.1.12",

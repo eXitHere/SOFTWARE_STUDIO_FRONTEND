@@ -1,14 +1,19 @@
-export type Blog = {
+import { ChangeEvent, SetStateAction, useState, MouseEvent } from 'react'
+
+export type AuthUser = {
   id: string
-  name: string
+  token: string
+  displayname: string
+  username: string
+  password: string
   photo: string
-  topic: string
-  exText: string
-  like: number
-  date: string
 }
 
-export type BlogProfile = {
+export type Tags = {
+  name: string
+}
+
+export type Blog = {
   id: string
   name: string
   photo: string
@@ -42,5 +47,11 @@ export type Modal = {
 export type Anoucement = {
   topic: string
   text: string
+  date : string
   close: () => void
+}
+
+export type ChooseCat = {
+  selectTag: string
+  handleChoose: (Category: string) => void
 }

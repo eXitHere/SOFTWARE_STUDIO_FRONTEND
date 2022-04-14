@@ -1,28 +1,41 @@
 import { Screen } from 'components/layouts/Screen'
 import { Navbar } from 'components/common/Navbar'
-import { ChangeEvent, SetStateAction, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { ChangeEvent, SetStateAction, useState, MouseEvent } from 'react'
 //import profile1 from 'assets/images/profile1.jpeg'
 import { EditorState } from 'draft-js'
 import { Editor } from 'react-draft-wysiwyg'
 import { convertToHTML } from 'draft-convert'
 import DOMPurify from 'dompurify'
+import axios, { AxiosResponse } from 'axios'
+import { Path } from 'routes'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
+import { ChooseCategory } from 'components/common/ChooseCategory'
 
 export const CreateBlog = () => {
   const [topicText, setTopicText] = useState<string>('')
   const [editorState, setEditorState] = useState(() => EditorState.createEmpty())
   const [convertedContent, setConvertedContent] = useState<string | null>(null)
+  const [selectTag, setSelectTag] = useState('')
+
   const handleChangeTopic = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setTopicText(e.target.value)
   }
 
-  // const handleChangeContent = (e: ChangeEvent<HTMLTextAreaElement>) => {
-  //   setContentText(e.target.value)
-  // }
-
-  const handleCreateBlog = (e: { preventDefault: () => void }) => {
+  const handleCreateBlog = async (e: { preventDefault: () => void }) => {
+    const sendData = {
+      topic : topicText,
+      content : String(convertedContent),
+      category : selectTag
+    }
     e.preventDefault()
-    console.log(String(convertedContent))
+    try {
+      const response = await axios.post('', String(convertedContent))
+      console.log('Response : ' + JSON.stringify(response.headers, null, 2))
+    } catch (e) {
+      console.log(e)
+    }
+    console.log(sendData)
   }
 
   const handleEditorChange = (state: SetStateAction<EditorState>) => {
@@ -42,11 +55,15 @@ export const CreateBlog = () => {
     }
   }
 
+  const handleChoose = (Category:string) => {
+    setSelectTag(Category);
+  }
+
   return (
     <Screen>
       <Navbar isBoards={false} />
       <p className="mb-4 text-3xl font-bold text-white mt-28"> สร้างกระทู้ใหม่</p>
-      <form className="flex flex-col items-center justify-center w-11/12 h-full md:w-3/4">
+      <div className="flex flex-col items-center justify-center w-11/12 h-full md:w-3/4">
         <p className="w-full my-4 text-xl text-white">ชื่อกระทู้</p>
 
         {/* preview div */}
@@ -58,7 +75,8 @@ export const CreateBlog = () => {
           cols={50}
           className="w-full h-20 p-4 text-lg rounded-xl"
         />
-
+        <p className="w-full my-4 text-xl text-white">เลือกหมวดหมู่</p>
+        <ChooseCategory selectTag={selectTag} handleChoose={handleChoose} />
         <p className="w-full my-4 text-xl text-white">เนื้อความ</p>
         <div className="w-full p-5 bg-white rounded-xl">
           <Editor
@@ -79,12 +97,21 @@ export const CreateBlog = () => {
             }}
           />
         </div>
+
         <div className="relative w-full pb-10 mb-10" onClick={handleCreateBlog}>
-          <button className="absolute right-0 w-32 p-4 m-4 mr-0 font-bold text-white bg-green-500 rounded-xl">
-            สร้าง
-          </button>
+          <Link to={Path.Profile}>
+            <button className="absolute right-0 w-32 p-4 m-4 mr-0 font-bold text-white bg-green-500 rounded-xl">
+              สร้าง
+            </button>
+          </Link>
+
+          <Link to={Path.Profile}>
+            <button className="absolute left-0 w-32 p-4 m-4 ml-0 font-bold text-white bg-red-400 rounded-xl">
+              ยกเลิก
+            </button>
+          </Link>
         </div>
-      </form>
+      </div>
     </Screen>
   )
 }

@@ -1,18 +1,21 @@
-import React, { ChangeEvent, MouseEvent, ReactNode, useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { ChangeEvent, MouseEvent, useState, useContext } from 'react'
 
+import { Link } from 'react-router-dom'
 import { Screen } from 'components/layouts/Screen'
 
 import profile1 from 'assets/images/profile1.jpeg'
 import { ModalConfirm } from 'components/common/ModalConfirm'
 import { Path } from 'routes'
+import { UserContext } from 'contexts/store'
 
 export const EditProfile = () => {
+  const userContext = useContext(UserContext)
   const [username, setUsername] = useState<string>('')
   const [displayname, setDisplayname] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [confirmpassword, setConfirmpassword] = useState<string>('')
-  const [image, setImage] = useState<string>(profile1)
+  // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+  const [image, setImage] = useState<string>(userContext?.user?.photo!)
   const [file, setFile] = useState<File | null>()
   const [content, setContent] = useState<React.ReactNode>(null)
   const [, setIsModalOpen] = useState<boolean>(false)
@@ -89,7 +92,7 @@ export const EditProfile = () => {
               ลบบัญชีผู้ใช้
             </button>
             <div className="flex justify-between flex-roe">
-              <Link to={Path.Home}>
+              <Link to={Path.Profile}>
                 <button className="flex items-center justify-center w-20 h-12 p-4 m-4 text-white bg-gray-400 rounded-md">
                   ยกเลิก
                 </button>

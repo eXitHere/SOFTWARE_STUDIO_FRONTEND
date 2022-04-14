@@ -1,13 +1,15 @@
 import { AppRoutes } from 'routes'
-import { ThemeProvider } from 'contexts/store2'
-
+import { TagContextProvider, UserContextProvider } from 'contexts/store'
 import 'styles/tailwind.css'
+
 
 const App = () => {
   return (
-    <ThemeProvider>
-      <AppRoutes />
-    </ThemeProvider>
+    <UserContextProvider>
+      <TagContextProvider>
+        <AppRoutes />
+      </TagContextProvider>
+    </UserContextProvider>
   )
 }
 
