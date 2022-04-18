@@ -4,9 +4,9 @@ import Sidebar from '../../components/sidebar';
 
 function Layout() {
     return (
-        <div className="h-screen w-screen bg-white flex justify-center items-center">
+        <div className="h-screen w-screen bg-white flex justify-center">
             <Sidebar />
-            <div className="w-full">
+            <div className="w-full h-full">
                 <Outlet />
             </div>
         </div>

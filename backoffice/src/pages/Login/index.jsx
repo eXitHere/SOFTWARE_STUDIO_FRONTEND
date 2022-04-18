@@ -1,14 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { login } from '../../api/user';
+import { getUserInfo } from '../../utils/user.utils';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
-    const [username, setUsername] = useState();
-    const [password, setPassword] = useState();
-    const [error, setError] = useState(false);
+    const [username, setUsername] = useState('admin1');
+    const [password, setPassword] = useState('admin123');
+    const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const navigateTo = useNavigate();
 
-    const submit = () => {
+    const submit = async () => {
+        if (!username) {
+            setError('username is required.');
+            return;
+        }
+        if (!password) {
+            setError('password is required.');
+            return;
+        }
         setLoading(true);
-        console.log(`submit ${username}, ${password}`);
+        const result = await login(username, password);
+        if (result) {
+            const userInfo = await getUserInfo();
+            console.log('login successfully', userInfo);
+            return navigateTo('/');
+        } else {
+            setError('username or password is invalid.');
+        }
+        setLoading(false);
     };
 
     return (
@@ -26,7 +46,7 @@ function Login() {
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             id="username"
                             type="text"
-                            placeholder="Username"
+                            placeholder="username"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                         />
@@ -44,11 +64,11 @@ function Login() {
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            placeholder="******************"
+                            placeholder="********"
                         />
                         {error && (
                             <p className="text-red-500 text-xs italic">
-                                Please choose a password.
+                                {error}
                             </p>
                         )}
                     </div>

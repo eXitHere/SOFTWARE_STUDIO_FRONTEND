@@ -8,3 +8,8 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+
+.active {
+    background-color: #f1f6f9;
+    color: #005eff;
+}

@@ -9,9 +9,11 @@
     },
     "dependencies": {
         "@heroicons/react": "^1.0.6",
+        "axios": "^0.26.1",
         "dompurify": "^2.3.6",
         "draft-convert": "^2.1.12",
         "draft-js": "^0.11.7",
+        "jwt-decode": "^3.1.2",
         "moment": "^2.29.2",
         "prop-types": "^15.8.1",
         "react": "^17.0.2",
