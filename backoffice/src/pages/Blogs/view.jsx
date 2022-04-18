@@ -2,6 +2,26 @@ import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { listBlog } from '../../api/blog';
 
+function HideShowButton({ state, setState }) {
+    return (
+        <button
+            className={`w-20 p-4 text-white ${
+                state ? 'bg-green-400' : 'bg-gray-400'
+            } rounded-xl`}
+        >
+            {state ? 'Show' : 'Hide'}
+        </button>
+    );
+}
+
+function DeleteButton({ state, setState }) {
+    return (
+        <button className="w-18 p-4 bg-red-400 text-white rounded-xl">
+            Delete
+        </button>
+    );
+}
+
 function List({ columns, data }) {
     return (
         <table className="table-auto w-full shadow-md bg-white rounded text-sm text-left text-gray-500 dark:text-gray-400">
@@ -25,7 +45,7 @@ function List({ columns, data }) {
                 {data.map((blog, idx) => (
                     <tr
                         key={idx}
-                        className="border-b dark:text-white dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700"
+                        className="dark:text-white border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700"
                     >
                         <td className="px-6 py-4">
                             {blog.topic} {idx}
@@ -35,15 +55,15 @@ function List({ columns, data }) {
                         </td>
                         <td className="px-6 py-4">{blog.like}</td>
                         <td className="px-6 py-4">
-                            {moment().format('MMMM Do YYYY, h:mm:ss a')}
+                            {moment(blog.updated_date).format(
+                                'MMMM Do YYYY, h:mm:ss a',
+                            )}
+                        </td>
+                        <td className="px-6 py-4">
+                            <HideShowButton />
                         </td>
                         <td className="px-6 py-4 text-right">
-                            <a
-                                href={`/blogs/${blog.id}`}
-                                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                            >
-                                Edit
-                            </a>
+                            <DeleteButton />
                         </td>
                     </tr>
                 ))}
@@ -78,6 +98,7 @@ function View() {
     useEffect(async () => {
         const tmp = await listBlog();
         const _blogs = tmp.blogs;
+        console.log(_blogs);
         setBlogs(_blogs);
     }, []);
 
@@ -87,8 +108,8 @@ function View() {
             accessor: 'topic',
         },
         {
-            Header: 'Blog Name',
-            accessor: 'name',
+            Header: 'Category',
+            accessor: 'category',
         },
         {
             Header: 'Like',
@@ -98,10 +119,14 @@ function View() {
             Header: 'Timestamp',
             accessor: 'timestamp',
         },
+        {
+            Header: 'Visibility',
+            accessor: 'visibility',
+        },
     ];
 
     return (
-        <div className="w-full p-5">
+        <div className="p-5 w-full">
             <div className="p-4">
                 <label htmlFor="table-search" className="sr-only">
                     Search

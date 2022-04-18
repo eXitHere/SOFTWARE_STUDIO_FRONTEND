@@ -35,12 +35,7 @@ function Sidebar() {
 
     useEffect(async () => {
         const tmp = await getUserInfo();
-        setUser({
-            name: tmp.display_name,
-            role: tmp[
-                'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
-            ],
-        });
+        setUser(tmp);
     }, []);
 
     const nav = [
@@ -60,9 +55,11 @@ function Sidebar() {
         <div className="divide-y top-0 left-0 w-[20vw] bg-primary p-2 text-white h-full ">
             <div className="flex justify-center p-5 flex-col">
                 <div className="flex justify-center">
-                    <Avatar name={user.name} />
+                    <Avatar name={user.display_name} />
                 </div>
-                <div className="pt-5 font-bold text-xl">{user.name}</div>
+                <div className="pt-5 font-bold text-xl">
+                    {user.display_name}
+                </div>
                 <div className="opacity-50">{user.role}</div>
             </div>
             {/* Buttons */}
