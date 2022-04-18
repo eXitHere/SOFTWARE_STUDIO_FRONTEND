@@ -4,6 +4,7 @@ const buildAuthHeader = (config) => {
     return {
         ...config.headers,
         authorization: `Bearer ${localStorage.getItem('token')}`,
+        SameSite: 'Strict',
     };
 };
 
@@ -31,6 +32,7 @@ axios.interceptors.response.use(
     function (error) {
         if (error.response?.status === 401) {
             localStorage.clear();
+            window.location.reload();
             return;
         }
         return Promise.reject(error);

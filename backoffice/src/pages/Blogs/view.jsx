@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { listBlog } from '../../api/blog';
+import Loader from '../../components/loader';
 
 function HideShowButton({ state, setState }) {
     return (
@@ -22,7 +23,7 @@ function DeleteButton({ state, setState }) {
     );
 }
 
-function List({ columns, data }) {
+function List({ columns, data, sortHandler, sortBy }) {
     return (
         <table className="table-auto w-full shadow-md bg-white rounded text-sm text-left text-gray-500 dark:text-gray-400">
             <thead className="h-12 text-xl bg-gray-50 rounded-lg text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
@@ -30,10 +31,21 @@ function List({ columns, data }) {
                     {columns.map((col, idx) => (
                         <th
                             scope="col"
-                            className="px-6 py-3 text-left font-bold"
+                            className="px-6 py-3 font-bold hover:cursor-pointer select-none text-center "
                             key={idx}
+                            id={col.accessor}
+                            onClick={(e) => sortHandler(e)}
                         >
                             {col.Header}
+                            {sortBy.key === col.accessor ? (
+                                sortBy.state ? (
+                                    <i className="ml-2 fa fa-angle-down" />
+                                ) : (
+                                    <i className="ml-2 fa fa-angle-up" />
+                                )
+                            ) : (
+                                <i />
+                            )}
                         </th>
                     ))}
                     <th scope="col" className="px-6 py-3">
@@ -47,7 +59,7 @@ function List({ columns, data }) {
                         key={idx}
                         className="dark:text-white border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700"
                     >
-                        <td className="px-6 py-4">
+                        <td className="px-6 py-4 font-bold">
                             {blog.topic} {idx}
                         </td>
                         <td className="px-6 py-4">
@@ -75,8 +87,13 @@ function List({ columns, data }) {
 function View() {
     const [blogs, setBlogs] = useState([]);
     const [focusBlogs, setFocusBlogs] = useState([]);
+    const [sortBy, setSortBy] = useState({
+        key: 'topic',
+        state: true,
+    });
+    const [filter, setFilter] = useState([]);
     const [page, setPage] = useState(1);
-    const perPage = 9;
+    const perPage = 6;
 
     useEffect(() => {
         setFocusBlogs(blogs.slice(perPage * (page - 1), perPage * page));
@@ -86,6 +103,47 @@ function View() {
     useEffect(() => {
         setFocusBlogs(blogs.slice(perPage * (page - 1), perPage * page));
     }, [blogs]);
+
+    useEffect(() => {
+        const sorted = focusBlogs.sort((a, b) =>
+            sortBy.state
+                ? a[sortBy.key] > b[sortBy.key]
+                    ? 1
+                    : -1
+                : a[sortBy.key] < b[sortBy.key]
+                ? 1
+                : -1,
+        );
+        setFocusBlogs(sorted);
+    }, [sortBy]);
+
+    useEffect(() => {
+        if (filter.length) {
+            const filtered = blogs.filter(
+                (e) =>
+                    e.topic.includes(filter) ||
+                    e.category.join(', ').includes(filter),
+            );
+            setFocusBlogs(filtered);
+        } else {
+            setFocusBlogs(blogs.slice(perPage * (page - 1), perPage * page));
+        }
+    }, [filter]);
+
+    const sortHandler = (e) => {
+        const id = e.target.id;
+        if (sortBy.key !== id) {
+            setSortBy({
+                key: id,
+                state: false,
+            });
+        } else {
+            setSortBy({
+                key: id,
+                state: !sortBy.state,
+            });
+        }
+    };
 
     const pageUp = () => {
         if (page < blogs.length / perPage) setPage(page + 1);
@@ -98,7 +156,6 @@ function View() {
     useEffect(async () => {
         const tmp = await listBlog();
         const _blogs = tmp.blogs;
-        console.log(_blogs);
         setBlogs(_blogs);
     }, []);
 
@@ -150,12 +207,25 @@ function View() {
                         type="text"
                         id="table-search"
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Search htmlFor items"
+                        placeholder="Search from topic or category"
+                        onChange={(e) => {
+                            setFilter(e.target.value);
+                        }}
                     />
                 </div>
             </div>
             <div className="overflow-auto h-4/5">
-                <List className="" data={focusBlogs} columns={columns} />
+                {focusBlogs.length ? (
+                    <List
+                        className=""
+                        data={focusBlogs}
+                        columns={columns}
+                        sortHandler={sortHandler}
+                        sortBy={sortBy}
+                    />
+                ) : (
+                    <Loader />
+                )}
             </div>
             <div className="flex justify-center">
                 {focusBlogs.length + perPage * (page - 1)} of {blogs.length}

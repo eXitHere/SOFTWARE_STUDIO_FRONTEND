@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Avatar from 'react-avatar';
 import { listUser } from '../../api/user';
-
-function StatusButton({ currentStatus }) {
-    return <td className="px-6 py-4">{currentStatus}</td>;
-}
+import Loader from '../../components/loader';
 
 function List({ columns, data }) {
     return (
@@ -38,9 +35,13 @@ function List({ columns, data }) {
                             </span>
                         </td>
                         <td className="px-6 py-4">{user.username}</td>
-                        <StatusButton
-                            currentStatus={user.banned ? 'active' : 'banned'}
-                        />
+                        <td
+                            className={`${
+                                user.banned ? 'text-red-400' : 'text-green-400'
+                            }`}
+                        >
+                            {user.banned ? 'banned' : 'normal'}
+                        </td>
                         <td className="px-6 py-4">{user.role}</td>
                         <td className="px-6 py-4 text-right">
                             <a
@@ -61,6 +62,7 @@ function Users() {
     const [users, setUsers] = useState([]);
     const [focusUsers, serFocusUser] = useState([]);
     const [page, setPage] = useState(1);
+    const [filter, setFilter] = useState([]);
     const perPage = 9;
 
     useEffect(() => {
@@ -71,6 +73,17 @@ function Users() {
     useEffect(() => {
         serFocusUser(users.slice(perPage * (page - 1), perPage * page));
     }, [users]);
+
+    useEffect(() => {
+        if (filter.length) {
+            const filtered = users.filter(
+                (e) => e.name.includes(filter) || e.username.includes(filter),
+            );
+            serFocusUser(filtered);
+        } else {
+            serFocusUser(users.slice(perPage * (page - 1), perPage * page));
+        }
+    }, [filter]);
 
     const pageUp = () => {
         if (page < users.length / perPage) setPage(page + 1);
@@ -287,12 +300,19 @@ function Users() {
                         type="text"
                         id="table-search"
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Search for items"
+                        placeholder="Search for name or username"
+                        onChange={(e) => {
+                            setFilter(e.target.value);
+                        }}
                     />
                 </div>
             </div>
             <div className="overflow-auto h-4/5">
-                <List className="" data={focusUsers} columns={columns} />
+                {focusUsers.length ? (
+                    <List className="" data={focusUsers} columns={columns} />
+                ) : (
+                    <Loader />
+                )}
             </div>
             <div className="flex justify-center">
                 {focusUsers.length + perPage * (page - 1)} of {users.length}
