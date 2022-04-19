@@ -26,7 +26,7 @@ async function login(username, password) {
 
 async function listUser() {
     try {
-        const result = await axios(`${URL}/api/User/list`, {
+        const result = await axios(`${URL}/api/Admin/manage/user/list`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
