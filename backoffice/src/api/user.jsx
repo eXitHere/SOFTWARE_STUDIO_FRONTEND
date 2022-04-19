@@ -41,4 +41,44 @@ async function listUser() {
     }
 }
 
-export { login, listUser };
+async function getUser(uuid) {
+    try {
+        const result = await axios(`${URL}/api/Admin/manage/user/get/${uuid}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        // console.log(result.data);
+
+        return result.data;
+    } catch (error) {
+        console.log(error);
+        return [];
+    }
+}
+
+async function updateUser(uuid, body) {
+    try {
+        const result = await axios(
+            `${URL}/api/Admin/manage/user/update/${uuid}`,
+            {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                data: body,
+            },
+        );
+
+        // console.log(result.data);
+
+        return result.data;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+
+export { login, listUser, getUser, updateUser };

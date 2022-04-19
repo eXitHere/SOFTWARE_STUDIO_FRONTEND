@@ -3,18 +3,29 @@ import Avatar from 'react-avatar';
 import { listUser } from '../../api/user';
 import Loader from '../../components/loader';
 
-function List({ columns, data }) {
+function List({ columns, data, sortHandler, sortBy }) {
     return (
         <table className="table-auto w-full shadow-md bg-white rounded text-sm text-left text-gray-500 dark:text-gray-400">
             <thead className="h-12 text-xl bg-gray-50 rounded-lg text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     {columns.map((col, idx) => (
                         <th
-                            className="px-6 py-3 text-left font-bold"
-                            key={idx}
                             scope="col"
+                            className="px-6 py-3 font-bold hover:cursor-pointer select-none text-center "
+                            key={idx}
+                            id={col.accessor}
+                            onClick={(e) => sortHandler(e)}
                         >
                             {col.Header}
+                            {sortBy.key === col.accessor ? (
+                                sortBy.state ? (
+                                    <i className="ml-2 fa fa-angle-down" />
+                                ) : (
+                                    <i className="ml-2 fa fa-angle-up" />
+                                )
+                            ) : (
+                                <i />
+                            )}
                         </th>
                     ))}
                     <th scope="col" className="px-6 py-3">
@@ -34,15 +45,17 @@ function List({ columns, data }) {
                                 {user.name || 'ไม่ได้กำหนด'}
                             </span>
                         </td>
-                        <td className="px-6 py-4">{user.username}</td>
+                        <td className="px-6 py-4 text-center">
+                            {user.username}
+                        </td>
                         <td
-                            className={`${
+                            className={`text-center ${
                                 user.banned ? 'text-red-400' : 'text-green-400'
                             }`}
                         >
                             {user.banned ? 'banned' : 'normal'}
                         </td>
-                        <td className="px-6 py-4">{user.role}</td>
+                        <td className="px-6 py-4 text-center">{user.role}</td>
                         <td className="px-6 py-4 text-right">
                             <a
                                 href={`/users/${user.id}`}
@@ -60,199 +73,81 @@ function List({ columns, data }) {
 
 function Users() {
     const [users, setUsers] = useState([]);
-    const [focusUsers, serFocusUser] = useState([]);
+    const [focusUsers, setFocusUser] = useState([]);
     const [page, setPage] = useState(1);
-    const [filter, setFilter] = useState([]);
+    const [sortBy, setSortBy] = useState({
+        key: 'name',
+        state: true,
+    });
+    const [filter, setFilter] = useState('');
     const perPage = 9;
 
     useEffect(() => {
-        serFocusUser(users.slice(perPage * (page - 1), perPage * page));
-        // console.log(perPage * (page - 1), perPage * page);
-    }, [page]);
+        setFocusUser(users.slice(perPage * (page - 1), perPage * page));
+    }, [users, page]);
 
     useEffect(() => {
-        serFocusUser(users.slice(perPage * (page - 1), perPage * page));
-    }, [users]);
+        const sorted = []
+            .concat(users)
+            .sort((a, b) =>
+                sortBy.state
+                    ? a[sortBy.key] > b[sortBy.key]
+                        ? 1
+                        : -1
+                    : a[sortBy.key] < b[sortBy.key]
+                    ? 1
+                    : -1,
+            );
+
+        setUsers(sorted);
+    }, [sortBy]);
 
     useEffect(() => {
         if (filter.length) {
             const filtered = users.filter(
                 (e) => e.name.includes(filter) || e.username.includes(filter),
             );
-            serFocusUser(filtered);
+            setFocusUser(filtered);
         } else {
-            serFocusUser(users.slice(perPage * (page - 1), perPage * page));
+            setFocusUser(users.slice(perPage * (page - 1), perPage * page));
         }
     }, [filter]);
 
+    const sortHandler = (e) => {
+        const id = e.target.id;
+        if (sortBy.key !== id) {
+            setSortBy({
+                key: id,
+                state: false,
+            });
+        } else {
+            setSortBy({
+                key: id,
+                state: !sortBy.state,
+            });
+        }
+    };
+
+    const firstPage = () => {
+        return page > 1;
+    };
+
+    const lastPage = () => {
+        return page < users.length / perPage;
+    };
+
     const pageUp = () => {
-        if (page < users.length / perPage) setPage(page + 1);
+        if (lastPage()) setPage(page + 1);
+        setFilter('');
     };
 
     const pageDown = () => {
-        if (page > 1) setPage(page - 1);
+        if (firstPage()) setPage(page - 1);
+        setFilter('');
     };
 
     useEffect(async () => {
         const users = await listUser();
-        // const users = [
-        //     {
-        //         id: '625c2d2c200b32232fbf9498',
-        //         username: 'dewey',
-        //         password:
-        //             '2bd208ee5ae84780edae1219d44d9e044adda4cc8b833236cbfb344a55705f66',
-        //         name: 'Dewey',
-        //         role: 'user',
-        //         profile_image: null,
-        //         banned: true,
-        //         createdDate: '2022-04-17T15:07:24.134Z',
-        //         updatedDate: '2022-04-17T15:07:24.134Z',
-        //     },
-        //     {
-        //         id: '625c2d26200b32232fbf9496',
-        //         username: 'herman',
-        //         password:
-        //             '2bd208ee5ae84780edae1219d44d9e044adda4cc8b833236cbfb344a55705f66',
-        //         name: 'Herman',
-        //         role: 'user',
-        //         profile_image: null,
-        //         banned: true,
-        //         createdDate: '2022-04-17T15:07:18.501Z',
-        //         updatedDate: '2022-04-17T15:07:18.501Z',
-        //     },
-        //     {
-        //         id: '625c2d1f200b32232fbf9494',
-        //         username: 'juan',
-        //         password:
-        //             '2bd208ee5ae84780edae1219d44d9e044adda4cc8b833236cbfb344a55705f66',
-        //         name: 'Juan',
-        //         role: 'user',
-        //         profile_image: null,
-        //         banned: false,
-        //         createdDate: '2022-04-17T15:07:11.702Z',
-        //         updatedDate: '2022-04-17T15:07:11.702Z',
-        //     },
-        //     {
-        //         id: '625c2d19200b32232fbf9492',
-        //         username: 'alfred',
-        //         password:
-        //             '2bd208ee5ae84780edae1219d44d9e044adda4cc8b833236cbfb344a55705f66',
-        //         name: 'Alfred',
-        //         role: 'user',
-        //         profile_image: null,
-        //         banned: false,
-        //         createdDate: '2022-04-17T15:07:05.369Z',
-        //         updatedDate: '2022-04-17T15:07:05.369Z',
-        //     },
-        //     {
-        //         id: '625c2d0f200b32232fbf9490',
-        //         username: 'leonardo',
-        //         password:
-        //             '2bd208ee5ae84780edae1219d44d9e044adda4cc8b833236cbfb344a55705f66',
-        //         name: 'Leonardo',
-        //         role: 'user',
-        //         profile_image: null,
-        //         banned: false,
-        //         createdDate: '2022-04-17T15:06:55.288Z',
-        //         updatedDate: '2022-04-17T15:06:55.288Z',
-        //     },
-        //     {
-        //         id: '625c2d07200b32232fbf948e',
-        //         username: 'marvin',
-        //         password:
-        //             '2bd208ee5ae84780edae1219d44d9e044adda4cc8b833236cbfb344a55705f66',
-        //         name: 'Marvin',
-        //         role: 'user',
-        //         profile_image: null,
-        //         banned: true,
-        //         createdDate: '2022-04-17T15:06:47.78Z',
-        //         updatedDate: '2022-04-17T15:06:47.78Z',
-        //     },
-        //     {
-        //         id: '625c2cfc200b32232fbf948c',
-        //         username: 'tanya',
-        //         password:
-        //             '2bd208ee5ae84780edae1219d44d9e044adda4cc8b833236cbfb344a55705f66',
-        //         name: 'Tanya',
-        //         role: 'user',
-        //         profile_image: null,
-        //         banned: false,
-        //         createdDate: '2022-04-17T15:06:36.185Z',
-        //         updatedDate: '2022-04-17T15:06:36.185Z',
-        //     },
-        //     {
-        //         id: '625c2cf5200b32232fbf948a',
-        //         username: 'aiden',
-        //         password:
-        //             '2bd208ee5ae84780edae1219d44d9e044adda4cc8b833236cbfb344a55705f66',
-        //         name: 'Aiden',
-        //         role: 'user',
-        //         profile_image: null,
-        //         banned: false,
-        //         createdDate: '2022-04-17T15:06:29.177Z',
-        //         updatedDate: '2022-04-17T15:06:29.177Z',
-        //     },
-        //     {
-        //         id: '625c2ced200b32232fbf9488',
-        //         username: 'admin5',
-        //         password:
-        //             '805673cb01644bac26b400bf8281d06e9a959a2e2e0f41a724cd7e57ea1b6a14',
-        //         name: 'Admin Rinraphat',
-        //         role: 'admin',
-        //         profile_image: null,
-        //         banned: false,
-        //         createdDate: '2022-04-17T15:06:21.957Z',
-        //         updatedDate: '2022-04-17T15:06:21.957Z',
-        //     },
-        //     {
-        //         id: '625c2ce8200b32232fbf9486',
-        //         username: 'admin4',
-        //         password:
-        //             '805673cb01644bac26b400bf8281d06e9a959a2e2e0f41a724cd7e57ea1b6a14',
-        //         name: 'Admin Thanakorn',
-        //         role: 'admin',
-        //         profile_image: null,
-        //         banned: false,
-        //         createdDate: '2022-04-17T15:06:16.959Z',
-        //         updatedDate: '2022-04-17T15:06:16.959Z',
-        //     },
-        //     {
-        //         id: '625c2ce2200b32232fbf9484',
-        //         username: 'admin3',
-        //         password:
-        //             '805673cb01644bac26b400bf8281d06e9a959a2e2e0f41a724cd7e57ea1b6a14',
-        //         name: 'Admin Thanadol',
-        //         role: 'admin',
-        //         profile_image: null,
-        //         banned: false,
-        //         createdDate: '2022-04-17T15:06:10.093Z',
-        //         updatedDate: '2022-04-17T15:06:10.093Z',
-        //     },
-        //     {
-        //         id: '625c2cdb200b32232fbf9482',
-        //         username: 'admin2',
-        //         password:
-        //             '805673cb01644bac26b400bf8281d06e9a959a2e2e0f41a724cd7e57ea1b6a14',
-        //         name: 'Admin Thana',
-        //         role: 'admin',
-        //         profile_image: null,
-        //         banned: false,
-        //         createdDate: '2022-04-17T15:06:03.306Z',
-        //         updatedDate: '2022-04-17T15:06:03.306Z',
-        //     },
-        //     {
-        //         id: '625c2cd3200b32232fbf9480',
-        //         username: 'admin1',
-        //         password:
-        //             '805673cb01644bac26b400bf8281d06e9a959a2e2e0f41a724cd7e57ea1b6a14',
-        //         name: 'Admin Prachya',
-        //         role: 'admin',
-        //         profile_image: null,
-        //         banned: false,
-        //         createdDate: '2022-04-17T15:05:55.74Z',
-        //         updatedDate: '2022-04-17T15:05:55.74Z',
-        //     },
-        // ];
         setUsers(users);
     }, []);
 
@@ -267,7 +162,7 @@ function Users() {
         },
         {
             Header: 'Status',
-            accessor: 'status',
+            accessor: 'banned',
         },
         {
             Header: 'Role',
@@ -304,34 +199,48 @@ function Users() {
                         onChange={(e) => {
                             setFilter(e.target.value);
                         }}
+                        value={filter}
                     />
                 </div>
             </div>
             <div className="overflow-auto h-4/5">
                 {focusUsers.length ? (
-                    <List className="" data={focusUsers} columns={columns} />
+                    <List
+                        className=""
+                        data={focusUsers}
+                        columns={columns}
+                        sortHandler={sortHandler}
+                        sortBy={sortBy}
+                    />
                 ) : (
                     <Loader />
                 )}
             </div>
             <div className="flex justify-center">
-                {focusUsers.length + perPage * (page - 1)} of {users.length}
+                {focusUsers.length + perPage * (page - 1)} of{' '}
+                {filter.length ? focusUsers.length : users.length}
             </div>
             <div className="flex justify-center w-full text-white space-x-2">
                 <button
-                    className="right-0 w-32 p-4 m-4 mr-0 font-bold  bg-red-500 rounded-xl"
+                    className={`right-0 w-32 p-4 m-4 mr-0 font-bold  rounded-xl ${
+                        firstPage() === false ? 'bg-gray-300' : 'bg-red-500'
+                    }`}
                     onClick={() => {
                         pageDown();
                     }}
+                    disabled={firstPage() === false}
                 >
                     prev
                 </button>
 
                 <button
-                    className="left-0 w-32 p-4 m-4 ml-0 font-bold  bg-green-400 rounded-xl"
+                    className={`right-0 w-32 p-4 m-4 mr-0 font-bold  rounded-xl ${
+                        lastPage() === false ? 'bg-gray-300' : 'bg-green-500'
+                    }`}
                     onClick={() => {
                         pageUp();
                     }}
+                    disabled={lastPage() === false}
                 >
                     next
                 </button>

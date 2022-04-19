@@ -1,31 +1,71 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
-import { listBlog } from '../../api/blog';
+import { listBlog, toggleHiddenBlog, deleteBlog } from '../../api/blog';
 import Loader from '../../components/loader';
 
-function HideShowButton({ state, setState }) {
-    return (
-        <button
-            className={`w-20 p-4 text-white ${
-                state ? 'bg-green-400' : 'bg-gray-400'
-            } rounded-xl`}
-        >
-            {state ? 'Show' : 'Hide'}
-        </button>
-    );
-}
+function List({ columns, data, sortHandler, sortBy, fetchAll }) {
+    const handleHiding = (e) => {
+        const id = e.target.id;
+        Swal.fire({
+            title: 'ยืนยันการซ่อนกระทู้ ?',
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'ยืนยัน',
+            denyButtonText: `ยกเลิก`,
+        }).then(async (result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                const status = await toggleHiddenBlog(id);
+                if (status) {
+                    await fetchAll();
+                    Swal.fire({
+                        title: 'Success!',
+                        icon: 'success',
+                        confirmButtonText: 'Close',
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Error!',
+                        icon: 'error',
+                        confirmButtonText: 'Close',
+                    });
+                }
+            }
+        });
+    };
 
-function DeleteButton({ state, setState }) {
-    return (
-        <button className="w-18 p-4 bg-red-400 text-white rounded-xl">
-            Delete
-        </button>
-    );
-}
+    const handleDelete = (e) => {
+        const id = e.target.id;
+        Swal.fire({
+            title: 'ยืนยันการลบกระทู้ ?',
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'ยืนยัน',
+            denyButtonText: `ยกเลิก`,
+        }).then(async (result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                const status = await deleteBlog(id);
+                if (status) {
+                    await fetchAll();
+                    Swal.fire({
+                        title: 'Success!',
+                        icon: 'success',
+                        confirmButtonText: 'Close',
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Error!',
+                        icon: 'error',
+                        confirmButtonText: 'Close',
+                    });
+                }
+            }
+        });
+    };
 
-function List({ columns, data, sortHandler, sortBy }) {
     return (
-        <table className="table-auto w-full shadow-md bg-white rounded text-sm text-left text-gray-500 dark:text-gray-400">
+        <table className="table-fixed w-full shadow-md bg-white rounded text-sm text-left text-gray-500 dark:text-gray-400">
             <thead className="h-12 text-xl bg-gray-50 rounded-lg text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     {columns.map((col, idx) => (
@@ -59,23 +99,39 @@ function List({ columns, data, sortHandler, sortBy }) {
                         key={idx}
                         className="dark:text-white border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700"
                     >
-                        <td className="px-6 py-4 font-bold">
-                            {blog.topic} {idx}
-                        </td>
-                        <td className="px-6 py-4">
+                        <td className="px-6 py-4 font-bold">{blog.topic}</td>
+                        <td className="px-6 py-4 text-center">
                             {blog.category.join(', ')}
                         </td>
-                        <td className="px-6 py-4">{blog.like}</td>
-                        <td className="px-6 py-4">
+                        <td className="px-6 py-4 text-center">{blog.like}</td>
+                        <td className="px-6 py-4 text-center">
                             {moment(blog.updated_date).format(
                                 'MMMM Do YYYY, h:mm:ss a',
                             )}
                         </td>
-                        <td className="px-6 py-4">
-                            <HideShowButton />
+                        <td className="px-6 py-4 text-center">
+                            <button
+                                id={blog.blog_id}
+                                onClick={(e) => handleHiding(e)}
+                                className={`w-20 p-4 text-white ${
+                                    !blog.hide ? 'bg-green-400' : 'bg-gray-400'
+                                } rounded-xl`}
+                            >
+                                {!blog.hide ? 'Show' : 'Hide'}
+                            </button>
+                            {/* {JSON.stringify(blog, 2, null)} */}
                         </td>
                         <td className="px-6 py-4 text-right">
-                            <DeleteButton />
+                            <button
+                                id={blog.blog_id}
+                                className={`w-20 p-4 text-white ${
+                                    !blog.deleted ? 'bg-red-400' : 'bg-gray-400'
+                                } rounded-xl`}
+                                onClick={(e) => handleDelete(e)}
+                                disabled={blog.deleted === true}
+                            >
+                                {blog.deleted ? 'Deleted' : 'Delete'}
+                            </button>
                         </td>
                     </tr>
                 ))}
@@ -91,30 +147,29 @@ function View() {
         key: 'topic',
         state: true,
     });
-    const [filter, setFilter] = useState([]);
+    const [filter, setFilter] = useState('');
     const [page, setPage] = useState(1);
     const perPage = 6;
 
     useEffect(() => {
         setFocusBlogs(blogs.slice(perPage * (page - 1), perPage * page));
-        // console.log(perPage * (page - 1), perPage * page);
-    }, [page]);
+    }, [blogs, page]);
 
     useEffect(() => {
-        setFocusBlogs(blogs.slice(perPage * (page - 1), perPage * page));
-    }, [blogs]);
-
-    useEffect(() => {
-        const sorted = focusBlogs.sort((a, b) =>
-            sortBy.state
-                ? a[sortBy.key] > b[sortBy.key]
+        const sorted = []
+            .concat(blogs)
+            .sort((a, b) =>
+                sortBy.state
+                    ? a[sortBy.key] > b[sortBy.key]
+                        ? 1
+                        : -1
+                    : a[sortBy.key] < b[sortBy.key]
                     ? 1
-                    : -1
-                : a[sortBy.key] < b[sortBy.key]
-                ? 1
-                : -1,
-        );
-        setFocusBlogs(sorted);
+                    : -1,
+            );
+
+        // console.log(blogs.length)
+        setBlogs(sorted);
     }, [sortBy]);
 
     useEffect(() => {
@@ -145,19 +200,36 @@ function View() {
         }
     };
 
+    const firstPage = () => {
+        return page > 1;
+    };
+
+    const lastPage = () => {
+        return page < blogs.length / perPage;
+    };
+
     const pageUp = () => {
-        if (page < blogs.length / perPage) setPage(page + 1);
+        if (lastPage()) setPage(page + 1);
+        setFilter('');
     };
 
     const pageDown = () => {
-        if (page > 1) setPage(page - 1);
+        if (firstPage()) setPage(page - 1);
+        setFilter('');
     };
 
     useEffect(async () => {
+        await fetchAll();
+    }, []);
+
+    const fetchAll = async () => {
         const tmp = await listBlog();
         const _blogs = tmp.blogs;
-        setBlogs(_blogs);
-    }, []);
+        const sorted = _blogs.sort((a, b) =>
+            a['deleted'] > b['deleted'] ? 1 : -1,
+        );
+        setBlogs(sorted);
+    };
 
     const columns = [
         {
@@ -174,11 +246,11 @@ function View() {
         },
         {
             Header: 'Timestamp',
-            accessor: 'timestamp',
+            accessor: 'updated_date',
         },
         {
             Header: 'Visibility',
-            accessor: 'visibility',
+            accessor: 'hide',
         },
     ];
 
@@ -211,6 +283,7 @@ function View() {
                         onChange={(e) => {
                             setFilter(e.target.value);
                         }}
+                        value={filter}
                     />
                 </div>
             </div>
@@ -222,29 +295,37 @@ function View() {
                         columns={columns}
                         sortHandler={sortHandler}
                         sortBy={sortBy}
+                        fetchAll={fetchAll}
                     />
                 ) : (
                     <Loader />
                 )}
             </div>
             <div className="flex justify-center">
-                {focusBlogs.length + perPage * (page - 1)} of {blogs.length}
+                {focusBlogs.length + perPage * (page - 1)} of{' '}
+                {filter.length ? focusBlogs.length : blogs.length}
             </div>
             <div className="flex justify-center w-full text-white space-x-2">
                 <button
-                    className="right-0 w-32 p-4 m-4 mr-0 font-bold  bg-red-500 rounded-xl"
+                    className={`right-0 w-32 p-4 m-4 mr-0 font-bold  rounded-xl ${
+                        firstPage() === false ? 'bg-gray-300' : 'bg-red-500'
+                    }`}
                     onClick={() => {
                         pageDown();
                     }}
+                    disabled={firstPage() === false}
                 >
                     prev
                 </button>
 
                 <button
-                    className="left-0 w-32 p-4 m-4 ml-0 font-bold  bg-green-400 rounded-xl"
+                    className={`right-0 w-32 p-4 m-4 mr-0 font-bold  rounded-xl ${
+                        lastPage() === false ? 'bg-gray-300' : 'bg-green-500'
+                    }`}
                     onClick={() => {
                         pageUp();
                     }}
+                    disabled={lastPage() === false}
                 >
                     next
                 </button>
