@@ -89,7 +89,10 @@ function List({ columns, data, sortHandler, sortBy, fetchAll }) {
                         </th>
                     ))}
                     <th scope="col" className="px-6 py-3">
-                        <span className="sr-only">Edit</span>
+                        <span className="sr-only">Delete</span>
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                        <span className="sr-only">View</span>
                     </th>
                 </tr>
             </thead>
@@ -133,6 +136,15 @@ function List({ columns, data, sortHandler, sortBy, fetchAll }) {
                                 {blog.deleted ? 'Deleted' : 'Delete'}
                             </button>
                         </td>
+                        <td className="px-6 py-4 text-right">
+                            <a
+                                href={`https://www.google.com/blogs/${blog.blog_id}`}
+                                target="_blank"
+                                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                            >
+                                View
+                            </a>
+                        </td>
                     </tr>
                 ))}
             </tbody>
@@ -149,11 +161,15 @@ function View() {
     });
     const [filter, setFilter] = useState('');
     const [page, setPage] = useState(1);
-    const perPage = 6;
+    const perPage = 7;
 
     useEffect(() => {
         setFocusBlogs(blogs.slice(perPage * (page - 1), perPage * page));
     }, [blogs, page]);
+
+    useEffect(() => {
+        console.log(focusBlogs);
+    }, []);
 
     useEffect(() => {
         const sorted = []
@@ -164,6 +180,8 @@ function View() {
                         ? 1
                         : -1
                     : a[sortBy.key] < b[sortBy.key]
+                    ? 1
+                    : -1 && a['deleted'] > b['deleted']
                     ? 1
                     : -1,
             );
@@ -257,37 +275,76 @@ function View() {
     return (
         <div className="p-5 w-full">
             <div className="p-4">
-                <label htmlFor="table-search" className="sr-only">
-                    Search
-                </label>
-                <div className="relative mt-1">
-                    <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <svg
-                            className="w-5 h-5 text-gray-500 dark:text-gray-400"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                fillRule="evenodd"
-                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                clipRule="evenodd"
-                            ></path>
-                        </svg>
+                <div className="flex flex-row justify-between">
+                    <div>
+                        <label htmlFor="table-search" className="sr-only">
+                            Search
+                        </label>
+                        <div className="relative mt-1">
+                            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <svg
+                                    className="w-5 h-5 text-gray-500 dark:text-gray-400"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        fillRule="evenodd"
+                                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                        clipRule="evenodd"
+                                    ></path>
+                                </svg>
+                            </div>
+                            <input
+                                type="text"
+                                id="table-search"
+                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Search from topic or category"
+                                onChange={(e) => {
+                                    setFilter(e.target.value);
+                                }}
+                                value={filter}
+                            />
+                        </div>
                     </div>
-                    <input
-                        type="text"
-                        id="table-search"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Search from topic or category"
-                        onChange={(e) => {
-                            setFilter(e.target.value);
-                        }}
-                        value={filter}
-                    />
+                    <div className="flex flex-row items-center">
+                        <div className="flex justify-center w-24">
+                            {focusBlogs.length + perPage * (page - 1)} of{' '}
+                            {filter.length ? focusBlogs.length : blogs.length}
+                        </div>
+                        <div className="flex justify-center w-full text-white space-x-2">
+                            <button
+                                className={`right-0 w-24 p-2 m-2 mr-0 font-bold  rounded-sm ${
+                                    firstPage() === false
+                                        ? 'bg-gray-300'
+                                        : 'bg-red-500'
+                                }`}
+                                onClick={() => {
+                                    pageDown();
+                                }}
+                                disabled={firstPage() === false}
+                            >
+                                prev
+                            </button>
+
+                            <button
+                                className={`right-0 w-24 p-2 m-2 mr-0 font-bold  rounded-sm ${
+                                    lastPage() === false
+                                        ? 'bg-gray-300'
+                                        : 'bg-green-500'
+                                }`}
+                                onClick={() => {
+                                    pageUp();
+                                }}
+                                disabled={lastPage() === false}
+                            >
+                                next
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div className="overflow-auto h-4/5">
+            <div className="overflow-auto">
                 {focusBlogs.length ? (
                     <List
                         className=""
@@ -300,35 +357,6 @@ function View() {
                 ) : (
                     <Loader />
                 )}
-            </div>
-            <div className="flex justify-center">
-                {focusBlogs.length + perPage * (page - 1)} of{' '}
-                {filter.length ? focusBlogs.length : blogs.length}
-            </div>
-            <div className="flex justify-center w-full text-white space-x-2">
-                <button
-                    className={`right-0 w-32 p-4 m-4 mr-0 font-bold  rounded-xl ${
-                        firstPage() === false ? 'bg-gray-300' : 'bg-red-500'
-                    }`}
-                    onClick={() => {
-                        pageDown();
-                    }}
-                    disabled={firstPage() === false}
-                >
-                    prev
-                </button>
-
-                <button
-                    className={`right-0 w-32 p-4 m-4 mr-0 font-bold  rounded-xl ${
-                        lastPage() === false ? 'bg-gray-300' : 'bg-green-500'
-                    }`}
-                    onClick={() => {
-                        pageUp();
-                    }}
-                    disabled={lastPage() === false}
-                >
-                    next
-                </button>
             </div>
         </div>
     );
