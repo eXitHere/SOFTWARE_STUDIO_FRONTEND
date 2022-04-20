@@ -28,13 +28,13 @@ function Sidebar() {
     const [isOpen, setOpen] = useState(false);
 
     const nav = [
-        { icon: 'fa fa-home', text: 'Home', to: 'backoffice/' },
-        { icon: 'fa fa-users', text: 'Users', to: 'backoffice/users' },
-        { icon: 'fa fa-comments', text: 'Blogs', to: 'backoffice/blogs' },
+        { icon: 'fa fa-home', text: 'Home', to: '/' },
+        { icon: 'fa fa-users', text: 'Users', to: '/users' },
+        { icon: 'fa fa-comments', text: 'Blogs', to: '/blogs' },
         {
             icon: 'fa fa-bullhorn',
             text: 'Announce',
-            to: 'backoffice/announcements',
+            to: 'announcements',
         },
     ];
 
