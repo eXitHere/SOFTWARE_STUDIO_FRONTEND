@@ -64,7 +64,7 @@ function App() {
 const ProtectedRoute = ({ children }) => {
     const user = getUserInfo();
     if (!user || user.role !== 'admin') {
-        return <Navigate to="/login" replace />;
+        return <Navigate to="backoffice/login" replace />;
     }
 
     return children;
