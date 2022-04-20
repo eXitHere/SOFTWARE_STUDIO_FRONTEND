@@ -14,7 +14,7 @@ function App() {
     console.log(`is dev ${isDev} || is prod ${import.meta.env.PROD}`);
     return (
         <div className="animate-fade-in-down">
-            <BrowserRouter basename={isDev ? 'backoffice' : ''}>
+            <BrowserRouter basename={isDev ? 'backoffice' : 'r'}>
                 <Routes>
                     <Route element={<Layout />}>
                         <Route
