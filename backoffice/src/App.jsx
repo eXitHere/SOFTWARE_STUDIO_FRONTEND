@@ -5,7 +5,7 @@ import NoPage from './pages/NotFound';
 import Layout from './pages/Layout';
 import Logout from './pages/Logout';
 import { UserView, UserEditor } from './pages/Users';
-import { RichEditor, View } from './pages/Blogs';
+import { View } from './pages/Blogs';
 import { Announcement } from './pages/Announcements';
 
 function App() {
@@ -43,14 +43,6 @@ function App() {
                             element={
                                 <ProtectedRoute>
                                     <View />
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="blogs/:id"
-                            element={
-                                <ProtectedRoute>
-                                    <RichEditor />
                                 </ProtectedRoute>
                             }
                         />

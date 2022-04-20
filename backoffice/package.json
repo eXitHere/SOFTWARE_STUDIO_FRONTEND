@@ -14,8 +14,10 @@
         "dompurify": "^2.3.6",
         "draft-convert": "^2.1.12",
         "draft-js": "^0.11.7",
+        "install": "^0.13.0",
         "jwt-decode": "^3.1.2",
         "moment": "^2.29.2",
+        "npm": "^8.7.0",
         "prop-types": "^15.8.1",
         "react": "^17.0.2",
         "react-avatar": "^4.0.0",
@@ -27,8 +29,10 @@
     "devDependencies": {
         "@vitejs/plugin-react": "^1.0.7",
         "autoprefixer": "^10.4.4",
+        "css-loader": "^6.7.1",
         "postcss": "^8.4.12",
         "react-router-dom": "^6.3.0",
+        "style-loader": "^3.3.1",
         "tailwindcss": "^3.0.23",
         "vite": "^2.9.0"
     }
