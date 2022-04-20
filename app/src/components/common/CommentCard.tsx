@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import likeImg from 'assets/images/like.png'
 import unlikeImg from 'assets/images/unlike.png'
-import trash from 'assets/images/trash.png'
+import trash from 'assets/icons/trash.png'
 import { Comment } from 'types'
 import { ModalConfirm } from 'components/common/ModalConfirm'
 

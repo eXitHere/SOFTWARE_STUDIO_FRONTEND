@@ -49,7 +49,7 @@ export const ChooseCategory = ({ selectTag, handleChoose }: CreateTagProps) => {
               className={classNames(
                 'flex flex-col items-center justify-center w-16 h-20 md:w-32 md:h-32 mt-2 font-bold',
                 {
-                  'bg-yellow-300 rounded-lg': selectTag == data.categoryName,
+                  'bg-yellow-300 rounded-lg': selectTag.includes(data.categoryName),
                 },
               )}
             >

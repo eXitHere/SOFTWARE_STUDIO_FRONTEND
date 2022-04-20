@@ -1,9 +1,8 @@
 import React, { ChangeEvent, MouseEvent, useState, useContext } from 'react'
-
+import axios from '../apiclient'
 import { Link } from 'react-router-dom'
 import { Screen } from 'components/layouts/Screen'
 
-import profile1 from 'assets/images/profile1.jpeg'
 import { ModalConfirm } from 'components/common/ModalConfirm'
 import { Path } from 'routes'
 import { UserContext } from 'contexts/store'
@@ -57,6 +56,38 @@ export const EditProfile = () => {
     // logout to login page
   }
 
+  const changeName = async () => {
+    const response = await axios.patch(
+      `https://thammathip.exitguy.studio/api/User/update`,
+      {
+        name: "hermanX",
+        profile_image: image,
+      },
+      {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      },
+    )
+    console.log(response)
+  }
+
+  const changePassword = async () => {
+    const response = await axios.patch(
+      `https://thammathip.exitguy.studio/api/User/update`,
+      {
+        password: 'hermanX',
+        profile_image: image,
+      },
+      {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      },
+    )
+    console.log(response)
+  }
+
   const imageHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader()
     reader.onload = () => {
@@ -75,14 +106,24 @@ export const EditProfile = () => {
       <div className="flex flex-col items-center justify-center">
         <p className="mt-12 text-2xl font-bold text-white md:text-3xl">แก้ไขข้อมูลส่วนตัว</p>
         <label htmlFor="image-upload">
-          <img src={image} className="w-32 h-32 m-4 rounded-full cursor-pointer" />
+          <img src={image} className="w-24 h-24 m-4 bg-red-400 rounded-full cursor-pointer" />
         </label>
         <input type="file" id="image-upload" onChange={imageHandler} hidden />
-        <form className="flex flex-col w-80 md:w-96">
-          <p className="pb-3 text-lg text-white">ชื่อผู้ใช้</p>
-          <input value={username} onChange={handleUsernameChange} className="w-full h-8 p-2 mb-5 rounded-lg" />
+        <div className="flex flex-col w-80 md:w-96">
           <p className="pb-3 text-lg text-white">ชื่อใช้แสดง</p>
           <input value={displayname} onChange={handleDisplaynameChange} className="w-full h-8 p-2 mb-5 rounded-lg" />
+
+          <div className="flex flex-row justify-center">
+            <Link to={Path.Profile}>
+              <button className="flex items-center justify-center w-20 h-12 p-4 m-4 text-white bg-gray-400 rounded-md">
+                ยกเลิก
+              </button>
+            </Link>
+
+            <button onClick={changeName} className="flex items-center justify-center w-20 h-12 p-4 m-4 text-white bg-green-400 rounded-md">
+              บันทึก
+            </button>
+          </div>
           <p className="pb-3 text-lg text-white">รหัสผ่าน</p>
           <input value={password} onChange={handlePasswordChange} className="w-full h-8 p-2 mb-5 rounded-lg" />
           <p className="pb-3 text-lg text-white">ยืนยันรหัสผ่าน</p>
@@ -98,12 +139,12 @@ export const EditProfile = () => {
                 </button>
               </Link>
 
-              <button className="flex items-center justify-center w-20 h-12 p-4 m-4 text-white bg-green-400 rounded-md">
+              <button onClick={changePassword} className="flex items-center justify-center w-20 h-12 p-4 m-4 text-white bg-green-400 rounded-md">
                 บันทึก
               </button>
             </div>
           </div>
-        </form>
+        </div>
       </div>
       {content}
     </Screen>

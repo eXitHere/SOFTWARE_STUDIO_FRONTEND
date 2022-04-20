@@ -1,4 +1,3 @@
-import { createContext, useState, FC } from 'react'
 
 interface IThemeContext {
   theme: 'light' | 'dark'
@@ -24,3 +23,7 @@ export const ThemeProvider: FC = ({ children }) => {
     </ThemeContext.Provider>
   )
 }
+import { createContext, useState, FC } from 'react'
+
+
+
