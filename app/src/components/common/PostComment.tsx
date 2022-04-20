@@ -1,8 +1,8 @@
 import { ChangeEvent, useState } from 'react'
+import { AddComment } from 'types'
 
-import profile1 from 'assets/images/profile1.jpeg'
-
-export const PostComment = () => {
+type AddCommentProps = Pick<AddComment,| 'name' | 'profile_image'>
+export const PostComment = ({name, profile_image}:AddCommentProps) => {
   const [commentText, setCommentText] = useState('')
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -15,11 +15,11 @@ export const PostComment = () => {
   }
 
   return (
-    <div className="relative flex flex-col w-11/12 h-68 md:flex-row md:h-48 lg:w-4/5 lg:h-40 bg-primary-lightest rounded-2xl">
+    <div className="relative flex flex-col w-11/12 h-68 md:flex-row md:h-36 lg:w-4/5 lg:h-40 bg-primary-lightest rounded-2xl">
       {/* profile picture + name */}
       <div className="flex flex-row items-center w-full h-full p-1 mr-4 md:justify-center md:w-1/6 md:flex-col lg:p-5 rounded-2xl">
-        <img src={profile1} className="w-12 h-12 mx-4 mt-2 bg-blue-300 rounded-full md:w-20 md:h-20 md:mx-0"></img>
-        <p className="pt-2 text-md md:text-md">test111</p>
+        <img src={profile_image} className="w-8 h-8 mx-4 mt-2 bg-blue-300 rounded-full md:w-20 md:h-20 md:mx-0"></img>
+        <p className="pt-2 text-md md:text-md">{name}</p>
       </div>
       <div className="flex flex-row items-center w-full md:w-5/6">
         {/* topic + preview */}

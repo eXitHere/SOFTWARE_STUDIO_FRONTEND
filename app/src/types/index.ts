@@ -1,3 +1,4 @@
+import { PostComment } from 'components/common/PostComment'
 import { ChangeEvent, SetStateAction, useState, MouseEvent } from 'react'
 
 export type AuthUser = {
@@ -14,13 +15,30 @@ export type Tags = {
 }
 
 export type Blog = {
-  id: string
-  name: string
-  photo: string
+  blog_id: string
+  author_name: string
+  profile_image: string
   topic: string
-  exText: string
+  content: string
+  category: string[]
   like: number
+  like_users : string[]
   date: string
+  username: string
+  profile_page: boolean
+}
+
+export type Detail = {
+  id: string
+  topic: string
+  content: string
+  category: string[]
+  like: string[]
+  like_count: number
+  createdDate: string
+  name_detail: string
+  user_id: string
+  profile_image: string
 }
 
 export type Comment = {
@@ -52,6 +70,11 @@ export type Anoucement = {
 }
 
 export type ChooseCat = {
-  selectTag: string
+  selectTag: string[]
   handleChoose: (Category: string) => void
+}
+
+export type AddComment = {
+  name: string
+  profile_image: string
 }

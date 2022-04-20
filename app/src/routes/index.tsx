@@ -1,9 +1,10 @@
 import { BrowserRouter, RouteObject, useRoutes } from 'react-router-dom'
 
-import { Blog, MainBlogs, Home, EditProfile, CreateBlog, Profile } from 'routes/lazy'
+import { Blog, MainBlogs, Home, EditProfile, CreateBlog, Profile, MockLogin } from 'routes/lazy'
 import { Path } from 'routes/path'
 
 import NotFound from 'pages/404'
+
 
 const routes: RouteObject[] = [
   {
@@ -12,7 +13,7 @@ const routes: RouteObject[] = [
       { index: true, element: <Home /> },
       {
         path: Path.Profile,
-        children: [{ index: true, element: <Profile/> }],
+        children: [{ index: true, element: <Profile /> }],
       },
       {
         path: Path.MainBlogs,
@@ -28,6 +29,10 @@ const routes: RouteObject[] = [
       {
         path: Path.CreateBlog,
         children: [{ index: true, element: <CreateBlog /> }],
+      },
+      {
+        path: Path.Login,
+        children: [{ index: true, element: <MockLogin /> }],
       },
       { path: '*', element: <NotFound /> },
     ],
