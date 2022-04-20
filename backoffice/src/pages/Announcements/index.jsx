@@ -6,43 +6,75 @@ import {
     convertFromRaw,
 } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
-import { createAnnounce, getAnnounce } from '../../api/announce';
+import {
+    createAnnounce,
+    getAnnounce,
+    deleteAnnounce,
+} from '../../api/announce';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import Loader from '../../components/loader';
 
 function Announcement() {
     const [editorState, setEditorState] = useState(() =>
         EditorState.createEmpty(),
     );
+    const [isLoading, setLoading] = useState(false);
 
     const contentIsEmpty = () => {
-        const htmlString = convertContentToHTML();
-        return htmlString.length === 7;
+        return !editorState.getCurrentContent().hasText();
     };
 
     const handleCreateBlog = async (e) => {
-        const htmlString = convertContentToHTML();
-        console.log(htmlString);
+        if (isLoading) return;
+        setLoading(true);
+
+        const content = convertContentToRaw();
         if (contentIsEmpty()) {
-            console.log('empty!');
+            // console.log('empty!');
         } else {
-            await createAnnounce(htmlString);
+            const status = await createAnnounce(content);
+            if (status) {
+                Swal.fire({
+                    title: 'Success!',
+                    icon: 'success',
+                    confirmButtonText: 'Close',
+                });
+            } else {
+                Swal.fire({
+                    title: 'Error!',
+                    icon: 'error',
+                    confirmButtonText: 'Close',
+                });
+            }
         }
+        setLoading(false);
     };
 
     useEffect(async () => {
-        const { content } = await getAnnounce();
-        setEditorState(
-            EditorState.createWithContent(convertFromRaw(JSON.parse(content))),
-        );
-        // console.log(content);
+        setLoading(true);
+
+        try {
+            const { content } = await getAnnounce();
+            if (content) {
+                setEditorState(
+                    EditorState.createWithContent(
+                        convertFromRaw(JSON.parse(content)),
+                    ),
+                );
+            }
+        } catch (error) {}
+
+        setLoading(false);
     }, []);
 
-    const handleClearState = () => {
+    const handleClearState = async () => {
         if (contentIsEmpty()) {
             return;
         }
+        setLoading(true);
+
         Swal.fire({
-            title: 'ยืนยันการเคลียร์ข้อความ',
+            title: 'ยืนยันการยกเลิกการประกาศ',
             showDenyButton: true,
             showCancelButton: false,
             confirmButtonText: 'ยืนยัน',
@@ -50,6 +82,7 @@ function Announcement() {
         }).then(async (result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
+                await deleteAnnounce();
                 const tmpEditorState = EditorState.push(
                     editorState,
                     ContentState.createFromText(''),
@@ -62,11 +95,8 @@ function Announcement() {
                 });
             }
         });
-    };
 
-    const handleEditorChange = (state) => {
-        setEditorState(state);
-        // convertContentToHTML();
+        setLoading(false);
     };
 
     const getFileBase64 = (file, callback) => {
@@ -81,11 +111,9 @@ function Announcement() {
             getFileBase64(file, (data) => resolve({ data: { link: data } })),
         );
 
-    const convertContentToHTML = () => {
-        const currentContentAsHTML = convertToRaw(
-            editorState.getCurrentContent(),
-        );
-        return currentContentAsHTML;
+    const convertContentToRaw = () => {
+        const content = convertToRaw(editorState.getCurrentContent());
+        return content;
     };
 
     return (
@@ -95,58 +123,63 @@ function Announcement() {
                 <div className="flex flex-col items-center justify-center">
                     <div className="w-full p-4 shadow-md mt-4">
                         <div className="bg-white rounded-xl w-full">
-                            <Editor
-                                placeholder="วันนี้คุณทำดีแล้วหรือยัง..."
-                                editorState={editorState}
-                                onEditorStateChange={handleEditorChange}
-                                toolbarClassName="toolbarClassName"
-                                wrapperClassName="wrapperClassName"
-                                editorClassName="editorClassName"
-                                readOnly={true}
-                                toolbar={{
-                                    // options: [
-                                    //     'inline',
-                                    //     'blockType',
-                                    //     'list',
-                                    //     'history',
-                                    //     'image',
-                                    // ],
-                                    inline: {
-                                        inDropdown: false,
-                                        options: [
-                                            'bold',
-                                            'italic',
-                                            'underline',
-                                        ],
-                                    },
-                                    list: {
-                                        inDropdown: true,
-                                        options: ['unordered', 'ordered'],
-                                    },
-                                    textAlign: { inDropdown: true },
-                                    link: { inDropdown: true },
-                                    history: { inDropdown: true },
-                                    fontFamily: { inDropdown: true },
-                                    image: {
-                                        uploadCallback: imageUploadCallback,
-                                        previewImage: true,
-                                    },
-                                    inputAccept:
-                                        'image/gif,image/jpeg,image/jpg,image/png,image/svg',
-                                    blockType: {
-                                        inDropdown: true,
-                                        options: [
-                                            'Normal',
-                                            'H1',
-                                            'H2',
-                                            'H3',
-                                            'H4',
-                                            'H5',
-                                            'H6',
-                                        ],
-                                    },
-                                }}
-                            />
+                            {isLoading ? (
+                                <Loader />
+                            ) : (
+                                <Editor
+                                    placeholder="วันนี้คุณทำดีแล้วหรือยัง..."
+                                    editorState={editorState}
+                                    onEditorStateChange={(e) =>
+                                        setEditorState(e)
+                                    }
+                                    toolbarClassName="toolbarClassName"
+                                    wrapperClassName="wrapperClassName"
+                                    editorClassName="editorClassName"
+                                    toolbar={{
+                                        // options: [
+                                        //     'inline',
+                                        //     'blockType',
+                                        //     'list',
+                                        //     'history',
+                                        //     'image',
+                                        // ],
+                                        inline: {
+                                            inDropdown: false,
+                                            options: [
+                                                'bold',
+                                                'italic',
+                                                'underline',
+                                            ],
+                                        },
+                                        list: {
+                                            inDropdown: true,
+                                            options: ['unordered', 'ordered'],
+                                        },
+                                        textAlign: { inDropdown: true },
+                                        link: { inDropdown: true },
+                                        history: { inDropdown: true },
+                                        fontFamily: { inDropdown: true },
+                                        image: {
+                                            uploadCallback: imageUploadCallback,
+                                            previewImage: true,
+                                        },
+                                        inputAccept:
+                                            'image/gif,image/jpeg,image/jpg,image/png,image/svg',
+                                        blockType: {
+                                            inDropdown: true,
+                                            options: [
+                                                'Normal',
+                                                'H1',
+                                                'H2',
+                                                'H3',
+                                                'H4',
+                                                'H5',
+                                                'H6',
+                                            ],
+                                        },
+                                    }}
+                                />
+                            )}
                         </div>
                     </div>
                     <div className="flex justify-end w-full text-white space-x-2">
@@ -167,7 +200,6 @@ function Announcement() {
                         </button>
                     </div>
                 </div>
-                <div>Hello World</div>
             </div>
         </div>
     );

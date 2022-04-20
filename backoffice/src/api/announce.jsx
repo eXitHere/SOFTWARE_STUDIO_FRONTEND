@@ -40,4 +40,22 @@ async function getAnnounce() {
     }
 }
 
-export { createAnnounce, getAnnounce };
+async function deleteAnnounce() {
+    try {
+        const result = await axios(`${URL}/api/Admin/manage/announce/delete`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        // console.log(result.data);
+
+        return result.data;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+
+export { createAnnounce, getAnnounce, deleteAnnounce };

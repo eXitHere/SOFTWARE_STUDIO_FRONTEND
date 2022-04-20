@@ -23,15 +23,16 @@ function Editor() {
 
     useEffect(async () => {
         setLoading(true);
+
         let fetchUser = await getUser(id);
         if (fetchUser) {
             setUser({ ...fetchUser });
         }
+
         setLoading(false);
     }, []);
 
     const handleChange = (e) => {
-        const va = user[e.target.id];
         if (e.target.id === 'banned') {
             setUser({
                 ...user,
@@ -47,6 +48,7 @@ function Editor() {
 
     const handleSubmit = async () => {
         setLoading(true);
+
         Swal.fire({
             title: 'ยืนยันการแก้ไข',
             showDenyButton: true,
@@ -72,6 +74,7 @@ function Editor() {
                 }
             }
         });
+
         setLoading(false);
     };
 

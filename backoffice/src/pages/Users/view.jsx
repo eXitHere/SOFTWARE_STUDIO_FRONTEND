@@ -5,8 +5,8 @@ import Loader from '../../components/loader';
 
 function List({ columns, data, sortHandler, sortBy }) {
     return (
-        <table className="table-fixed w-full shadow-md bg-white rounded text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead className="h-12 text-xl bg-gray-50 rounded-lg text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
+        <table className="table-fixed w-full shadow-md bg-white rounded text-sm text-left text-gray-500 ">
+            <thead className="h-12 text-xl bg-gray-50 rounded-lg text-gray-700 uppercase">
                 <tr>
                     {columns.map((col, idx) => (
                         <th
@@ -37,7 +37,7 @@ function List({ columns, data, sortHandler, sortBy }) {
                 {data.map((user, idx) => (
                     <tr
                         key={idx}
-                        className="dark:text-white border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700"
+                        className="dark:text-white border-b  odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700"
                     >
                         <td className="px-6 py-4">
                             <Avatar size="4vh" name={user.name} />
@@ -59,7 +59,7 @@ function List({ columns, data, sortHandler, sortBy }) {
                             className={`px-6 py-4 text-center ${
                                 user.role === 'admin'
                                     ? 'text-yellow-400'
-                                    : 'text-white'
+                                    : 'text-gray-500'
                             }`}
                         >
                             {user.role.toUpperCase()}

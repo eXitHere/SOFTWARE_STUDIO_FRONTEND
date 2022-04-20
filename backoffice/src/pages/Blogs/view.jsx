@@ -168,10 +168,6 @@ function View() {
     }, [blogs, page]);
 
     useEffect(() => {
-        console.log(focusBlogs);
-    }, []);
-
-    useEffect(() => {
         const sorted = []
             .concat(blogs)
             .sort((a, b) =>
