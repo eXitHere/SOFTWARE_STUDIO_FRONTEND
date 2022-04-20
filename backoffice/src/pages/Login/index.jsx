@@ -2,13 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { login } from '../../api/user';
 import { getUserInfo } from '../../utils/user.utils';
 import { useNavigate } from 'react-router-dom';
+import Lotus from '../../assets/images/lotus.png';
 
 function Login() {
-    const [username, setUsername] = useState('admin1');
-    const [password, setPassword] = useState('admin123');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const navigateTo = useNavigate();
+
+    const timeToHello = () => {
+        const now = new Date().getHours();
+        if (now >= 18) return 'ค่ำ';
+        if (now >= 15) return 'เย็น';
+        else if (now >= 12) return 'บ่าย';
+        else return 'เช้า';
+    };
 
     const submit = async () => {
         if (!username) {
@@ -33,8 +42,18 @@ function Login() {
 
     return (
         <div className="h-screen w-screen bg-primary flex justify-center items-center">
-            <div className="bg-secondary w-1/2 h-96 flex items-center justify-around rounded">
-                <div className="flex flex-col justify-between items-center">
+            <div className="bg-secondary w-3/4 h-96 flex items-center justify-around rounded">
+                <div className="w-1/2 h-full ">
+                    <img
+                        className="object-scale-down w-full h-full"
+                        src={Lotus}
+                    />
+                </div>
+                <div className="w-1/2 flex flex-col justify-between items-center">
+                    <div className="flex flex-row">
+                        <p className="text-xl font-bold p-4 text-left">Login</p>
+                    </div>
+                    <p className="p-4">สวัสดีตอน{timeToHello()}</p>
                     <div className="mb-4">
                         <label
                             className="block text-gray-700 text-sm font-bold mb-2"
@@ -80,7 +99,7 @@ function Login() {
                                 if (!loading) submit();
                             }}
                         >
-                            Sign In
+                            Login
                         </button>
                     </div>
                 </div>
