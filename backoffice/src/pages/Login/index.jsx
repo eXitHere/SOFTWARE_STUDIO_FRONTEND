@@ -28,21 +28,30 @@ function Login() {
             setError('password is required.');
             return;
         }
+
         setLoading(true);
         const result = await login(username, password);
         if (result) {
             const userInfo = await getUserInfo();
-            console.log('login successfully', userInfo);
+            // console.log(userInfo);
             return navigateTo('/');
         } else {
             setError('username or password is invalid.');
         }
+
         setLoading(false);
+    };
+
+    const handleKeypress = (e) => {
+        console.log(e.key);
+        if (e.key === 'Enter') {
+            submit();
+        }
     };
 
     return (
         <div className="h-screen w-screen bg-primary flex justify-center items-center">
-            <div className="bg-secondary w-3/4 h-96 flex items-center justify-around rounded">
+            <div className="bg-secondary md:w-3/4 lg:w-2/4 h-96 flex items-center justify-around rounded">
                 <div className="w-1/2 h-full ">
                     <img
                         className="object-scale-down w-full h-full"
@@ -68,6 +77,7 @@ function Login() {
                             placeholder="username"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
+                            onKeyPress={handleKeypress}
                         />
                     </div>
                     <div className="mb-6">
@@ -84,6 +94,7 @@ function Login() {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="********"
+                            onKeyPress={handleKeypress}
                         />
                         {error && (
                             <p className="text-red-500 text-xs italic">
