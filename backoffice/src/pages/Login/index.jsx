@@ -33,8 +33,13 @@ function Login() {
         const result = await login(username, password);
         if (result) {
             const userInfo = await getUserInfo();
+            console.log(userInfo);
+            if (userInfo.role !== 'admin') {
+                return navigateTo('/logout');
+            } else {
+                return navigateTo('/');
+            }
             // console.log(userInfo);
-            return navigateTo('/');
         } else {
             setError('username or password is invalid.');
         }
@@ -43,7 +48,7 @@ function Login() {
     };
 
     const handleKeypress = (e) => {
-        console.log(e.key);
+        // console.log(e.key);
         if (e.key === 'Enter') {
             submit();
         }

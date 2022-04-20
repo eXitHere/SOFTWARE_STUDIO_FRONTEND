@@ -9,7 +9,6 @@ function getRandomColor() {
     const tmp = `rgba(${Math.floor(Math.random() * 1000) % 255}, ${
         Math.floor(Math.random() * 1000) % 255
     }, ${Math.floor(Math.random() * 1000) % 255}, 0.2)`;
-    console.log(tmp);
     return tmp;
 }
 
@@ -22,6 +21,7 @@ function PostStats({ data }) {
             setColorList(colors);
         }
     }, [data]);
+
     return (
         <div className="p-4 shadow-md divide-y grid grid-cols-1">
             {data ? (

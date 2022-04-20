@@ -7,6 +7,7 @@ import Logout from './pages/Logout';
 import { UserView, UserEditor } from './pages/Users';
 import { View } from './pages/Blogs';
 import { Announcement } from './pages/Announcements';
+import { getUserInfo } from './utils/user.utils';
 
 function App() {
     return (
@@ -61,8 +62,8 @@ function App() {
 }
 
 const ProtectedRoute = ({ children }) => {
-    const token = localStorage.getItem('token');
-    if (!token) {
+    const user = getUserInfo();
+    if (!user || user.role !== 'admin') {
         return <Navigate to="/login" replace />;
     }
 
