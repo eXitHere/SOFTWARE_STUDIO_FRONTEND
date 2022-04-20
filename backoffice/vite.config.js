@@ -7,5 +7,5 @@ export default defineConfig({
     build: {
         sourcemap: false,
     },
-    base: '/backoffice/',
+    // base: '/backoffice/',
 });
