@@ -12,7 +12,14 @@ import { getUserInfo } from './utils/user.utils';
 function App() {
     return (
         <div className="animate-fade-in-down">
-            <BrowserRouter basename="/backoffice">
+            <BrowserRouter
+                basename={
+                    !process.env.NODE_ENV ||
+                    process.env.NODE_ENV === 'development'
+                        ? 'backoffice'
+                        : ''
+                }
+            >
                 <Routes>
                     <Route element={<Layout />}>
                         <Route
