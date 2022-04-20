@@ -12,11 +12,11 @@ import { getUserInfo } from './utils/user.utils';
 function App() {
     return (
         <div className="animate-fade-in-down">
-            <BrowserRouter>
+            <BrowserRouter basename="/backoffice">
                 <Routes>
                     <Route element={<Layout />}>
                         <Route
-                            path="backoffice/"
+                            path="/"
                             element={
                                 <ProtectedRoute>
                                     <Home />
@@ -24,7 +24,7 @@ function App() {
                             }
                         />
                         <Route
-                            path="backoffice/users"
+                            path="users"
                             element={
                                 <ProtectedRoute>
                                     <UserView />
@@ -32,7 +32,7 @@ function App() {
                             }
                         />
                         <Route
-                            path="backoffice/users/:id"
+                            path="users/:id"
                             element={
                                 <ProtectedRoute>
                                     <UserEditor />
@@ -40,7 +40,7 @@ function App() {
                             }
                         />
                         <Route
-                            path="backoffice/blogs"
+                            path="blogs"
                             element={
                                 <ProtectedRoute>
                                     <View />
@@ -48,13 +48,13 @@ function App() {
                             }
                         />
                         <Route
-                            path="backoffice/announcements"
+                            path="announcements"
                             element={<Announcement />}
                         />
                     </Route>
-                    <Route path="backoffice/login" element={<Login />} />
-                    <Route path="backoffice/logout" element={<Logout />} />
-                    <Route path="backoffice/*" element={<NoPage />} />
+                    <Route path="login" element={<Login />} />
+                    <Route path="logout" element={<Logout />} />
+                    <Route path="*" element={<NoPage />} />
                 </Routes>
             </BrowserRouter>
         </div>
@@ -64,7 +64,7 @@ function App() {
 const ProtectedRoute = ({ children }) => {
     const user = getUserInfo();
     if (!user || user.role !== 'admin') {
-        return <Navigate to="backoffice/login" replace />;
+        return <Navigate to="login" replace />;
     }
 
     return children;

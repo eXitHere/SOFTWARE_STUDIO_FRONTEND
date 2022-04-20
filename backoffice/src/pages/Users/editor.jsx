@@ -180,7 +180,7 @@ function Editor() {
                         <button
                             className={`p-4 border w-36 h-14 text-center items-center font-bold rounded-md text-white bg-red-400`}
                             onClick={() => {
-                                navigateTo('/users');
+                                navigateTo('users');
                             }}
                         >
                             Back
