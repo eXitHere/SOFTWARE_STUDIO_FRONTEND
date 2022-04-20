@@ -10,12 +10,12 @@ import { Announcement } from './pages/Announcements';
 import { getUserInfo } from './utils/user.utils';
 
 function App() {
-    // const isDev = import.meta.env.DEV;
-    // console.log(`is dev ${isDev} || is prod ${import.meta.env.PROD} `);
-    // console.log(import.meta.env.BASE_URL);
+    const isDev = import.meta.env.DEV;
+    console.log(`is dev ${isDev} || is prod ${import.meta.env.PROD} `);
+    console.log(import.meta.env.BASE_URL);
     return (
         <div className="animate-fade-in-down">
-            <BrowserRouter>
+            <BrowserRouter basename={isDev ? '' : 'backoffice'}>
                 <Routes>
                     <Route element={<Layout />}>
                         <Route
