@@ -44,12 +44,11 @@ function Sidebar() {
 
     return (
         <div
-            onClick={openSidenav}
             onMouseLeave={closeSidenav}
             onMouseEnter={openSidenav}
-            className={`${
-                isOpen === true ? 'w-32' : 'w-16'
-            } h-full bg-primary w-1/4 top-0 left-0 transition-all pt-4 flex flex-col items-center fixed z-10`}
+            className={`h-full bg-primary w-1/4 top-0 left-0 transition-all pt-4 flex flex-col items-center fixed z-10 ${
+                isOpen && isOpen === true ? 'w-60' : 'w-16'
+            }`}
         >
             <div className="flex justify-center items-center p-4 mt-4 h-12 mb-10 w-full">
                 {isOpen && (
