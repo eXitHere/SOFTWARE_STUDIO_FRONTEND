@@ -4,4 +4,5 @@ export enum Path {
   EditProfile = '/edit-Profile',
   CreateBlog = '/create-blog',
   Profile = '/profile',
+  Login = '/login',
 }

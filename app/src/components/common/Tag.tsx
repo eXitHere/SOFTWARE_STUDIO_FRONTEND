@@ -1,4 +1,4 @@
-import {useContext} from 'react'
+import {useContext, useState} from 'react'
 import book from 'assets/images/book.png'
 import monk from 'assets/images/monk.png'
 import temple from 'assets/images/temple.png'
@@ -38,10 +38,28 @@ const dataCategory: Category[] = [
 ]
 
 export const Tag = () => {
+  const [selectTag, setSelectTag] = useState<string[]>([])
   const tagContext = useContext(TagContext)
 
-  const handleCategory = (catName: string) => {
-    tagContext.setCategory({name:catName})
+  // const handleCategory = (catName: string) => {
+  //   tagContext.setCategory({name:catName})
+  // }
+
+  const handleCategory = (Category: string) => {
+    if (selectTag.includes(Category) == false) {
+      setSelectTag([Category, ...selectTag])
+      tagContext.setCategory([Category, ...selectTag])
+    } else {
+      // const myIndex = selectTag.indexOf(Category)
+      // if (myIndex !== -1) {
+      //   selectTag.splice(myIndex, 1)
+      // }
+      const newArray = selectTag.filter(function (f) {
+        return f !== Category
+      })
+      setSelectTag([...newArray])
+      tagContext.setCategory([...newArray])
+    }
   }
 
   return (
@@ -56,7 +74,7 @@ export const Tag = () => {
               className={classNames(
                 'flex flex-col items-center justify-center w-16 h-20 md:w-32 md:h-32 mt-2 font-bold',
                 {
-                  'bg-yellow-300 rounded-lg': tagContext.category.name == data.categoryName,
+                  'bg-yellow-300 rounded-lg': selectTag.includes(data.categoryName),
                 },
               )}
             >
