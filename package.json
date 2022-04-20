@@ -8,14 +8,12 @@
         "test": "gh-pages --help",
         "prepare": "husky install",
         "postinstall": "cd backoffice && yarn && cd .. && cd app && yarn ",
-        "format": "prettier --write \"**/*.{js,jsx,html}\"",
-        "deploy": "cd backoffice && npm run build && cd .. && gh-pages -r git@github.com:eXitHere/SOFTWARE_STUDIO_FRONTEND.git -d backoffice/dist -e backoffice/ -m \"Update\""
+        "format": "prettier --write \"**/*.{js,jsx,html}\""
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "devDependencies": {
-        "gh-pages": "^3.2.3",
         "husky": "^7.0.4",
         "prettier": "^2.6.1"
     },
