@@ -16,7 +16,7 @@ function App() {
                 <Routes>
                     <Route element={<Layout />}>
                         <Route
-                            path="/"
+                            path="backoffice/"
                             element={
                                 <ProtectedRoute>
                                     <Home />
@@ -24,7 +24,7 @@ function App() {
                             }
                         />
                         <Route
-                            path="users"
+                            path="backoffice/users"
                             element={
                                 <ProtectedRoute>
                                     <UserView />
@@ -32,7 +32,7 @@ function App() {
                             }
                         />
                         <Route
-                            path="users/:id"
+                            path="backoffice/users/:id"
                             element={
                                 <ProtectedRoute>
                                     <UserEditor />
@@ -40,7 +40,7 @@ function App() {
                             }
                         />
                         <Route
-                            path="blogs"
+                            path="backoffice/blogs"
                             element={
                                 <ProtectedRoute>
                                     <View />
@@ -48,13 +48,13 @@ function App() {
                             }
                         />
                         <Route
-                            path="announcements"
+                            path="backoffice/announcements"
                             element={<Announcement />}
                         />
                     </Route>
-                    <Route path="login" element={<Login />} />
-                    <Route path="logout" element={<Logout />} />
-                    <Route path="*" element={<NoPage />} />
+                    <Route path="backoffice/login" element={<Login />} />
+                    <Route path="backoffice/logout" element={<Logout />} />
+                    <Route path="backoffice/*" element={<NoPage />} />
                 </Routes>
             </BrowserRouter>
         </div>

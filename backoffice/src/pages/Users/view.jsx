@@ -37,7 +37,7 @@ function List({ columns, data, sortHandler, sortBy }) {
                 {data.map((user, idx) => (
                     <tr
                         key={idx}
-                        className="dark:text-white border-b  odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700"
+                        className=" border-b  odd:bg-white even:bg-gray-50"
                     >
                         <td className="px-6 py-4">
                             <Avatar size="4vh" name={user.name} />
@@ -66,8 +66,8 @@ function List({ columns, data, sortHandler, sortBy }) {
                         </td>
                         <td className="px-6 py-4 text-right">
                             <a
-                                href={`/users/${user.id}`}
-                                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                                href={`users/${user.id}`}
+                                className="font-medium text-blue-600 hover:underline"
                             >
                                 Edit
                             </a>
@@ -189,7 +189,7 @@ function Users() {
                         <div className="relative mt-1">
                             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                 <svg
-                                    className="w-5 h-5 text-gray-500 dark:text-gray-400"
+                                    className="w-5 h-5 text-gray-500"
                                     fill="currentColor"
                                     viewBox="0 0 20 20"
                                     xmlns="http://www.w3.org/2000/svg"
@@ -204,7 +204,7 @@ function Users() {
                             <input
                                 type="text"
                                 id="table-search"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5  "
                                 placeholder="Search from topic or category"
                                 onChange={(e) => {
                                     setFilter(e.target.value);
