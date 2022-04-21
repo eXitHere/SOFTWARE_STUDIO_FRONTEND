@@ -4,6 +4,7 @@ import { Blog, MainBlogs, Home, EditProfile, CreateBlog, Profile, MockLogin } fr
 import { Path } from 'routes/path'
 
 import NotFound from 'pages/404'
+import EditBlog from 'pages/editBlog'
 
 
 const routes: RouteObject[] = [
@@ -20,6 +21,7 @@ const routes: RouteObject[] = [
         children: [
           { index: true, element: <MainBlogs /> },
           { path: `${Path.MainBlogs}/:id`, element: <Blog /> },
+          { path: `${Path.EditBlog}/:id`, element: <EditBlog /> },
         ],
       },
       {

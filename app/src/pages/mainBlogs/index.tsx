@@ -26,7 +26,6 @@ export const MainBlogs = () => {
 
   const handleSearch = (e: FormEvent) => {
     e.preventDefault()
-    // console.log(search)
   }
 
   const getUserBlogs = async () => {
@@ -48,8 +47,6 @@ export const MainBlogs = () => {
     const searchData: string[] = []
 
     for (let i = 0; i < globalBlogs.length; i++) {
-      // console.log(globalBlogs[i].category)
-      // console.log(tagContext.category)
       if (keyword == '') {
         if (
           globalBlogs[i].topic.includes(keyword) &&
@@ -63,7 +60,7 @@ export const MainBlogs = () => {
         }
       }
     }
-    // console.log(tagContext.category)
+
     if (keyword == '' && tagContext.category.length == 0) {
       setSearchBlogs(globalBlogs)
     } else {
@@ -93,8 +90,7 @@ export const MainBlogs = () => {
 
   return (
     <Screen>
-      <Navbar isBoards={true} username={decoded.username} />
-
+      <Navbar isBoards={true} username={decoded.display_name} />
       <form onSubmit={handleSearch} className="flex items-center justify-around w-11/12 h-10 mt-24 ml-0 md:hidden">
         <input
           type="text"
@@ -117,7 +113,7 @@ export const MainBlogs = () => {
             key={data.blog_id}
             blog_id={data.blog_id}
             author_name={data.author.name}
-            profile_image={data.author.profile_image}
+            // profile_image={data.author.profile_image}
             topic={data.topic}
             content={data.content}
             category={data.category}

@@ -17,8 +17,8 @@ export const MockLogin = () => {
   }
   
   const userLogin = {
-    username: 'herman',
-    password: 'user123'
+    username: username,
+    password: password
   }
 
   const sendLogin = async () => {
@@ -31,9 +31,6 @@ export const MockLogin = () => {
     return navigateTo(Path.Profile)
   }
 
-  // useEffect(() => {
-  //   sendLogin()
-  // })
   return (
     <Screen>
       <div className="flex flex-col items-center w-screen h-screen">

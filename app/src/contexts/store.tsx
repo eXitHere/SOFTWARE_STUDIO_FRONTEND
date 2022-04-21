@@ -60,6 +60,10 @@ export const SearchContextProvider = ({ children }: SearchContextProviderProps) 
 type UpdateContextType = {
   update: string
   setUpdate: React.Dispatch<SetStateAction<string>>
+  updateComment: string
+  setUpdateComment: React.Dispatch<SetStateAction<string>>
+  updateLikeComment: string
+  setUpdateLikeComment: React.Dispatch<SetStateAction<string>>
 }
 
 type UpdateContextProviderProps = {
@@ -68,13 +72,18 @@ type UpdateContextProviderProps = {
 
 export const UpdateContext = createContext<UpdateContextType>({} as UpdateContextType)
 export const UpdateContextProvider = ({ children }: UpdateContextProviderProps) => {
-  const [update, setUpdate] = useState<string>("")
-
+  const [update, setUpdate] = useState<string>('')
+  const [updateComment, setUpdateComment] = useState<string>('')
+  const [updateLikeComment, setUpdateLikeComment] = useState<string>('')
   return (
     <UpdateContext.Provider
       value={{
         update,
         setUpdate,
+        updateComment,
+        setUpdateComment,
+        updateLikeComment,
+        setUpdateLikeComment,
       }}
     >
       {children}

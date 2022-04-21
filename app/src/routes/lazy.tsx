@@ -9,6 +9,7 @@ const WrappedSuspense = ({ children }: { children: ReactNode }) => (
 const RawHome = lazy(() => import('pages/home'))
 const RawBlog = lazy(() => import('pages/blog'))
 const RawMainBlogs = lazy(() => import('pages/mainBlogs'))
+const RawEditBlog= lazy(() => import('pages/editBlog'))
 const RawEditProfile = lazy(() => import('pages/editProfile'))
 const RawCreateBlog = lazy(() => import('pages/createBlog'))
 const RawProfile = lazy(() => import('pages/profile'))
@@ -29,6 +30,12 @@ export const Blog = () => (
 export const MainBlogs = () => (
   <WrappedSuspense>
     <RawMainBlogs />
+  </WrappedSuspense>
+)
+
+export const EditBlog = () => (
+  <WrappedSuspense>
+    <RawEditBlog />
   </WrappedSuspense>
 )
 

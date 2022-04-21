@@ -1,6 +1,3 @@
-import { PostComment } from 'components/common/PostComment'
-import { ChangeEvent, SetStateAction, useState, MouseEvent } from 'react'
-
 export type AuthUser = {
   id: string
   token: string
@@ -17,12 +14,11 @@ export type Tags = {
 export type Blog = {
   blog_id: string
   author_name: string
-  profile_image: string
   topic: string
-  content: string
+  content: any
   category: string[]
   like: number
-  like_users : string[]
+  like_users: string[]
   date: string
   username: string
   profile_page: boolean
@@ -42,12 +38,15 @@ export type Detail = {
 }
 
 export type Comment = {
-  id: string
+  login_id: string
+  login_name: string
+  comment_id: string
+  user_id: string
   name: string
-  photo: string
-  text: string
+  comment: string
   like: number
-  date: string
+  like_users: string
+  created_date: string
 }
 
 export type Category = {
@@ -62,10 +61,15 @@ export type Modal = {
   agree: () => void
 }
 
-export type Anoucement = {
-  topic: string
-  text: string
-  date : string
+export type ModalEditCommentType = {
+  name: string
+  blog_id: string
+  comment_id: string
+  comment: string
+  close: () => void
+}
+
+export type Announcement = {
   close: () => void
 }
 
@@ -76,5 +80,11 @@ export type ChooseCat = {
 
 export type AddComment = {
   name: string
+  blog_id: string
   profile_image: string
+  comment_count: string
+  post: boolean
+  comment_id: string
+  comment: string
+  close: () => void
 }
