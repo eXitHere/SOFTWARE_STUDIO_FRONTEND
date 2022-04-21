@@ -1,75 +1,77 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import Avatar from 'react-avatar';
-import {
-    FaHome,
-    FaUsers,
-    FaBook,
-    FaBullhorn,
-    FaSignOutAlt,
-} from 'react-icons/fa';
-import { getUserInfo } from '../../utils/user.utils';
-
+import MiniLotus from '../../assets/images/mini_lotus.png';
 // https://react-icons.github.io/react-icons/icons?name=fa
 
-function Button({ icon, text, to }) {
+function Button({ icon, text, to, isOpen }) {
     return (
         <NavLink
             activelassname="active"
             to={to}
-            className="h-12 flex flex-row hover:cursor-pointer hover:opacity-90 hover:bg-slate-400"
+            className={`pb-8 pt-8 h-12 flex flex-row hover:cursor-pointer hover:opacity-90 hover:bg-slate-400 items-center text-xl ${
+                !isOpen ? 'justify-center' : 'pl-4'
+            }`}
         >
-            <div className="text-center inline-flex items-center">
-                {/* {icon} */}
-                <span className="ml-2 items-center truncate">{text}</span>
-            </div>
+            {isOpen ? (
+                <span className="ml-2 truncate">
+                    <i className={icon} aria-hidden="true" />
+                    <span className="ml-2">{text}</span>
+                </span>
+            ) : (
+                <i className={icon} aria-hidden="true" />
+            )}
         </NavLink>
     );
 }
 
 function Sidebar() {
-    const [user, setUser] = useState({
-        name: 'unknown',
-        role: 'unknown',
-    });
-
-    useEffect(async () => {
-        const tmp = await getUserInfo();
-        setUser(tmp);
-    }, []);
+    const [isOpen, setOpen] = useState(false);
 
     const nav = [
-        { icon: <FaHome />, text: 'Home', to: '/' },
-        { icon: <FaUsers />, text: 'Users', to: '/users' },
-        { icon: <FaBook />, text: 'Blogs', to: '/blogs' },
-        { icon: <FaBullhorn />, text: 'Announce', to: '/announcements' },
+        { icon: 'fa fa-home', text: 'Home', to: '/' },
+        { icon: 'fa fa-users', text: 'Users', to: '/users' },
+        { icon: 'fa fa-comments', text: 'Blogs', to: '/blogs' },
+        {
+            icon: 'fa fa-bullhorn',
+            text: 'Announce',
+            to: 'announcements',
+        },
     ];
 
-    const logoutNav = {
-        icon: <FaSignOutAlt />,
-        text: 'logout',
-        to: '/logout',
+    const openSidenav = () => {
+        setOpen(true);
+    };
+
+    const closeSidenav = () => {
+        setOpen(false);
     };
 
     return (
-        <div className="divide-y top-0 left-0 w-[20vw] bg-primary p-2 text-white h-full ">
-            <div className="flex justify-center p-5 flex-col">
-                <div className="flex justify-center">
-                    <Avatar name={user.display_name} />
-                </div>
-                <div className="pt-5 font-bold text-xl">
-                    {user.display_name}
-                </div>
-                <div className="opacity-50">{user.role}</div>
+        <div
+            onMouseLeave={closeSidenav}
+            onMouseEnter={openSidenav}
+            className={`h-full bg-primary w-1/4 top-0 left-0 transition-all pt-4 flex flex-col items-center fixed z-10 ${
+                isOpen && isOpen === true ? 'w-60' : 'w-16'
+            }`}
+        >
+            <div className="flex justify-center items-center p-4 mt-4 h-12 mb-10 w-full">
+                {isOpen && (
+                    <a
+                        className="text-center inline-flex items-center flex-row hover:cursor-pointer hover:opacity-90 "
+                        href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                        target="_blank"
+                    >
+                        <img src={MiniLotus} className="w-16 h-16 mr-4" />
+                        <span className="text-4xl items-center text-white">
+                            ADMIN
+                        </span>
+                    </a>
+                )}
             </div>
-            {/* Buttons */}
-            <div className="pt-5 flex flex-col space-y-4">
+            <div className="divide-y bg-primary text-white w-full h-full flex flex-col">
                 {nav.map((e, idx) => (
-                    <Button key={idx} {...e} />
+                    <Button isOpen={isOpen} key={idx} {...e} />
                 ))}
-                <div className="text-red-800">
-                    <Button {...logoutNav} />
-                </div>
             </div>
         </div>
     );

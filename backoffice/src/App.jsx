@@ -5,8 +5,9 @@ import NoPage from './pages/NotFound';
 import Layout from './pages/Layout';
 import Logout from './pages/Logout';
 import { UserView, UserEditor } from './pages/Users';
-import { RichEditor, View } from './pages/Blogs';
+import { View } from './pages/Blogs';
 import { Announcement } from './pages/Announcements';
+import { getUserInfo } from './utils/user.utils';
 
 function App() {
     return (
@@ -47,14 +48,6 @@ function App() {
                             }
                         />
                         <Route
-                            path="blogs/:id"
-                            element={
-                                <ProtectedRoute>
-                                    <RichEditor />
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
                             path="announcements"
                             element={<Announcement />}
                         />
@@ -69,9 +62,9 @@ function App() {
 }
 
 const ProtectedRoute = ({ children }) => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-        return <Navigate to="/login" replace />;
+    const user = getUserInfo();
+    if (!user || user.role !== 'admin') {
+        return <Navigate to="login" replace />;
     }
 
     return children;
