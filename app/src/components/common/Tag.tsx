@@ -1,4 +1,4 @@
-import {useContext, useState} from 'react'
+import { useContext, useState } from 'react'
 import book from 'assets/images/book.png'
 import monk from 'assets/images/monk.png'
 import temple from 'assets/images/temple.png'
@@ -6,8 +6,7 @@ import candle from 'assets/images/candle.png'
 import calendar from 'assets/images/calendar.png'
 import { Category } from 'types'
 import classNames from 'classnames'
-import {TagContext } from 'contexts/store'
-
+import { TagContext } from 'contexts/store'
 
 const dataCategory: Category[] = [
   {
@@ -55,7 +54,7 @@ export const Tag = () => {
   }
 
   return (
-    <div className="flex flex-col w-11/12 p-2 mt-2 mb-4 lg:w-4/5 md:mt-28 rounded-xl bg-primary-light">
+    <div className="flex flex-col w-11/12 p-2 mt-2 mb-4 lg:w-4/5 rounded-xl bg-primary-light">
       <p className="pl-2 text-lg font-semibold">หมวดหมู่ : </p>
       <div className="flex items-center justify-around text-lg">
         {dataCategory.map((data) => {

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, useRef, MutableRefObject } from 'react'
+import React, { useState, useRef } from 'react'
 
 import im1 from 'assets/images/im1.jpg'
 import im2 from 'assets/images/im2.jpg'
@@ -12,7 +12,7 @@ const imageLength = featuredImages.length
 
 export const ImageShow = () => {
   const [idxImage, setIdxImage] = useState(0)
-  const refNext = useRef(null) as unknown as MutableRefObject<HTMLDivElement>
+  const refNext = useRef(null)
 
   const refs = featuredImages.reduce((acc: any, val, i) => {
     acc[i] = React.createRef()
@@ -61,11 +61,11 @@ export const ImageShow = () => {
   }
 
   const arrowStyle =
-    'absolute text-white text-2xl z-10 bg-black h-10 w-10 rounded-full opacity-75 flex items-center justify-center'
+    'absolute text-white text-2xl z-0 bg-black h-10 w-10 rounded-full opacity-75 flex items-center justify-center'
 
   // image controller
   return (
-    <div className="flex flex-col w-10/12 p-2 mt-2 mb-4 lg:w-3/5 md:mt-28 bg-primary-light">
+    <div className="flex flex-col w-10/12 p-2 mb-4 lg:w-3/5 bg-primary-light">
       <div className="relative w-full">
         <div className="carousel">
           <button type="button" onClick={prevImage} className={`${arrowStyle} left-2`} style={{ top: '40%' }}>
@@ -91,7 +91,7 @@ export const ImageShow = () => {
           </button>
         </div>
       </div>
-      <div className="text-center">Image From www.freepik.com/</div>
+      <div className="text-center opacity-50 text-sm">ภาพจาก www.freepik.com/</div>
     </div>
   )
 }
