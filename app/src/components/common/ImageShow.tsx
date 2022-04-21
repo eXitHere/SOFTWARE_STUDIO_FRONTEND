@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, MutableRefObject } from 'react'
 
 import im1 from 'assets/images/im1.jpg'
 import im2 from 'assets/images/im2.jpg'
@@ -8,29 +8,30 @@ import im3 from 'assets/images/im3.jpg'
 
 const featuredImages = [im1, im2, im3]
 const imageLength = featuredImages.length
-let slideInterval: number | undefined
+// let slideInterval: any
 
 export const ImageShow = () => {
   const [idxImage, setIdxImage] = useState(0)
-  const refNext = useRef(null) as MutableRefObject<HTMLDivElement>
+  const refNext = useRef(null) as unknown as MutableRefObject<HTMLDivElement>
 
   const refs = featuredImages.reduce((acc: any, val, i) => {
     acc[i] = React.createRef()
     return acc
   }, {})
 
-  useEffect(() => {
-    startSlider()
-    return () => {
-      clearInterval(slideInterval)
-    }
-  }, [])
+  // disable auto slide
+  // useEffect(() => {
+  //   startSlider()
+  //   return () => {
+  //     clearInterval(slideInterval)
+  //   }
+  // }, [])
 
-  const startSlider = () => {
-    slideInterval = setInterval(() => {
-      refNext.current.click()
-    }, 3500)
-  }
+  // const startSlider = () => {
+  //   slideInterval = setInterval(() => {
+  //     refNext.current.click()
+  //   }, 3500)
+  // }
 
   const scrollToImage = (i: number) => {
     setIdxImage(i)

@@ -1,3 +1,3 @@
-const URL = 'https://thammathip.exitguy.studio';
+const URL = 'https://thammathip.exitguy.studio'
 
-export { URL };
+export { URL }
