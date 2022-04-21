@@ -8,15 +8,13 @@ import MockLogin from 'pages/mocklogin'
 import MainBlogs from 'pages/mainBlogs'
 
 export const Home = () => {
-  
-
   return (
     <Screen>
       {/* <Link to={Path.Profile}>
         <button onClick={login}>login</button>
       </Link> */}
       {/* <Login/> */}
-      <MainBlogs/>
+      <MainBlogs />
     </Screen>
   )
 }

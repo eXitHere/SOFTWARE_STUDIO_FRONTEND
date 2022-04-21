@@ -1,11 +1,10 @@
-import React,{ FormEvent, useState, useContext } from 'react'
+import React, { FormEvent, useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import AvatarGroup from 'react-avatar-group'
 // import profile1 from 'assets/images/profile1.jpeg'
 import searchIcon from 'assets/images/searchIcon.png'
 import LoginIcon from 'assets/icons/loginIcon.png'
 import LogoutIcon from 'assets/icons/logoutIcon.png'
-
 
 import { Path } from 'routes'
 import { SearchContext, UserContext } from 'contexts/store'
@@ -16,10 +15,9 @@ type NavbarProps = {
 }
 
 export const Navbar = ({ isBoards, username }: NavbarProps) => {
-  
   const userContext = useContext(UserContext)
   const searchContext = useContext(SearchContext)
-  
+
   // const [search, setSearch] = useState('')
 
   const handleLogout = () => {

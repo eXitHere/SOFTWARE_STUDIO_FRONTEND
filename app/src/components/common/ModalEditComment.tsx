@@ -10,7 +10,15 @@ export const ModalEditComment = ({ name, blog_id, comment_id, comment, close }: 
     >
       <div className="flex flex-col items-center justify-center w-11/12 bg-white shadow h-3/6 rounded-2xl dark:bg-gray-700">
         <p className="p-4 mb-6 text-3xl font-bold text-white">แก้ไขความคิดเห็น</p>
-        <PostComment name={name} blog_id={blog_id} comment_count={''} post={false} comment_id={comment_id} comment={comment} close={close} />
+        <PostComment
+          name={name}
+          blog_id={blog_id}
+          comment_count={''}
+          post={false}
+          comment_id={comment_id}
+          comment={comment}
+          close={close}
+        />
 
         <button
           onClick={close}
