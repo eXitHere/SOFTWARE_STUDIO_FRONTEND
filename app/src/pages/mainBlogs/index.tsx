@@ -6,6 +6,7 @@ import { SearchContext, TagContext, UpdateContext } from 'contexts/store'
 
 import { Screen } from 'components/layouts/Screen'
 import { Navbar } from 'components/common/Navbar'
+import { Footer } from 'components/common/Footer'
 import { Tag } from 'components/common/Tag'
 import { ImageShow } from 'components/common/ImageShow'
 import { BlogCard } from 'components/common/BlogCard'
@@ -125,6 +126,7 @@ export const MainBlogs = () => {
           />
         )
       })}
+      <Footer />
     </Screen>
   )
 }
