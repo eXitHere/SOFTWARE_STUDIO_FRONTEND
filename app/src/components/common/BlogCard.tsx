@@ -1,26 +1,38 @@
 import { useState, useContext, useEffect } from 'react'
-import axios from 'pages/apiclient'
 import { UpdateContext } from 'contexts/store'
+import AvatarGroup from 'react-avatar-group'
+import draftToHtml from 'draftjs-to-html'
+import axios from 'pages/apiclient'
 
-// Component
 import { Blog } from 'types'
 import { ModalConfirm } from 'components/common/ModalConfirm'
 import { Link } from 'react-router-dom'
 import { Path } from 'routes'
 
-// Photo
 import likeImg from 'assets/images/like.png'
 import unlikeImg from 'assets/images/unlike.png'
 import trash from 'assets/icons/trash.png'
+import edit from 'assets/icons/edit.png'
 import tagIcon from 'assets/icons/tagIcon.png'
+import classNames from 'classnames'
 
-// Type
-type BlogCardProps = Pick<Blog, 'blog_id' | 'author_name' | 'profile_image' | 'topic' | 'content' | 'category' | 'like' | 'like_users' | 'date' | 'username' | 'profile_page'>
+type BlogCardProps = Pick<
+  Blog,
+  | 'blog_id'
+  | 'author_name'
+  | 'topic'
+  | 'content'
+  | 'category'
+  | 'like'
+  | 'like_users'
+  | 'date'
+  | 'username'
+  | 'profile_page'
+>
 
 export const BlogCard = ({
   blog_id,
   author_name,
-  profile_image,
   topic,
   content,
   category,
@@ -30,12 +42,8 @@ export const BlogCard = ({
   username,
   profile_page,
 }: BlogCardProps) => {
-  // useState
   const updateContext = useContext(UpdateContext)
-  const [clickLike, setClickLike] = useState<boolean>(true)
-  const [likePhoto, setLikePhoto] = useState<string>(unlikeImg)
   const [modalContent, setModalContent] = useState<React.ReactNode>(null)
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [data, setData] = useState<any>()
   const [, setIsModalOpen] = useState<boolean>(false)
 
@@ -49,14 +57,12 @@ export const BlogCard = ({
         },
       },
     )
-    if (updateContext.update == 'notlike'){
-      updateContext.setUpdate('like')
+
+    if (updateContext.update.split(' ')[0] == 'UNLIKE') {
+      updateContext.setUpdate(`LIKE ${blog_id}`)
+    } else {
+      updateContext.setUpdate(`UNLIKE ${blog_id}`)
     }
-    else {
-      updateContext.setUpdate('notlike')
-    }
-    // console.log(response)
-    
   }
 
   const deleteBlog = async () => {
@@ -65,7 +71,7 @@ export const BlogCard = ({
         authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
     })
-    updateContext.setUpdate('delete')
+    updateContext.setUpdate(`DELETE ${blog_id}`)
     console.log(response)
   }
 
@@ -96,7 +102,6 @@ export const BlogCard = ({
     deleteBlog()
     setIsModalOpen(false)
     setModalContent(null)
-    // delete
   }
 
   function extractContent(s: string) {
@@ -105,12 +110,23 @@ export const BlogCard = ({
     return span.textContent || span.innerText
   }
 
+  useEffect(() => {
+    if (content) {
+      setData(draftToHtml(JSON.parse(content)))
+    }
+  }, [content])
+
   return (
-    <div className="relative flex flex-col w-11/12 mb-4 h-80 md:flex-row md:h-48 lg:w-4/5 bg-primary-lightest rounded-2xl">
+    <div className={classNames("relative flex flex-col w-11/12 mb-4 h-80 md:flex-row lg:w-4/5 bg-primary-lightest rounded-2xl",{"md:h-48":profile_page === true,"md:h-40":profile_page === false})}>
       {/* profile picture + name */}
-      <div className="flex flex-row items-center w-full h-48 p-1 pt-0 mt-0 mr-4 md:justify-center md:w-1/6 md:flex-col lg:p-5 lg:pt-0 rounded-2xl">
-        <img src={profile_image} className="w-12 h-12 mx-4 mt-2 bg-blue-300 rounded-full md:w-20 md:h-20 md:mx-0"></img>
-        <p className="pt-2 text-md md:text-md">{author_name}</p>
+      <div className="flex flex-row items-center w-full h-20 p-1 pt-0 mt-0 mr-4 md:justify-center md:w-1/6 md:flex-col lg:p-5 lg:pt-0 rounded-2xl">
+        {/* <img src={profile_image} className="w-12 h-12 mx-4 mt-2 bg-blue-300 rounded-full md:w-20 md:h-20 md:mx-0"></img> */}
+        {author_name ? (
+          <div className="px-4 md:mt-16">
+            <AvatarGroup avatars={[author_name]} initialCharacters={1} max={1} size={50} displayAllOnHover shadow={1} />
+          </div>
+        ) : null}
+        <p className="pt-2 text-center text-md md:text-md">{author_name}</p>
       </div>
       <div className="flex flex-row w-full md:w-5/6">
         {/* topic + preview */}
@@ -120,17 +136,10 @@ export const BlogCard = ({
           </Link>
           <div className="flex flex-row items-center my-1 mt-2">
             <img src={tagIcon} className="w-6 h-6 mr-2" />
-            {category.map((cat, index) => {
-              return (
-                <p className="px-2" key={index}>
-                  {cat}
-                </p>
-              )
-            })}
+            <p className="px-2">{category.join(", ")}</p>
           </div>
           <p className="py-2 text-sm lg:text-lg overflow: hidden; white-space: nowrap; ">
-            {/* {content.slice(0, 160) + ' ...'} */}
-            {extractContent(content).slice(0, 160) + ' ...'}
+            {extractContent(data).slice(0, 165) + ' ...'}
           </p>
         </div>
 
@@ -153,15 +162,23 @@ export const BlogCard = ({
           <p className="text-sm md:text-sm">{date}</p>
         </div>
       </div>
-      
+
       {/* delete button */}
       {profile_page && (
-        <button
-          onClick={handleModal}
-          className="absolute right-0 flex items-center justify-center w-8 h-8 mr-2 bg-red-400 bottom-3 rounded-xl"
-        >
-          <img src={trash} className="w-4 h-4"></img>
-        </button>
+        <>
+          <button
+            onClick={handleModal}
+            className="absolute right-0 flex items-center justify-center w-8 h-8 mr-2 bg-red-400 bottom-3 rounded-xl"
+          >
+            <img src={trash} className="w-4 h-4"></img>
+          </button>
+
+          <Link to={`${Path.EditBlog}/${blog_id}`}>
+            <button className="absolute flex items-center justify-center w-8 h-8 mr-2 bg-blue-400 right-10 bottom-3 rounded-xl">
+              <img src={edit} className="w-4 h-4"></img>
+            </button>
+          </Link>
+        </>
       )}
       {modalContent}
     </div>

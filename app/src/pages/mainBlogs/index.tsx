@@ -25,7 +25,6 @@ export const MainBlogs = () => {
 
   const handleSearch = (e: FormEvent) => {
     e.preventDefault()
-    // console.log(search)
   }
 
   const getUserBlogs = async () => {
@@ -47,8 +46,6 @@ export const MainBlogs = () => {
     const searchData: string[] = []
   
     for (let i = 0; i < globalBlogs.length; i++) {
-      // console.log(globalBlogs[i].category)
-      // console.log(tagContext.category)
       if (keyword == ''){
         if (
           globalBlogs[i].topic.includes(keyword) &&
@@ -65,7 +62,7 @@ export const MainBlogs = () => {
         }
       }
     }
-    // console.log(tagContext.category)
+
     if (keyword=='' && tagContext.category.length==0){
       setSearchBlogs(globalBlogs)
     }
@@ -97,7 +94,7 @@ export const MainBlogs = () => {
 
   return (
     <Screen>
-      <Navbar isBoards={true} username={decoded.username} />
+      <Navbar isBoards={true} username={decoded.display_name} />
       <form onSubmit={handleSearch} className="flex items-center justify-around w-11/12 h-10 mt-24 ml-0 md:hidden">
         <input
           type="text"
