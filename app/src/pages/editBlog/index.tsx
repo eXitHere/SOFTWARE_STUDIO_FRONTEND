@@ -1,22 +1,22 @@
 import { Screen } from 'components/layouts/Screen'
 import { Navbar } from 'components/common/Navbar'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { ChangeEvent, useState, useEffect } from 'react'
-import { EditorState, convertToRaw} from 'draft-js'
+import { EditorState, convertToRaw, convertFromRaw } from 'draft-js'
 import { Editor } from 'react-draft-wysiwyg'
 import jwt_decode from 'jwt-decode'
-import axios from '../apiclient'
+import axios from 'pages/apiclient'
 
 import { Path } from 'routes'
 import { ChooseCategory } from 'components/common/ChooseCategory'
 
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 
-export const CreateBlog = () => {
+export const EditBlog = () => {
+  const { id } = useParams()
   const [topicText, setTopicText] = useState<string>('')
-
   const [editorState, setEditorState] = useState(() => EditorState.createEmpty())
-  const [selectTag, setSelectTag] = useState<string[]>(['คำสอน'])
+  const [selectTag, setSelectTag] = useState<string[]>([''])
   const [decoded, setDecoded] = useState<any>({})
   const navigateTo = useNavigate()
 
@@ -24,9 +24,8 @@ export const CreateBlog = () => {
     setTopicText(e.target.value)
   }
 
-  const handleCreateBlog = async (e: { preventDefault: () => void }) => {
+  const handleUpdateBlog = async (e: { preventDefault: () => void }) => {
     const content = convertContentToRaw()
-    console.log(content)
     const sendData = {
       topic: topicText,
       content: JSON.stringify(content),
@@ -37,7 +36,7 @@ export const CreateBlog = () => {
       if (sendData.topic == '' || sendData.category.length == 0) {
         alert('กรุณากรอกข้อมูลให้ครบทุกช่อง')
       } else {
-        const response = await axios.post('https://thammathip.exitguy.studio/api/Blog/create', sendData, {
+        const response = await axios.patch(`https://thammathip.exitguy.studio/api/Blog/update/${id}`, sendData, {
           headers: {
             authorization: `Bearer ${localStorage.getItem('accessToken')}`,
           },
@@ -62,7 +61,9 @@ export const CreateBlog = () => {
   }
 
   const imageUploadCallback = (file: File) =>
-    new Promise((resolve) => getFileBase64(file, (data: any) => resolve({ data: { link: data } })))
+    new Promise((resolve) =>
+      getFileBase64(file, (data: any) => resolve({ data: { link: data } })),
+    )
 
   const handleChoose = (Category: string) => {
     if (selectTag.includes(Category) == false) {
@@ -75,6 +76,18 @@ export const CreateBlog = () => {
     }
   }
 
+  const getBlogs = async () => {
+    try {
+      const response = await axios(`https://thammathip.exitguy.studio/api/Blog/${id}`)
+      console.log(response.data)
+      setTopicText(response.data.topic)
+      setEditorState(EditorState.createWithContent(convertFromRaw(JSON.parse(response.data.content))))
+      setSelectTag(response.data.category)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   useEffect(() => {
     if (window.localStorage.getItem('accessToken') == null) {
       window.localStorage.setItem('auth', 'NO')
@@ -82,12 +95,13 @@ export const CreateBlog = () => {
       const token = window.localStorage.getItem('accessToken')
       setDecoded(jwt_decode(token || '{}'))
     }
+    getBlogs()
   }, [])
 
   return (
     <Screen>
       <Navbar isBoards={false} username={decoded.username} />
-      <p className="mb-4 text-3xl font-bold text-white mt-28"> สร้างกระทู้ใหม่</p>
+      <p className="mb-4 text-3xl font-bold text-white mt-28"> แก้ไขกระทู้</p>
       <div className="flex flex-col items-center justify-center w-11/12 h-full md:w-3/4">
         <p className="w-full my-4 text-xl text-white">ชื่อกระทู้</p>
         <textarea
@@ -136,12 +150,11 @@ export const CreateBlog = () => {
         </div>
 
         <div className="relative w-full pb-10 mb-10">
-          {/* <Link to={Path.Profile}> */}
           <button
-            onClick={handleCreateBlog}
+            onClick={handleUpdateBlog}
             className="absolute right-0 w-32 p-4 m-4 mr-0 font-bold text-white bg-green-500 rounded-xl"
           >
-            สร้าง
+            แก้ไข
           </button>
 
           <Link to={Path.Profile}>
@@ -155,4 +168,4 @@ export const CreateBlog = () => {
   )
 }
 
-export default CreateBlog
+export default EditBlog

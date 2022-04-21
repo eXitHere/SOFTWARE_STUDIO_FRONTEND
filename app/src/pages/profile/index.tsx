@@ -2,6 +2,7 @@ import {useState,useContext,useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import jwt_decode from 'jwt-decode'
+import AvatarGroup from 'react-avatar-group'
 import { BlogCard } from 'components/common/BlogCard'
 import { Navbar } from 'components/common/Navbar'
 import { Screen } from 'components/layouts/Screen'
@@ -18,9 +19,7 @@ export const Profile = () => {
   const updateContext = useContext(UpdateContext)
 
   const [isBanner, setIsBanner] = useState<boolean>(true)
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [decoded, setDecoded] = useState<any>({})
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [globalBlogs, setGlobalBlogs] = useState<any[]>([])
 
   const getUserBlogs = async () => {
@@ -28,13 +27,13 @@ export const Profile = () => {
       const response = await axios('https://thammathip.exitguy.studio/api/Blog/list')
       const userBlog:object[] = []
       const token = window.localStorage.getItem('accessToken')
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const value:any = jwt_decode(token || '{}')
       for (let i = 0; i < response.data.blogs.length; i++) {
         if (response.data.blogs[i].author.name === value.display_name){
           userBlog.push(response.data.blogs[i])
         }
       }
+      console.log(userBlog)
       setGlobalBlogs(userBlog)
     } catch (e) {
       console.log(e)
@@ -55,11 +54,22 @@ export const Profile = () => {
   
   return (
     <Screen>
-      <Navbar isBoards={false} username={decoded.username} />
+      <Navbar isBoards={false} username={decoded.display_name} />
       <div className="flex flex-col items-center justify-center w-full mt-16">
-        <img src={userContext?.user?.photo} className="mt-8 mb-2 bg-red-200 rounded-full w-36 h-36"></img>
-        <p className="p-2 text-3xl font-bold text-white">{decoded.username}</p>
-        <p className="p-2 text-xl font-semibold text-white">กระทู้ : 1</p>
+        {decoded.username ? (
+          <div className="mt-10">
+            <AvatarGroup
+              avatars={[decoded.display_name]}
+              initialCharacters={1}
+              max={1}
+              size={100}
+              displayAllOnHover
+              shadow={1}
+            />
+          </div>
+        ) : null}
+        <p className="p-2 text-3xl font-bold text-white">{decoded.display_name}</p>
+        <p className="p-2 text-xl font-semibold text-white">{`กระทู้ : ${globalBlogs.length}`}</p>
         <div>
           <Link to={Path.EditProfile}>
             <button className="h-16 m-4 font-semibold bg-primary-lightest rounded-xl w-36">แก้ไขบัญชีผู้ใช้</button>
@@ -96,13 +106,6 @@ export const Profile = () => {
       </div>
       {window.localStorage.getItem('anoucement') == 'FALSE' && (
         <AnoucementModal
-          topic={
-            'There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain'
-          }
-          text={
-            'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here, content here, making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for lorem ipsum will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose.'
-          }
-          date={'12/12/65'}
           close={close}
         />
       )}

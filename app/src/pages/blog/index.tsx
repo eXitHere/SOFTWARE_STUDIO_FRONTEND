@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import axios from '../apiclient'
@@ -8,62 +8,40 @@ import { Content } from 'components/common/Content'
 import { PostComment } from 'components/common/PostComment'
 import { CommentCard } from 'components/common/CommentCard'
 import { Navbar } from 'components/common/Navbar'
-
-import { Comment } from 'types'
-
-import profile1 from 'assets/images/profile1.jpeg'
-
-const Comments: Comment[] = [
-  {
-    id: '001',
-    name: 'User101',
-    photo: profile1,
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent maximus erat maximus, fringilla ipsum quis, vestibulum tellus. Vivamus non ultrices elit, at tristique lorem. Fusce non massa eget sapien mattis efficitur a a neque.',
-    like: 100,
-    date: '10/12/22',
-  },
-  {
-    id: '002',
-    name: 'User102',
-    photo: profile1,
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent maximus erat maximus, fringilla ipsum quis, vestibulum tellus. Vivamus non ultrices elit, at tristique lorem. Fusce non massa eget sapien mattis efficitur a a neque.',
-    like: 24,
-    date: '9/4/22',
-  },
-]
+import { UpdateContext } from 'contexts/store'
 
 const Blog = () => {
   const { id } = useParams()
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const updateContext = useContext(UpdateContext)
   const [blog, setBlog] = useState<any>({})
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [decoded, setDecoded] = useState<any>({})
 
+
   const getBlogs = async () => {
-      try {
-        const response = await axios(`https://thammathip.exitguy.studio/api/Blog/${id}`)
-        console.log(response.data)
-        setBlog(response.data)
-      } 
-      catch (e) {
-        console.log(e)
-      }}
-  
+    try {
+      const response = await axios(`https://thammathip.exitguy.studio/api/Blog/${id}`)
+      console.log(response.data)
+      setBlog(response.data)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   useEffect(() => {
-    if ( window.localStorage.getItem('auth') == 'YES') {
+    if (window.localStorage.getItem('auth') == 'YES') {
       const token = window.localStorage.getItem('accessToken')
       setDecoded(jwt_decode(token || '{}'))
     }
     getBlogs()
-  },[])
+  }, [updateContext.updateComment, updateContext.updateLikeComment])
 
   return (
     <Screen>
-      <Navbar isBoards={false} username={decoded.username} />
+      <Navbar isBoards={false} username={decoded.display_name} />
       <Content
         id={blog.id}
         topic={blog.topic}
-        content={blog.content?.replaceAll('<img', '<img className="text-center rounded-xl"')}
+        content={blog.content}
         category={blog.category}
         like={blog.like}
         like_count={blog.like_users?.length}
@@ -77,15 +55,44 @@ const Blog = () => {
           <div className="flex flex-col w-4/5 mt-4 mb-4">
             <p className="text-xl font-semibold text-white">เพิ่มความเห็น</p>
           </div>
-          <PostComment name={decoded.display_name} profile_image={''} />
+          <PostComment
+            name={decoded.display_name}
+            blog_id={blog.blog_id}
+            comment_count={String(blog.comments?.length)}
+            post={true}
+            comment_id={''}
+            comment={''}
+            close={()=>{}}
+          />
         </>
       ) : null}
       <div className="flex flex-col w-4/5 mt-4 mb-4">
-        <p className="text-xl font-semibold text-white">ความเห็นทั้งหมด</p>
-      </div>{' '}
-      {Comments.map(({ id, ...rest }) => {
-        return <CommentCard key={id} {...rest} />
-      })}
+        <p className="text-xl font-semibold text-white">{`ความเห็นทั้งหมด : ${blog.comments?.length}`}</p>
+      </div>
+      {blog.comments ? (
+        blog.comments.length != 0 ? (
+          blog.comments.map((data: any) => {
+            return (
+              <CommentCard
+                key={data.comment_id}
+                login_id={decoded.id}
+                login_name={decoded.username}
+                comment_id={data.comment_id}
+                user_id={data.author.user_id}
+                name={data.author.name}
+                comment={data.comment}
+                like={data.like}
+                like_users={data.like_users}
+                created_date={data.created_date.split('T')[0]}
+              />
+            )
+          })
+        ) : (
+          <div className="relative flex flex-col items-center justify-center w-11/12 h-32 mb-4 text-lg h-68 md:flex-row lg:w-4/5 bg-primary-lightest rounded-2xl">
+            ยังไม่มีความเห็น
+          </div>
+        )
+      ) : null}
     </Screen>
   )
 }

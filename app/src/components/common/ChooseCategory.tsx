@@ -1,4 +1,3 @@
-import { useContext, useState } from 'react'
 import book from 'assets/images/book.png'
 import monk from 'assets/images/monk.png'
 import temple from 'assets/images/temple.png'
@@ -39,7 +38,7 @@ const dataCategory: Category[] = [
 type CreateTagProps = Pick<ChooseCat, 'selectTag' | 'handleChoose'>
 export const ChooseCategory = ({ selectTag, handleChoose }: CreateTagProps) => {
   return (
-    <div className="flex flex-col w-full p-2 mt-6 mb-4 bg-white rounded-xl">
+    <div className="flex flex-col w-full p-2 mt-2 mb-4 bg-white rounded-xl">
       <div className="flex items-center justify-around w-full text-lg">
         {dataCategory.map((data) => {
           return (
@@ -47,13 +46,13 @@ export const ChooseCategory = ({ selectTag, handleChoose }: CreateTagProps) => {
               key={data.categoryID}
               onClick={() => handleChoose(data.categoryName)}
               className={classNames(
-                'flex flex-col items-center justify-center w-16 h-20 md:w-32 md:h-32 mt-2 font-bold',
+                'flex flex-col items-center justify-center w-16 h-20 md:w-24 md:h-28 my-2 font-bold',
                 {
                   'bg-yellow-300 rounded-lg': selectTag.includes(data.categoryName),
                 },
               )}
             >
-              <img className="w-12 h-12 md:w-20 md:h-20" src={data.logo} />
+              <img className="w-12 h-12 md:w-16 md:h-16" src={data.logo} />
               <p className="text-sm md:text-lg">{data.categoryName}</p>
             </button>
           )
