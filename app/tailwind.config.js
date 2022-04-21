@@ -959,6 +959,7 @@ module.exports = {
     'disabled',
   ],
   plugins: [
+    require('@tailwindcss/aspect-ratio'),
     plugin(function ({ addBase, theme }) {
       addBase({
         h1: { fontSize: theme('fontSize.2xl') },

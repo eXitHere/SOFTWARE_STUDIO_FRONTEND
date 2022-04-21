@@ -10,6 +10,7 @@
     "lint": "eslint --quiet \"src/**/*.{js,jsx,ts,tsx}\""
   },
   "dependencies": {
+    "@tailwindcss/aspect-ratio": "^0.4.0",
     "@types/draftjs-to-html": "^0.8.1",
     "axios": "^0.26.1",
     "classnames": "^2.3.1",
