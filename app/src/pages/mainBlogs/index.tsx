@@ -108,25 +108,23 @@ export const MainBlogs = () => {
 
       <Tag />
 
-      {searchBlogs.map((data) => {
-        return (
-          <BlogCard
-            key={data.blog_id}
-            blog_id={data.blog_id}
-            author_name={data.author.name}
-            // profile_image={data.author.profile_image}
-            topic={data.topic}
-            content={data.content}
-            category={data.category}
-            like={data.like}
-            like_users={data.like_users}
-            date={data.created_date.split('T')[0]}
-            username={decoded.username}
-            profile_page={false}
-          />
-        )
-      })}
-      <Footer />
+            {searchBlogs.map((data) => {
+            return (
+              <BlogCard
+                key={data.blog_id}
+                blog_id={data.blog_id}
+                author_name={data.author.name}
+                topic={data.topic}
+                content={data.content}
+                category={data.category}
+                like={data.like}
+                like_users={data.like_users}
+                date={data.created_date.split('T')[0]}
+                username={decoded.username}
+                profile_page={false}
+              />
+            )
+          })}
     </Screen>
   )
 }

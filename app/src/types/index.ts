@@ -25,16 +25,16 @@ export type Blog = {
 }
 
 export type Detail = {
-  id: string
+  blog_id: string
   topic: string
   content: string
   category: string[]
-  like: string[]
-  like_count: number
+  like_users: string[]
+  like: number
   createdDate: string
-  name_detail: string
-  user_id: string
-  profile_image: string
+  author_name: string
+  author_id: string
+  username: string
 }
 
 export type Comment = {

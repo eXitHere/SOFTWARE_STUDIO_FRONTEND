@@ -91,7 +91,6 @@ export const Profile = () => {
               key={data.blog_id}
               blog_id={data.blog_id}
               author_name={data.author.name}
-              profile_image={data.author.profile_image}
               topic={data.topic}
               content={data.content}
               category={data.category}
