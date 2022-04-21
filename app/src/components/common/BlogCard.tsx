@@ -46,6 +46,8 @@ export const BlogCard = ({
   const [modalContent, setModalContent] = useState<React.ReactNode>(null)
   const [data, setData] = useState<any>()
   const [, setIsModalOpen] = useState<boolean>(false)
+  const [likeData, setLikeData] = useState<number>(0)
+  const [listLikeData, setListLikeData] = useState<string[]>([])
 
   const sendLike = async () => {
     const response = await axios.patch(
@@ -58,11 +60,10 @@ export const BlogCard = ({
       },
     )
 
-    if (updateContext.update.split(' ')[0] == 'UNLIKE') {
-      updateContext.setUpdate(`LIKE ${blog_id}`)
-    } else {
-      updateContext.setUpdate(`UNLIKE ${blog_id}`)
-    }
+    const updateData = await axios(`https://thammathip.exitguy.studio/api/Blog/${blog_id}`)
+    setLikeData(updateData.data.like)
+    setListLikeData(updateData.data.like_users)
+    console.log(updateData.data.like)
   }
 
   const deleteBlog = async () => {
@@ -76,11 +77,11 @@ export const BlogCard = ({
   }
 
   const handleLike = () => {
-    if (like_users.includes(username) == false) {
-      console.log('Like')
-    } else {
-      console.log('UnLike')
-    }
+    // if (like_users.includes(username) == false) {
+    //   console.log('Like')
+    // } else {
+    //   console.log('UnLike')
+    // }
     sendLike()
   }
 
@@ -116,11 +117,16 @@ export const BlogCard = ({
     }
   }, [content])
 
+  useEffect(() => {
+    setLikeData(like)
+    setListLikeData(like_users)
+    // console.log(like_users)
+  }, [])
+
   return (
-    <div className={classNames("relative flex flex-col w-11/12 mb-4 h-80 md:flex-row lg:w-4/5 bg-primary-lightest rounded-2xl",{"md:h-48":profile_page === true,"md:h-40":profile_page === false})}>
+    <div className={classNames("relative flex flex-col w-11/12 mb-4 md:flex-row lg:w-4/5 bg-primary-lightest rounded-2xl",{"sm: h-60 lg:h-52 xl:h-44":profile_page === true,"sm:h-60 md:h-48 lg:h-44 xl:h-40":profile_page === false})}>
       {/* profile picture + name */}
       <div className="flex flex-row items-center w-full h-20 p-1 pt-0 mt-0 mr-4 md:justify-center md:w-1/6 md:flex-col lg:p-5 lg:pt-0 rounded-2xl">
-        {/* <img src={profile_image} className="w-12 h-12 mx-4 mt-2 bg-blue-300 rounded-full md:w-20 md:h-20 md:mx-0"></img> */}
         {author_name ? (
           <div className="px-4 md:mt-16">
             <AvatarGroup avatars={[author_name]} initialCharacters={1} max={1} size={50} displayAllOnHover shadow={1} />
@@ -138,16 +144,16 @@ export const BlogCard = ({
             <img src={tagIcon} className="w-6 h-6 mr-2" />
             <p className="px-2">{category.join(", ")}</p>
           </div>
-          <p className="py-2 text-sm lg:text-lg overflow: hidden; white-space: nowrap; ">
+          <p className="py-2 text-sm lg:text-md xl:text-lg overflow: hidden; white-space: nowrap; ">
             {extractContent(data).slice(0, 165) + ' ...'}
           </p>
         </div>
 
         {/* like + date */}
         <div className="flex flex-col items-center justify-start w-2/6 h-full p-2 pl-0 mr-0 md:w-1/4 md:p-5 rounded-2xl">
-          {window.localStorage.getItem('auth') == 'YES' ? (
+          {window.localStorage.getItem('auth') == 'YES'? (
             <button onClick={handleLike} className="w-12 h-8 md:w-16 md:h-12">
-              {like_users.includes(username) ? (
+              {listLikeData.includes(username) ? (
                 <img src={likeImg} className="w-full h-full" />
               ) : (
                 <img src={unlikeImg} className="w-full h-full" />
@@ -158,7 +164,7 @@ export const BlogCard = ({
               <img src={likeImg} className="w-full h-full" />
             </button>
           )}
-          <p className="my-2 font-semibold">{like}</p>
+          <p className="my-2 font-semibold">{likeData}</p>
           <p className="text-sm md:text-sm">{date}</p>
         </div>
       </div>

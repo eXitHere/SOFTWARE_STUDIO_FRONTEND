@@ -39,16 +39,16 @@ const Blog = () => {
     <Screen>
       <Navbar isBoards={false} username={decoded.display_name} />
       <Content
-        id={blog.id}
+        blog_id={blog.id}
         topic={blog.topic}
         content={blog.content}
         category={blog.category}
-        like={blog.like}
-        like_count={blog.like_users?.length}
+        like_users={blog?.like_users}
+        like={blog?.like}
         createdDate={blog.created_date?.split('T')[0]}
-        name_detail={blog.author?.name}
-        user_id={blog.author?.user_id}
-        profile_image={blog.author?.profile_image}
+        author_name={blog.author?.name}
+        author_id={blog.author?.user_id}
+        username={decoded.username}
       />
       {window.localStorage.getItem('auth') == 'YES' ? (
         <>
