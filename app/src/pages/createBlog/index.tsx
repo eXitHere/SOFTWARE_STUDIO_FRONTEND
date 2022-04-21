@@ -1,8 +1,9 @@
 import { Screen } from 'components/layouts/Screen'
 import { Navbar } from 'components/common/Navbar'
+import { Footer } from 'components/common/Footer'
 import { Link, useNavigate } from 'react-router-dom'
 import { ChangeEvent, useState, useEffect } from 'react'
-import { EditorState, convertToRaw} from 'draft-js'
+import { EditorState, convertToRaw } from 'draft-js'
 import { Editor } from 'react-draft-wysiwyg'
 import jwt_decode from 'jwt-decode'
 import axios from '../apiclient'
@@ -151,6 +152,7 @@ export const CreateBlog = () => {
           </Link>
         </div>
       </div>
+      <Footer />
     </Screen>
   )
 }
