@@ -41,19 +41,11 @@ export const Tag = () => {
   const [selectTag, setSelectTag] = useState<string[]>([])
   const tagContext = useContext(TagContext)
 
-  // const handleCategory = (catName: string) => {
-  //   tagContext.setCategory({name:catName})
-  // }
-
   const handleCategory = (Category: string) => {
     if (selectTag.includes(Category) == false) {
       setSelectTag([Category, ...selectTag])
       tagContext.setCategory([Category, ...selectTag])
     } else {
-      // const myIndex = selectTag.indexOf(Category)
-      // if (myIndex !== -1) {
-      //   selectTag.splice(myIndex, 1)
-      // }
       const newArray = selectTag.filter(function (f) {
         return f !== Category
       })
@@ -64,7 +56,7 @@ export const Tag = () => {
 
   return (
     <div className="flex flex-col w-11/12 p-2 mt-2 mb-4 lg:w-4/5 md:mt-28 rounded-xl bg-primary-light">
-      <p className="pl-2 font-semibold">หมวดหมู่ : </p>
+      <p className="pl-2 text-lg font-semibold">หมวดหมู่ : </p>
       <div className="flex items-center justify-around text-lg">
         {dataCategory.map((data) => {
           return (
