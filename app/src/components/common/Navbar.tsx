@@ -35,7 +35,7 @@ export const Navbar = ({ isBoards, username }: NavbarProps) => {
       <Link to={Path.MainBlogs}>
         <p className="text-lg font-bold text-white md:text-3xl">ThammaTip</p>
       </Link>
-      {isBoards && (
+      {/* {isBoards && (
         <form onSubmit={handleSearch} className="items-center hidden w-2/6 h-10 md:flex">
           <input
             type="text"
@@ -45,6 +45,37 @@ export const Navbar = ({ isBoards, username }: NavbarProps) => {
           />
           <img onClick={handleSearch} src={searchIcon} className="w-8 h-8 mx-2 cursor-pointer" />
         </form>
+      )} */}
+
+      {isBoards && (
+        <div className="w-2/5">
+          <div className="relative mt-1">
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <svg
+                className="w-5 h-5 text-gray-500"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                  clipRule="evenodd"
+                ></path>
+              </svg>
+            </div>
+            <input
+              type="text"
+              id="table-search"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 p-2.5 w-full"
+              placeholder="Search from topic or category"
+              // onChange={(e) => {
+              //   setFilter(e.target.value)
+              // }}
+              // value={filter}
+            />
+          </div>
+        </div>
       )}
 
       <div className="flex items-center justify-center">

@@ -92,7 +92,7 @@ export const MainBlogs = () => {
   return (
     <Screen>
       <Navbar isBoards={true} username={decoded.display_name} />
-      <form onSubmit={handleSearch} className="flex items-center justify-around w-11/12 h-10 mt-24 ml-0 md:hidden">
+      {/* <form onSubmit={handleSearch} className="flex items-center justify-around w-11/12 h-10 mt-24 ml-0 md:hidden">
         <input
           type="text"
           value={search}
@@ -102,7 +102,7 @@ export const MainBlogs = () => {
         <div className="flex justify-end w-1/12 ml-4">
           <img onClick={handleSearch} src={searchIcon} className="w-8 h-8" />
         </div>
-      </form>
+      </form> */}
 
       <ImageShow />
 
