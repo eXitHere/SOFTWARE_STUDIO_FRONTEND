@@ -103,28 +103,29 @@ export const MainBlogs = () => {
           <img onClick={handleSearch} src={searchIcon} className="w-8 h-8" />
         </div>
       </form> */}
-
-      <ImageShow />
+      <div className="md:mt-28 mt-40 justify-center w-full flex">
+        {searchContext.keyword.length === 0 && <ImageShow />}
+      </div>
 
       <Tag />
 
-            {searchBlogs.map((data) => {
-            return (
-              <BlogCard
-                key={data.blog_id}
-                blog_id={data.blog_id}
-                author_name={data.author.name}
-                topic={data.topic}
-                content={data.content}
-                category={data.category}
-                like={data.like}
-                like_users={data.like_users}
-                date={data.created_date.split('T')[0]}
-                username={decoded.username}
-                profile_page={false}
-              />
-            )
-          })}
+      {searchBlogs.map((data) => {
+        return (
+          <BlogCard
+            key={data.blog_id}
+            blog_id={data.blog_id}
+            author_name={data.author.name}
+            topic={data.topic}
+            content={data.content}
+            category={data.category}
+            like={data.like}
+            like_users={data.like_users}
+            date={data.created_date.split('T')[0]}
+            username={decoded.username}
+            profile_page={false}
+          />
+        )
+      })}
     </Screen>
   )
 }
