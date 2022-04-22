@@ -1,9 +1,8 @@
 import { useState, useContext } from 'react'
 import { UpdateContext } from 'contexts/store'
 import AvatarGroup from 'react-avatar-group'
-import axios from 'pages/apiclient'
 import { dateRelative } from 'utils/date'
-
+import axios from 'pages/apiclient'
 import classNames from 'classnames'
 
 import { ModalConfirm } from 'components/common/ModalConfirm'
@@ -11,6 +10,8 @@ import { ModalEditComment } from 'components/common/ModalEditComment'
 
 import likeImg from 'assets/images/like.png'
 import unlikeImg from 'assets/images/unlike.png'
+import likeHover from 'assets/images/likeHover.png'
+import unlikeHover from 'assets/images/unlikeHover.png'
 import trash from 'assets/icons/trash.png'
 import edit from 'assets/icons/edit.png'
 
@@ -35,7 +36,7 @@ export const CommentCard = ({
   const updateContext = useContext(UpdateContext)
   const [content, setContent] = useState<React.ReactNode>(null)
   const [updateCommentContent, setUpdateCommentContent] = useState<React.ReactNode>(null)
-  const [, setIsModalOpen] = useState<boolean>(false)
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [, setIsUpdateCommentModalOpen] = useState<boolean>(false)
 
   const sendLike = async () => {
@@ -117,13 +118,15 @@ export const CommentCard = ({
     setContent(null)
   }
 
-  // const agreeUpdateComment = () => {
-  //   setIsUpdateCommentModalOpen(false)
-  //   setUpdateCommentContent(null)
-  // }
-
   return (
-    <div className="flex flex-col w-11/12 mb-4 lg:w-4/5 rounded-2xl h-68 bg-primary-lightest">
+    <div
+      className={classNames(
+        'flex flex-col w-11/12 mb-4 lg:w-4/5 rounded-2xl min-h-68 bg-primary-lightest',
+        {
+          'drop-shadow-md': isModalOpen === false,
+        },
+      )}
+    >
       {/* profile picture + name */}
       <div className="flex flex-row justify-end w-full rounded-md">
         {/* topic + preview */}
@@ -135,13 +138,13 @@ export const CommentCard = ({
             <>
               <button
                 onClick={handleModal}
-                className="flex items-center justify-center w-8 h-8 mr-2 bg-red-400 left-4 bottom-3 rounded-xl"
+                className="flex items-center justify-center w-8 h-8 mr-2 bg-red-400 hover:bg-red-500 left-4 bottom-3 rounded-xl"
               >
                 <img src={trash} className="w-4 h-4"></img>
               </button>
               <button
                 onClick={handleUpdateCommentModal}
-                className="flex items-center justify-center w-8 h-8 mr-2 bg-blue-400 left-14 bottom-3 rounded-xl"
+                className="flex items-center justify-center w-8 h-8 mr-2 bg-blue-400 hover:bg-blue-500 left-14 bottom-3 rounded-xl"
               >
                 <img src={edit} className="w-4 h-4"></img>
               </button>
@@ -154,16 +157,31 @@ export const CommentCard = ({
         <div className="flex flex-row justify-center pt-2 pr-4 mr-4 border-r-2 item-center">
           <p className="my-2 mr-2 font-semibold">{like}</p>
           {window.localStorage.getItem('auth') == 'YES' ? (
-            <button onClick={handleLike} className="w-12 h-8">
+            <button onClick={handleLike} className="w-12 h-8 drop-shadow-md">
               {like_users.includes(login_name) ? (
-                <img src={likeImg} className="w-full h-full" />
+                <img
+                  src={likeImg}
+                  onMouseOver={(e) => (e.currentTarget.src = likeHover)}
+                  onMouseOut={(e) => (e.currentTarget.src = likeImg)}
+                  className="w-full h-full"
+                />
               ) : (
-                <img src={unlikeImg} className="w-full h-full" />
+                <img
+                  src={unlikeImg}
+                  onMouseOver={(e) => (e.currentTarget.src = unlikeHover)}
+                  onMouseOut={(e) => (e.currentTarget.src = unlikeImg)}
+                  className="w-full h-full"
+                />
               )}
             </button>
           ) : (
             <button className="w-12 h-8">
-              <img src={likeImg} className="w-full h-full" />
+              <img
+                src={likeImg}
+                onMouseOver={(e) => (e.currentTarget.src = unlikeHover)}
+                onMouseOut={(e) => (e.currentTarget.src = unlikeImg)}
+                className="w-full h-full"
+              />
             </button>
           )}
         </div>
@@ -199,7 +217,9 @@ export const CommentCard = ({
         </div>
       </div>
       {like_users.length > 0 ? (
-        <div className="flex flex-row p-2 text-sm border-t-2">ถูกใจโดย {like_users.join(', ')}</div>
+        <div className="flex flex-row p-2 text-sm border-t-2">
+          ถูกใจโดย {like_users.join(', ')} {like_users.length > 1 ? 'และอีกหลายคน' : ''}
+        </div>
       ) : (
         <div></div>
       )}

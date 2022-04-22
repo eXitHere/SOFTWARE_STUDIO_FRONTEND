@@ -111,46 +111,61 @@ export const EditProfile = () => {
   return (
     <Screen>
       <Navbar isBoards={false} username={decoded.display_name} />
-      <div className="flex flex-col items-center justify-center mt-32">
+      <div className="flex flex-col items-center justify-center md:mb-12 mt-44 md:mt-32">
         <p className="text-2xl font-bold text-white md:text-3xl">แก้ไขข้อมูลส่วนตัว</p>
         <div className="flex flex-col w-80 md:w-96">
-          <p className="pb-3 mt-8 text-lg text-white">ชื่อใช้แสดง</p>
-          <input value={displayname} onChange={handleDisplaynameChange} className="w-full h-8 p-2 mb-5 rounded-lg" />
+          <p className="pb-3 mt-6 text-lg text-white">ชื่อใช้แสดง</p>
+          <input
+            value={displayname}
+            onChange={handleDisplaynameChange}
+            className="w-full h-8 p-2 mb-5 rounded-lg drop-shadow-md"
+          />
 
           <div className="flex flex-row justify-center">
             <Link to={Path.Profile}>
-              <button className="flex items-center justify-center w-20 h-12 p-4 m-4 text-white bg-gray-400 rounded-md">
+              <button className="flex items-center justify-center w-20 h-12 p-4 m-4 text-white bg-gray-400 rounded-md drop-shadow-md hover:bg-gray-500">
                 ยกเลิก
               </button>
             </Link>
 
             <button
               onClick={changeName}
-              className="flex items-center justify-center w-20 h-12 p-4 m-4 text-white bg-green-400 rounded-md"
+              className="flex items-center justify-center w-20 h-12 p-4 m-4 text-white bg-green-400 rounded-md drop-shadow-md hover:bg-green-500"
             >
               บันทึก
             </button>
           </div>
           <p className="pb-3 text-lg text-white">รหัสผ่าน</p>
-          <input value={password} onChange={handlePasswordChange} className="w-full h-8 p-2 mb-5 rounded-lg" />
+          <input
+            value={password}
+            onChange={handlePasswordChange}
+            className="w-full h-8 p-2 mb-5 rounded-lg drop-shadow-md"
+          />
           <p className="pb-3 text-lg text-white">ยืนยันรหัสผ่าน</p>
-          <input value={confirmpassword} onChange={handleConfirmpassword} className="w-full h-8 p-2 mb-5 rounded-lg" />
+          <input
+            value={confirmpassword}
+            onChange={handleConfirmpassword}
+            className="w-full h-8 p-2 mb-5 rounded-lg drop-shadow-md"
+          />
           <div className="flex flex-col items-center justify-center w-full">
-            <div className="flex justify-between flex-roe">
+            <div className="flex flex-row justify-between">
               <Link to={Path.Profile}>
-                <button className="flex items-center justify-center w-20 h-12 p-4 m-4 text-white bg-gray-400 rounded-md">
+                <button className="flex items-center justify-center w-20 h-12 p-4 m-4 text-white bg-gray-400 rounded-md drop-shadow-md hover:bg-gray-500">
                   ยกเลิก
                 </button>
               </Link>
 
               <button
                 onClick={changePassword}
-                className="flex items-center justify-center w-20 h-12 p-4 m-4 text-white bg-green-400 rounded-md"
+                className="flex items-center justify-center w-20 h-12 p-4 m-4 text-white bg-green-400 rounded-md drop-shadow-md hover:bg-green-600"
               >
                 บันทึก
               </button>
             </div>
-            <button onClick={handleDeleteUser} className="w-full h-12 mt-2 text-white bg-red-400 rounded-lg">
+            <button
+              onClick={handleDeleteUser}
+              className="w-full h-12 mt-2 text-white bg-red-400 rounded-lg drop-shadow-md hover:bg-red-500"
+            >
               ลบบัญชีผู้ใช้
             </button>
           </div>

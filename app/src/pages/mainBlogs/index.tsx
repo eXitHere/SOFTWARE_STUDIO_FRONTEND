@@ -1,4 +1,4 @@
-import { FormEvent, useState, useContext, useEffect } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import axios from '../apiclient'
 import jwt_decode from 'jwt-decode'
 
@@ -11,27 +11,29 @@ import { ImageShow } from 'components/common/ImageShow'
 import { BlogCard } from 'components/common/BlogCard'
 import { Footer } from 'components/common/Footer'
 
-// import searchIcon from 'assets/images/searchIcon.png'
+const blogsPerPage = 5
 
 export const MainBlogs = () => {
   const tagContext = useContext(TagContext)
   const searchContext = useContext(SearchContext)
   const updateContext = useContext(UpdateContext)
-  // const [search, setSearch] = useState('')
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [globalBlogs, setGlobalBlogs] = useState<any[]>([])
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [searchBlogs, setSearchBlogs] = useState<any[]>([])
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [decoded, setDecoded] = useState<any>({})
 
-  // const handleSearch = (e: FormEvent) => {
-  //   e.preventDefault()
-  // }
+  const [pageCount, setPageCount] = useState<number>(1)
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [globalBlogs, setGlobalBlogs] = useState<any[]>([])
+  const [searchBlogs, setSearchBlogs] = useState<any[]>([])
+  const [decoded, setDecoded] = useState<any>({})
 
   const getUserBlogs = async () => {
     try {
       const response = await axios('https://thammathip.exitguy.studio/api/Blog/list')
+      const blogsCount = response.data.blogs?.length
+      const page = Math.ceil(blogsCount / blogsPerPage)
+      if (page > 0) {
+        setPageCount(Math.ceil(blogsCount / blogsPerPage))
+      } else {
+        setPageCount(1)
+      }
       setGlobalBlogs(response.data.blogs)
       setSearchBlogs(response.data.blogs)
       console.log(response)
@@ -42,6 +44,20 @@ export const MainBlogs = () => {
 
   function findCommonElements(arr1: string[], arr2: string[]) {
     return arr1.some((item) => arr2.includes(item))
+  }
+
+  const pageUp = () => {
+    if (currentPage + 1 <= pageCount) {
+      const newPageValue = currentPage + 1
+      setCurrentPage(newPageValue)
+    }
+  }
+
+  const pageDown = () => {
+    if (currentPage - 1 > 0) {
+      const newPageValue = currentPage - 1
+      setCurrentPage(newPageValue)
+    }
   }
 
   const searchFilter = (keyword: string) => {
@@ -74,31 +90,32 @@ export const MainBlogs = () => {
       window.localStorage.setItem('auth', 'NO')
     } else {
       const token = window.localStorage.getItem('accessToken')
-      setDecoded(jwt_decode(token || '{}'))
+      const userData = JSON.parse(
+        JSON.stringify(jwt_decode(token || '{}')).replace(
+          'http://schemas.microsoft.com/ws/2008/06/identity/claims/role',
+          'role',
+        ),
+      )
+      setDecoded(userData)
+      console.log(userData)
     }
     getUserBlogs()
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  useEffect(
-    () => {
-      searchFilter(searchContext.keyword)
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [searchContext.keyword, tagContext.category, updateContext.update],
-  )
+  useEffect(() => {
+    searchFilter(searchContext.keyword)
+  }, [searchContext.keyword, tagContext.category, updateContext.update])
 
   return (
     <Screen>
       <Navbar isBoards={true} username={decoded.display_name} />
-      <div className="flex justify-center w-full mt-40 md:mt-28">
+      <div className="flex justify-center w-full mt-40 md:mt-28 drop-shadow-md">
         {searchContext.keyword.length === 0 && <ImageShow />}
       </div>
 
       <Tag />
 
-      {searchBlogs.map((data) => {
+      {searchBlogs.slice((currentPage - 1) * blogsPerPage, currentPage * blogsPerPage).map((data) => {
         return (
           <BlogCard
             key={data.blog_id}
@@ -111,11 +128,26 @@ export const MainBlogs = () => {
             like_users={data.like_users}
             date={data.created_date.split('T')[0]}
             username={decoded.username}
+            user_role={decoded.role}
             profile_page={false}
           />
         )
       })}
-
+      <div className="flex items-center justify-center w-3/4">
+        <button
+          onClick={pageDown}
+          className="w-16 h-12 mx-4 bg-primary-light hover:bg-primary-lightest rounded-xl drop-shadow-md"
+        >
+          {'<'}
+        </button>
+        <p className="w-32 text-center text-white">{`หน้า ${currentPage} จาก ${pageCount}`}</p>
+        <button
+          onClick={pageUp}
+          className="w-16 h-12 mx-4 bg-primary-light hover:bg-primary-lightest rounded-xl drop-shadow-md"
+        >
+          {'>'}
+        </button>
+      </div>
       <Footer />
     </Screen>
   )

@@ -5,8 +5,10 @@ import React, { useState, useRef } from 'react'
 import im1 from 'assets/images/im1.jpg'
 import im2 from 'assets/images/im2.jpg'
 import im3 from 'assets/images/im3.jpg'
+import im4 from 'assets/images/im4.jpg'
+import im5 from 'assets/images/im5.jpg'
 
-const featuredImages = [im1, im2, im3]
+const featuredImages = [im1, im2, im3, im4, im5]
 const imageLength = featuredImages.length
 // let slideInterval: any
 
@@ -65,7 +67,7 @@ export const ImageShow = () => {
 
   // image controller
   return (
-    <div className="flex flex-col w-10/12 p-2 mb-4 lg:w-3/5 bg-primary-light">
+    <div className="flex flex-col w-10/12 p-2 mb-4 rounded-xl lg:w-3/5 bg-primary-light">
       <div className="relative w-full">
         <div className="carousel">
           <button type="button" onClick={prevImage} className={`${arrowStyle} left-2`} style={{ top: '40%' }}>
@@ -74,8 +76,8 @@ export const ImageShow = () => {
             </span>
           </button>
           {featuredImages.map((img, i) => (
-            <div className="w-full flex-shrink-0 aspect-w-16 aspect-h-9" key={img} ref={refs[i]}>
-              <img src={img} className="w-full object-contain" />
+            <div className="flex-shrink-0 w-full aspect-w-16 aspect-h-9" key={img} ref={refs[i]}>
+              <img src={img} className="object-contain w-full" />
             </div>
           ))}
           <button
@@ -91,7 +93,7 @@ export const ImageShow = () => {
           </button>
         </div>
       </div>
-      <div className="text-center opacity-50 text-sm">ภาพจาก www.freepik.com/</div>
+      <div className="text-sm text-center opacity-50">ภาพจาก www.freepik.com/</div>
     </div>
   )
 }

@@ -54,7 +54,7 @@ export const Tag = () => {
   }
 
   return (
-    <div className="flex flex-col w-11/12 p-2 mt-2 mb-4 lg:w-4/5 rounded-xl bg-primary-light">
+    <div className="flex flex-col w-11/12 p-2 mt-2 mb-4 drop-shadow-md lg:w-4/5 rounded-xl bg-primary-light">
       <p className="pl-2 text-lg font-semibold">หมวดหมู่ : </p>
       <div className="flex items-center justify-around text-lg">
         {dataCategory.map((data) => {
@@ -63,9 +63,9 @@ export const Tag = () => {
               key={data.categoryID}
               onClick={() => handleCategory(data.categoryName)}
               className={classNames(
-                'flex flex-col items-center justify-center w-16 h-20 md:w-32 md:h-32 mt-2 font-bold',
+                'flex flex-col items-center justify-center w-16 h-20 md:w-32 md:h-32 mt-2 font-bold hover:bg-yellow-400 hover:rounded-lg',
                 {
-                  'bg-yellow-300 rounded-lg': selectTag.includes(data.categoryName),
+                  'bg-yellow-300 drop-shadow-md rounded-lg': selectTag.includes(data.categoryName),
                 },
               )}
             >
