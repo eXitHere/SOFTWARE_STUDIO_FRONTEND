@@ -9,6 +9,7 @@ import { PostComment } from 'components/common/PostComment'
 import { CommentCard } from 'components/common/CommentCard'
 import { Navbar } from 'components/common/Navbar'
 import { UpdateContext } from 'contexts/store'
+import Loader from 'components/loader'
 
 const Blog = () => {
   const { id } = useParams()
@@ -38,19 +39,26 @@ const Blog = () => {
   return (
     <Screen>
       <Navbar isBoards={false} username={decoded.display_name} />
-      <Content
-        blog_id={blog.id}
-        topic={blog.topic}
-        content={blog.content}
-        category={blog.category}
-        like_users={blog?.like_users}
-        like={blog?.like}
-        createdDate={dateRelative(blog.created_date)}
-        // createdDate={blog?.created_date}
-        author_name={blog.author?.name}
-        author_id={blog.author?.user_id}
-        username={decoded.username}
-      />
+      {blog ? (
+        <Content
+          blog_id={blog.id}
+          topic={blog.topic}
+          content={blog.content}
+          category={blog.category}
+          like_users={blog?.like_users}
+          like={blog?.like}
+          createdDate={dateRelative(blog.created_date)}
+          // createdDate={blog?.created_date}
+          author_name={blog.author?.name}
+          author_id={blog.author?.user_id}
+          username={decoded.username}
+        />
+      ) : (
+        <div className=" mt-20 lg:w-4/5 md:mt-28">
+          <Loader />
+        </div>
+      )}
+
       {window.localStorage.getItem('auth') == 'YES' ? (
         <>
           <div className="flex flex-col w-4/5 mt-4 mb-4">
