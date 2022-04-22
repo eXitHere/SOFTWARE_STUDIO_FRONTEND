@@ -14,7 +14,7 @@ export const ImageShow = () => {
   const [idxImage, setIdxImage] = useState(0)
   const refNext = useRef(null)
 
-  const refs = featuredImages.reduce((acc: any, val, i) => {
+  const refs = featuredImages.reduce((acc: any, _val, i) => {
     acc[i] = React.createRef()
     return acc
   }, {})

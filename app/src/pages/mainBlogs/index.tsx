@@ -6,18 +6,17 @@ import { SearchContext, TagContext, UpdateContext } from 'contexts/store'
 
 import { Screen } from 'components/layouts/Screen'
 import { Navbar } from 'components/common/Navbar'
-import { Footer } from 'components/common/Footer'
 import { Tag } from 'components/common/Tag'
 import { ImageShow } from 'components/common/ImageShow'
 import { BlogCard } from 'components/common/BlogCard'
 
-import searchIcon from 'assets/images/searchIcon.png'
+// import searchIcon from 'assets/images/searchIcon.png'
 
 export const MainBlogs = () => {
   const tagContext = useContext(TagContext)
   const searchContext = useContext(SearchContext)
   const updateContext = useContext(UpdateContext)
-  const [search, setSearch] = useState('')
+  // const [search, setSearch] = useState('')
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [globalBlogs, setGlobalBlogs] = useState<any[]>([])
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -25,9 +24,9 @@ export const MainBlogs = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [decoded, setDecoded] = useState<any>({})
 
-  const handleSearch = (e: FormEvent) => {
-    e.preventDefault()
-  }
+  // const handleSearch = (e: FormEvent) => {
+  //   e.preventDefault()
+  // }
 
   const getUserBlogs = async () => {
     try {

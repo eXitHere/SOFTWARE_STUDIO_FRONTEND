@@ -27,14 +27,14 @@ export const Content = ({
   blog_id,
   topic,
   content,
-  category,
+  // category,
   like_users,
   like,
   createdDate,
   author_name,
-  author_id,
-  username
-}: ContentProps) => {
+}: // author_id,
+// username
+ContentProps) => {
   // const [clickLike, setClickLike] = useState<boolean>(true)
   // const [likePhoto, setLikePhoto] = useState<string>(unlikeImg)
   const [editorState, setEditorState] = useState(() => EditorState.createEmpty())
@@ -111,11 +111,9 @@ export const Content = ({
               <p className="mx-4 text-md">{author_name}</p>
             </div>
             <div className="flex items-center justify-center">
-            
-                <button onClick={handleLike} className="w-12 h-8 mr-4 md:w-16 md:h-12">
-                
-                    <img src={likeImg} className="w-full h-full" />
-                </button>
+              <button onClick={handleLike} className="w-12 h-8 mr-4 md:w-16 md:h-12">
+                <img src={likeImg} className="w-full h-full" />
+              </button>
               <p className="pr-1 text-lg font-bold md:pr-3 md:text-xl">{like}</p>
             </div>
           </div>
