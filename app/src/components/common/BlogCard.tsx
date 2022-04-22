@@ -124,11 +124,19 @@ export const BlogCard = ({
   }, [])
 
   return (
-    <div className={classNames("relative flex flex-col w-11/12 mb-4 md:flex-row lg:w-4/5 bg-primary-lightest rounded-2xl",{"sm: h-60 lg:h-52 xl:h-44":profile_page === true,"sm:h-60 md:h-48 lg:h-44 xl:h-40":profile_page === false})}>
+    <div
+      className={classNames(
+        'relative flex flex-col w-11/12 mb-4 md:flex-row lg:w-4/5 bg-primary-lightest rounded-2xl h-60',
+        // {
+        //   'sm:h-60 lg:h-52 xl:h-44': profile_page === true,
+        //   'sm:h-60 md:h-48 lg:h-44 xl:h-40': profile_page === false,
+        // },
+      )}
+    >
       {/* profile picture + name */}
-      <div className="flex flex-row items-center w-full h-20 p-1 pt-0 mt-0 mr-4 md:justify-center md:w-1/6 md:flex-col lg:p-5 lg:pt-0 rounded-2xl">
+      <div className="flex flex-row items-center justify-center w-full md:w-1/6 md:flex-col border-r-2">
         {author_name ? (
-          <div className="px-4 md:mt-16">
+          <div className="px-4">
             <AvatarGroup avatars={[author_name]} initialCharacters={1} max={1} size={50} displayAllOnHover shadow={1} />
           </div>
         ) : null}
@@ -136,22 +144,22 @@ export const BlogCard = ({
       </div>
       <div className="flex flex-row w-full md:w-5/6">
         {/* topic + preview */}
-        <div className="w-3/4 h-full p-5 pt-0 pr-0 md:pt-3">
-          <Link to={`${Path.MainBlogs}/${blog_id}`}>
-            <p className="text-xl font-bold md:text-2xl">{topic}</p>
-          </Link>
+        <Link to={`${Path.MainBlogs}/${blog_id}`} className="w-3/4 h-full pl-4 pr-4 pt-10">
+          <div className="border-b-2 mb-4">
+            <p className="p-4 text-xl font-bold md:text-2xl">{topic}</p>
+          </div>
           <div className="flex flex-row items-center my-1 mt-2">
             <img src={tagIcon} className="w-6 h-6 mr-2" />
-            <p className="px-2">{category.join(", ")}</p>
+            <p className="px-2">{category.join(', ')}</p>
           </div>
-          <p className="py-2 text-sm lg:text-md xl:text-lg overflow: hidden; white-space: nowrap; ">
+          <p className="py-2 text-sm overflow: hidden; white-space: nowrap; opacity-70">
             {extractContent(data).slice(0, 165) + ' ...'}
           </p>
-        </div>
+        </Link>
 
         {/* like + date */}
-        <div className="flex flex-col items-center justify-start w-2/6 h-full p-2 pl-0 mr-0 md:w-1/4 md:p-5 rounded-2xl">
-          {window.localStorage.getItem('auth') == 'YES'? (
+        <div className="flex flex-col items-center justify-center w-2/6 h-full md:w-1/4 rounded-2xl">
+          {window.localStorage.getItem('auth') == 'YES' ? (
             <button onClick={handleLike} className="w-12 h-8 md:w-16 md:h-12">
               {listLikeData.includes(username) ? (
                 <img src={likeImg} className="w-full h-full" />

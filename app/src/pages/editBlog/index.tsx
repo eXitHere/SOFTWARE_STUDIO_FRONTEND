@@ -61,9 +61,7 @@ export const EditBlog = () => {
   }
 
   const imageUploadCallback = (file: File) =>
-    new Promise((resolve) =>
-      getFileBase64(file, (data: any) => resolve({ data: { link: data } })),
-    )
+    new Promise((resolve) => getFileBase64(file, (data: any) => resolve({ data: { link: data } })))
 
   const handleChoose = (Category: string) => {
     if (selectTag.includes(Category) == false) {

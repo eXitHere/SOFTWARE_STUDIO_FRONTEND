@@ -83,16 +83,13 @@ ContentProps) => {
     <div className="flex flex-col w-11/12 mt-20 lg:w-4/5 md:mt-28">
       <div className="p-4 mt-4 rounded-xl bg-primary-light ">
         <p className="p-4 text-3xl font-bold">{topic}</p>
-        <div className="w-full p-5 mb-2 bg-white rounded-xl">
+        <div className="w-full p-5 mb-2 rounded-xl">
           <Editor
             editorState={editorState}
-            toolbarClassName="toolbarClassName"
-            wrapperClassName="wrapperClassName"
-            editorClassName="editorClassName"
+            toolbarClassName="hidden"
+            // wrapperClassName="wrapperClassName"
+            // editorClassName="editorClassName"
             readOnly={true}
-            toolbar={{
-              options: [],
-            }}
           />
         </div>
         <div className="flex flex-col w-full">
@@ -108,7 +105,10 @@ ContentProps) => {
                   shadow={1}
                 />
               ) : null}
-              <p className="mx-4 text-md">{author_name}</p>
+              <div className="ml-2">
+                <p className="text-md">{author_name}</p>
+                <p className="text-sm italic mt-1 opacity-70">{createdDate}</p>
+              </div>
             </div>
             <div className="flex items-center justify-center">
               <button onClick={handleLike} className="w-12 h-8 mr-4 md:w-16 md:h-12">
@@ -117,7 +117,6 @@ ContentProps) => {
               <p className="pr-1 text-lg font-bold md:pr-3 md:text-xl">{like}</p>
             </div>
           </div>
-          <p className="">{createdDate}</p>
         </div>
       </div>
     </div>

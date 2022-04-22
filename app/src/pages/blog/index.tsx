@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import axios from '../apiclient'
-
+import { dateRelative } from 'utils/date'
 import { Screen } from 'components/layouts/Screen'
 import { Content } from 'components/common/Content'
 import { PostComment } from 'components/common/PostComment'
@@ -16,11 +16,11 @@ const Blog = () => {
   const [blog, setBlog] = useState<any>({})
   const [decoded, setDecoded] = useState<any>({})
 
-
   const getBlogs = async () => {
     try {
       const response = await axios(`https://thammathip.exitguy.studio/api/Blog/${id}`)
-      console.log(response.data)
+      console.log(response.data.created_date)
+      console.log()
       setBlog(response.data)
     } catch (e) {
       console.log(e)
@@ -45,7 +45,8 @@ const Blog = () => {
         category={blog.category}
         like_users={blog?.like_users}
         like={blog?.like}
-        createdDate={blog.created_date?.split('T')[0]}
+        createdDate={dateRelative(blog.created_date)}
+        // createdDate={blog?.created_date}
         author_name={blog.author?.name}
         author_id={blog.author?.user_id}
         username={decoded.username}
@@ -62,7 +63,7 @@ const Blog = () => {
             post={true}
             comment_id={''}
             comment={''}
-            close={()=>{}}
+            close={() => {}}
           />
         </>
       ) : null}
