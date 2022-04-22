@@ -92,17 +92,6 @@ export const MainBlogs = () => {
   return (
     <Screen>
       <Navbar isBoards={true} username={decoded.display_name} />
-      {/* <form onSubmit={handleSearch} className="flex items-center justify-around w-11/12 h-10 mt-24 ml-0 md:hidden">
-        <input
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-11/12 p-1 rounded-md"
-        />
-        <div className="flex justify-end w-1/12 ml-4">
-          <img onClick={handleSearch} src={searchIcon} className="w-8 h-8" />
-        </div>
-      </form> */}
       <div className="flex justify-center w-full mt-40 md:mt-28">
         {searchContext.keyword.length === 0 && <ImageShow />}
       </div>

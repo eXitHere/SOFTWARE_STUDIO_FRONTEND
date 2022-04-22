@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import moment from 'moment'
 import { listBlog, toggleHiddenBlog, deleteBlog } from '../../api/blog'
 import Loader from '../../components/loader'
@@ -148,6 +149,8 @@ function View() {
   })
   const [filter, setFilter] = useState('')
   const [page, setPage] = useState(1)
+  const [paramID, setParamID] = useState(null)
+  const search = useLocation().search
   const perPage = 7
 
   useEffect(() => {
@@ -175,7 +178,9 @@ function View() {
 
   useEffect(() => {
     if (filter.length) {
-      const filtered = blogs.filter((e) => e.topic.includes(filter) || e.category.join(', ').includes(filter))
+      const filtered = blogs.filter(
+        (e) => e.topic.includes(filter) || e.category.join(', ').includes(filter) || e.blog_id === paramID,
+      )
       setFocusBlogs(filtered)
     } else {
       setFocusBlogs(blogs.slice(perPage * (page - 1), perPage * page))
@@ -215,9 +220,27 @@ function View() {
     setFilter('')
   }
 
+  const getBlogById = (id) => {
+    return blogs.find((e) => e.blog_id === id)
+  }
+
   useEffect(async () => {
     await fetchAll()
+
+    const id = new URLSearchParams(search).get('id')
+    if (id) setParamID(id)
   }, [])
+
+  useEffect(() => {
+    if (paramID && blogs.length) {
+      // console.log('searching', paramID, blogs.length)
+      const findBlogs = getBlogById(paramID)
+      if (findBlogs) {
+        // console.log(findBlogs)
+        setFilter(findBlogs.blog_id)
+      }
+    }
+  }, [paramID, blogs])
 
   const fetchAll = async () => {
     const tmp = await listBlog()
