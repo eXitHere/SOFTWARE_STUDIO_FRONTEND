@@ -2,6 +2,7 @@ import { useState, useContext } from 'react'
 import { UpdateContext } from 'contexts/store'
 import AvatarGroup from 'react-avatar-group'
 import axios from 'pages/apiclient'
+import { dateRelative } from 'utils/date'
 
 import classNames from 'classnames'
 
@@ -14,7 +15,6 @@ import trash from 'assets/icons/trash.png'
 import edit from 'assets/icons/edit.png'
 
 import { Comment } from 'types'
-
 
 type CommentCardProps = Pick<
   Comment,
@@ -80,7 +80,15 @@ export const CommentCard = ({
   }
 
   const handleUpdateCommentModal = () => {
-    openUpdateComment(<ModalEditComment name={name} blog_id={""} comment_id={comment_id} comment={comment} close={closeUpdateCommentModal}/>)
+    openUpdateComment(
+      <ModalEditComment
+        name={name}
+        blog_id={''}
+        comment_id={comment_id}
+        comment={comment}
+        close={closeUpdateCommentModal}
+      />,
+    )
   }
 
   const open = (content: React.ReactNode) => {
@@ -114,33 +122,39 @@ export const CommentCard = ({
   //   setUpdateCommentContent(null)
   // }
 
-
   return (
-    <div className="relative flex flex-col w-11/12 min-h-full mb-4 h-68 md:flex-row lg:w-4/5 bg-primary-lightest rounded-2xl">
+    <div className="flex flex-col w-4/5 mb-4 h-68  bg-primary-lightest rounded-md">
       {/* profile picture + name */}
-      <div
-        className={classNames('flex flex-row items-center w-full p-1 mr-4  md:justify-center md:w-1/6 md:flex-col', {
-          'md:pb-16': user_id == login_id,
-        })}
-      >
-        {name ? (
-          <div className="px-4 pt-2">
-            <AvatarGroup avatars={[name]} initialCharacters={1} max={1} size={50} displayAllOnHover shadow={1} />
-          </div>
-        ) : null}
-
-        <p className="pt-2 text-center text-md md:text-md">{name}</p>
-      </div>
-      <div className="flex flex-row w-full md:w-5/6">
+      <div className="flex flex-row w-full rounded-md justify-end">
         {/* topic + preview */}
-        <div className="w-3/4 min-h-full py-6 pr-0">
-          <p className="py-2 mb-8 ml-4 text-sm md:text-xl">{comment}</p>
+        <div className="w-full py-6 pr-0">
+          <p className="py-2 mb-8 ml-4 text-sm">{comment}</p>
         </div>
-
+        <div className="flex w-20 m-2 justify-center">
+          {user_id == login_id && (
+            <>
+              <button
+                onClick={handleModal}
+                className="flex items-center justify-center w-8 h-8 mr-2 bg-red-400 left-4 bottom-3 rounded-xl"
+              >
+                <img src={trash} className="w-4 h-4"></img>
+              </button>
+              <button
+                onClick={handleUpdateCommentModal}
+                className="flex items-center justify-center w-8 h-8 mr-2 bg-blue-400 left-14 bottom-3 rounded-xl"
+              >
+                <img src={edit} className="w-4 h-4"></img>
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+      <div className="flex flex-row p-4 rounded-2xl">
         {/* like + date */}
-        <div className="flex flex-col items-center justify-center w-2/6 h-full p-2 md:w-1/4 md:p-0 rounded-2xl">
+        <div className="flex flex-row pt-2 border-r-2 item-center justify-center pr-4 mr-4">
+          <p className="my-2 font-semibold mr-2">{like}</p>
           {window.localStorage.getItem('auth') == 'YES' ? (
-            <button onClick={handleLike} className="w-12 h-8 md:w-16 md:h-12">
+            <button onClick={handleLike} className="w-12 h-8">
               {like_users.includes(login_name) ? (
                 <img src={likeImg} className="w-full h-full" />
               ) : (
@@ -148,30 +162,46 @@ export const CommentCard = ({
               )}
             </button>
           ) : (
-            <button className="w-12 h-8 md:w-16 md:h-12">
+            <button className="w-12 h-8">
               <img src={likeImg} className="w-full h-full" />
             </button>
           )}
-          <p className="my-2 font-semibold">{like}</p>
-          <p className="text-sm md:text-sm">{created_date}</p>
+        </div>
+        {/* profile */}
+        <div className="">
+          <div
+            className={classNames('flex flex-row items-center', {
+              '': user_id == login_id,
+            })}
+          >
+            <div className="flex flex-col items-center">
+              <div className="flex items-center">
+                <div className=" w-12 h-12">
+                  {name ? (
+                    <AvatarGroup
+                      avatars={[name]}
+                      initialCharacters={1}
+                      max={1}
+                      size={50}
+                      displayAllOnHover
+                      shadow={1}
+                    />
+                  ) : null}
+                </div>
+                <div className="ml-2">
+                  <p className="text-md">{name}</p>
+                  <p className="text-sm italic mt-1 opacity-70">{dateRelative(created_date)}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* delete button */}
         </div>
       </div>
-      {/* delete button */}
-      {user_id == login_id && (
-        <>
-          <button
-            onClick={handleModal}
-            className="absolute flex items-center justify-center w-8 h-8 mr-2 bg-red-400 left-4 bottom-3 rounded-xl"
-          >
-            <img src={trash} className="w-4 h-4"></img>
-          </button>
-          <button
-            onClick={handleUpdateCommentModal}
-            className="absolute flex items-center justify-center w-8 h-8 mr-2 bg-blue-400 left-14 bottom-3 rounded-xl"
-          >
-            <img src={edit} className="w-4 h-4"></img>
-          </button>
-        </>
+      {like_users.length > 0 ? (
+        <div className="flex flex-row border-t-2 p-2 text-sm">ถูกใจโดย {like_users.join(', ')}</div>
+      ) : (
+        <div></div>
       )}
       {content}
       {updateCommentContent}

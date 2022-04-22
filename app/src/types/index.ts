@@ -45,7 +45,7 @@ export type Comment = {
   name: string
   comment: string
   like: number
-  like_users: string
+  like_users: [string]
   created_date: string
 }
 
