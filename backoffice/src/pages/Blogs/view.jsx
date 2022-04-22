@@ -5,10 +5,10 @@ import { listBlog, toggleHiddenBlog, deleteBlog } from '../../api/blog'
 import Loader from '../../components/loader'
 
 function List({ columns, data, sortHandler, sortBy, fetchAll }) {
-  const handleHiding = (e) => {
+  const handleHiding = (e, currentState) => {
     const id = e.target.id
     Swal.fire({
-      title: 'ยืนยันการซ่อนกระทู้ ?',
+      title: `ยืนยันการ${currentState === true ? 'แสดง' : 'ซ่อน'}กระทู้ ?`,
       showDenyButton: true,
       showCancelButton: false,
       confirmButtonText: 'ยืนยัน',
@@ -107,7 +107,7 @@ function List({ columns, data, sortHandler, sortBy, fetchAll }) {
             <td className="px-6 py-4 text-center">
               <button
                 id={blog.blog_id}
-                onClick={(e) => handleHiding(e)}
+                onClick={(e) => handleHiding(e, blog.hide)}
                 className={`w-20 p-4 text-white ${!blog.hide ? 'bg-green-400' : 'bg-gray-400'} rounded-xl`}
               >
                 {!blog.hide ? 'Show' : 'Hide'}
@@ -125,14 +125,19 @@ function List({ columns, data, sortHandler, sortBy, fetchAll }) {
               </button>
             </td>
             <td className="px-6 py-4 text-right">
-              <a
-                // href={`http://localhost:3001/main-blogs/${blog.blog_id}`}
-                href={`https://app-thammathip.exitguy.studio/main-blogs/${blog.blog_id}`}
-                target="_blank"
-                className="font-medium text-blue-600 hover:underline"
-              >
-                View
-              </a>
+              {blog.deleted || blog.hide ? (
+                <p className="">View</p>
+              ) : (
+                <a
+                  disabled={true}
+                  // href={`http://localhost:3001/main-blogs/${blog.blog_id}`}
+                  href={`https://app-thammathip.exitguy.studio/main-blogs/${blog.blog_id}`}
+                  target="_blank"
+                  className="font-medium text-blue-600 hover:underline"
+                >
+                  View
+                </a>
+              )}
             </td>
           </tr>
         ))}
