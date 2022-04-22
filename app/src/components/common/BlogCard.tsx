@@ -160,7 +160,8 @@ export const BlogCard = ({
 
         <>
           <a
-            href={`https://backoffice-thammathip.exitguy.studio/blogs?id=${blog_id}`}
+            href={`https://backoffice-thammathip.exitguy.studio/blogs?id=${blog_id}&next=/blogs?id=${blog_id}`}
+            // href={`http://localhost:3000/blogs?id=${blog_id}&next=/blogs?id=${blog_id}`}
             target="_blank"
             rel="noreferrer"
             className="absolute right-0 top-2 flex items-center justify-center w-8 h-8 mr-2 bg-yellow-400 bottom-3 rounded-xl"
