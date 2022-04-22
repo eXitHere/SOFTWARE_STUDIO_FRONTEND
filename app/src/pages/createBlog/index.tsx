@@ -101,7 +101,7 @@ export const CreateBlog = () => {
         <p className="w-full my-4 text-xl text-white">เลือกหมวดหมู่</p>
         <ChooseCategory selectTag={selectTag} handleChoose={handleChoose} />
         <p className="w-full my-4 text-xl text-white">เนื้อความ</p>
-        <div className="w-full p-5 bg-white rounded-xl">
+        <div className="w-full p-5 bg-white min-h-64 rounded-xl">
           <Editor
             placeholder="วันนี้คุณทำดีแล้วหรือยัง..."
             editorState={editorState}
@@ -130,7 +130,7 @@ export const CreateBlog = () => {
               inputAccept: 'image/gif,image/jpeg,image/jpg,image/png,image/svg',
               blockType: {
                 inDropdown: true,
-                options: ['Normal', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6'],
+                options: ['Normal', 'H1', 'H2', 'H3', 'H4', 'H5'],
               },
             }}
           />
@@ -140,13 +140,13 @@ export const CreateBlog = () => {
           {/* <Link to={Path.Profile}> */}
           <button
             onClick={handleCreateBlog}
-            className="absolute right-0 w-32 p-4 m-4 mr-0 font-bold text-white bg-green-500 rounded-xl"
+            className="absolute right-0 w-32 p-4 m-4 mr-0 font-bold text-white bg-green-500 hover:bg-green-600 rounded-xl"
           >
             สร้าง
           </button>
 
           <Link to={Path.Profile}>
-            <button className="absolute left-0 w-32 p-4 m-4 ml-0 font-bold text-white bg-red-400 rounded-xl">
+            <button className="absolute left-0 w-32 p-4 m-4 ml-0 font-bold text-white bg-red-400 hover:bg-red-500 rounded-xl">
               ยกเลิก
             </button>
           </Link>

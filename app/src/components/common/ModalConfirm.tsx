@@ -4,7 +4,7 @@ type ModalProps = Pick<Modal, 'warningText' | 'close' | 'agree'>
 export const ModalConfirm = ({ warningText, close, agree }: ModalProps) => {
   return (
     <div
-      id="popup-modal"
+      // id="popup-modal"
       className="fixed top-0 bottom-0 left-0 right-0 z-50 flex flex-col items-center justify-center w-screen h-screen backdrop-blur-lg"
     >
       <div className="flex flex-col items-center justify-center h-56 bg-white shadow rounded-2xl dark:bg-gray-700 w-96">

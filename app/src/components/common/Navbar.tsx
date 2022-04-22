@@ -67,29 +67,18 @@ export const Navbar = ({ isBoards, username }: NavbarProps) => {
   }
 
   return (
-    <div className="fixed z-10 shadow-md flex flex-col items-center md:h-24 h-36 w-full p-2 px-4 md:px-8 bg-primary-main">
-      <div className="flex justify-between w-full items-center">
+    <div className="fixed z-10 flex flex-col items-center w-full p-2 px-4 shadow-md md:h-24 h-36 md:px-8 bg-primary-main">
+      <div className="flex items-center justify-between w-full">
         <Link to={Path.MainBlogs}>
-          <p className="text-lg font-bold text-white md:text-3xl">ThammaTip</p>
+          <p className="text-lg font-bold text-white hover:text-gray-200 md:text-3xl">ThammaTip</p>
         </Link>
-        {/* {isBoards && (
-        <form onSubmit={handleSearch} className="items-center hidden w-2/6 h-10 md:flex">
-          <input
-            type="text"
-            value={searchContext.keyword}
-            onChange={(e) => searchContext.setKeyword(e.target.value)}
-            className="w-full p-1 rounded-md"
-          />
-          <img onClick={handleSearch} src={searchIcon} className="w-8 h-8 mx-2 cursor-pointer" />
-        </form>
-      )} */}
 
         {isBoards && <SearchBox searchContext={searchContext} c="w-2/4 hidden md:block" />}
 
         <div className="flex items-center justify-center">
           {window.localStorage.getItem('auth') == 'YES' ? (
             <Link to={Path.Profile} className="flex items-center justify-center">
-              <p className={'text-white px-3 text-center text-md md:text-xl'}>{username}</p>
+              <p className={'text-white hover:text-gray-200 px-3 text-center text-md md:text-xl'}>{username}</p>
               <div>
                 {username ? (
                   <div className="w-12 h-12">
@@ -109,13 +98,13 @@ export const Navbar = ({ isBoards, username }: NavbarProps) => {
 
           {window.localStorage.getItem('auth') == 'YES' ? (
             <Link to={Path.Login}>
-              <button className="flex items-center justify-center w-12 h-12 m-4 ml-2 mr-0 bg-red-400 md:w-12 md:h-12 rounded-xl">
+              <button className="flex items-center justify-center w-12 h-12 m-4 ml-2 mr-0 bg-red-400 hover:bg-red-500 md:w-12 md:h-12 rounded-xl">
                 <img src={LogoutIcon} onClick={handleLogout} className="w-6 h-6" />
               </button>
             </Link>
           ) : (
             <Link to={Path.Login}>
-              <button className="flex items-center justify-center w-12 h-12 m-4 ml-2 mr-0 bg-green-500 rounded-xl">
+              <button className="flex items-center justify-center w-12 h-12 m-4 ml-2 mr-0 bg-green-500 hover:bg-green-600 rounded-xl">
                 <img src={LoginIcon} onClick={handleLogout} className="w-8 h-8" />
               </button>
             </Link>

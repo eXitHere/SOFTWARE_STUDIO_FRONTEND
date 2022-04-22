@@ -11,6 +11,7 @@ import { Path } from 'routes'
 import { ChooseCategory } from 'components/common/ChooseCategory'
 
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
+import { Footer } from 'components/common/Footer'
 
 export const EditBlog = () => {
   const { id } = useParams()
@@ -121,7 +122,7 @@ export const EditBlog = () => {
             wrapperClassName="wrapperClassName"
             editorClassName="editorClassName"
             toolbar={{
-              options: ['inline', 'blockType', 'list', 'history', 'image'],
+              // options: ['inline', 'blockType', 'list', 'history', 'image'],
               inline: {
                 inDropdown: false,
                 options: ['bold', 'italic', 'underline'],
@@ -141,7 +142,7 @@ export const EditBlog = () => {
               inputAccept: 'image/gif,image/jpeg,image/jpg,image/png,image/svg',
               blockType: {
                 inDropdown: true,
-                options: ['Normal', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6'],
+                options: ['Normal', 'H1', 'H2', 'H3', 'H4', 'H5'],
               },
             }}
           />
@@ -150,18 +151,19 @@ export const EditBlog = () => {
         <div className="relative w-full pb-10 mb-10">
           <button
             onClick={handleUpdateBlog}
-            className="absolute right-0 w-32 p-4 m-4 mr-0 font-bold text-white bg-green-500 rounded-xl"
+            className="absolute right-0 w-32 p-4 m-4 mr-0 font-bold text-white bg-green-500 hover:bg-green-600 rounded-xl"
           >
             แก้ไข
           </button>
 
           <Link to={Path.Profile}>
-            <button className="absolute left-0 w-32 p-4 m-4 ml-0 font-bold text-white bg-red-400 rounded-xl">
+            <button className="absolute left-0 w-32 p-4 m-4 ml-0 font-bold text-white bg-red-400 hover:bg-red-500 rounded-xl">
               ยกเลิก
             </button>
           </Link>
         </div>
       </div>
+      <Footer/>
     </Screen>
   )
 }

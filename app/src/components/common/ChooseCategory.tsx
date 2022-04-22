@@ -38,7 +38,7 @@ const dataCategory: Category[] = [
 type CreateTagProps = Pick<ChooseCat, 'selectTag' | 'handleChoose'>
 export const ChooseCategory = ({ selectTag, handleChoose }: CreateTagProps) => {
   return (
-    <div className="flex flex-col w-full p-2 mt-2 mb-4 bg-white rounded-xl">
+    <div className="flex flex-col w-full p-2 mt-2 mb-4 bg-white drop-shadow-md rounded-xl">
       <div className="flex items-center justify-around w-full text-lg">
         {dataCategory.map((data) => {
           return (
@@ -46,7 +46,7 @@ export const ChooseCategory = ({ selectTag, handleChoose }: CreateTagProps) => {
               key={data.categoryID}
               onClick={() => handleChoose(data.categoryName)}
               className={classNames(
-                'flex flex-col items-center justify-center w-16 h-20 md:w-24 md:h-28 my-2 font-bold',
+                'flex flex-col items-center justify-center w-16 h-20 md:w-24 md:h-28 my-2 font-bold hover:bg-yellow-400 hover:rounded-lg',
                 {
                   'bg-yellow-300 rounded-lg': selectTag.includes(data.categoryName),
                 },

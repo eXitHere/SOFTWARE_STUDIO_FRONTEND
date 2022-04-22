@@ -356,6 +356,7 @@ module.exports = {
     },
     fontFamily: {
       sans: [
+        'Prompt',
         'ui-sans-serif',
         'system-ui',
         '-apple-system',

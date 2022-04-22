@@ -21,6 +21,7 @@ export type Blog = {
   like_users: string[]
   date: string
   username: string
+  user_role: string
   profile_page: boolean
 }
 

@@ -8,6 +8,8 @@ import { UpdateContext } from 'contexts/store'
 
 import likeImg from 'assets/images/like.png'
 import unlikeImg from 'assets/images/unlike.png'
+import likeHover from 'assets/images/likeHover.png'
+import unlikeHover from 'assets/images/unlikeHover.png'
 import tagIcon from 'assets/icons/tagIcon.png'
 
 import { Detail } from 'types'
@@ -72,7 +74,7 @@ ContentProps) => {
   }, [content])
 
   return (
-    <div className="flex flex-col w-11/12 mt-36 lg:w-4/5 md:mt-28">
+    <div className="flex flex-col w-11/12 mt-36 lg:w-4/5 md:mt-28 drop-shadow-md">
       <div className="p-4 mt-4 rounded-xl bg-primary-light ">
         <p className="p-4 text-3xl font-bold">{topic}</p>
         <div className="flex flex-row items-center px-4 my-1 mt-2">
@@ -108,11 +110,21 @@ ContentProps) => {
             </div>
             <div className="flex items-center justify-center">
               {window.localStorage.getItem('auth') == 'YES' ? (
-                <button onClick={handleLike} className="h-10 w-14 md:w-20 md:h-12">
+                <button onClick={handleLike} className="h-10 w-14 md:w-20 md:h-12 drop-shadow-md">
                   {like_users?.includes(username) ? (
-                    <img src={likeImg} className="w-full h-full" />
+                    <img
+                      src={likeImg}
+                      onMouseOver={(e) => (e.currentTarget.src = likeHover)}
+                      onMouseOut={(e) => (e.currentTarget.src = likeImg)}
+                      className="w-full h-full"
+                    />
                   ) : (
-                    <img src={unlikeImg} className="w-full h-full" />
+                    <img
+                      src={unlikeImg}
+                      onMouseOver={(e) => (e.currentTarget.src = unlikeHover)}
+                      onMouseOut={(e) => (e.currentTarget.src = unlikeImg)}
+                      className="w-full h-full"
+                    />
                   )}
                 </button>
               ) : (
