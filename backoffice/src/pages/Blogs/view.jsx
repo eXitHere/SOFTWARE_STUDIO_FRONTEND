@@ -126,7 +126,8 @@ function List({ columns, data, sortHandler, sortBy, fetchAll }) {
             </td>
             <td className="px-6 py-4 text-right">
               <a
-                href={`http://localhost:3001/main-blogs/${blog.blog_id}`}
+                // href={`http://localhost:3001/main-blogs/${blog.blog_id}`}
+                href={`https://app-thammathip.exitguy.studio/main-blogs/${blog.blog_id}`}
                 target="_blank"
                 className="font-medium text-blue-600 hover:underline"
               >
