@@ -14,6 +14,7 @@ import unlikeImg from 'assets/images/unlike.png'
 import trash from 'assets/icons/trash.png'
 import edit from 'assets/icons/edit.png'
 import tagIcon from 'assets/icons/tagIcon.png'
+import powerIcon from 'assets/icons/power.png'
 import classNames from 'classnames'
 
 type BlogCardProps = Pick<
@@ -156,6 +157,17 @@ export const BlogCard = ({
             {extractContent(data).slice(0, 165) + ' ...'}
           </p>
         </Link>
+
+        <>
+          <a
+            href={`https://backoffice-thammathip.exitguy.studio/blogs?id=${blog_id}`}
+            target="_blank"
+            rel="noreferrer"
+            className="absolute right-0 top-2 flex items-center justify-center w-8 h-8 mr-2 bg-yellow-400 bottom-3 rounded-xl"
+          >
+            <img src={powerIcon} className="w-4 h-4"></img>
+          </a>
+        </>
 
         {/* like + date */}
         <div className="flex flex-col items-center justify-center w-2/6 h-full md:w-1/4 rounded-2xl">

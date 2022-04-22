@@ -88,9 +88,9 @@ export const Navbar = ({ isBoards, username }: NavbarProps) => {
 
         <div className="flex items-center justify-center">
           {window.localStorage.getItem('auth') == 'YES' ? (
-            <div className="flex items-center justify-center">
+            <Link to={Path.Profile} className="flex items-center justify-center">
               <p className={'text-white px-3 text-center text-md md:text-xl'}>{username}</p>
-              <Link to={Path.Profile}>
+              <div>
                 {username ? (
                   <div className="w-12 h-12">
                     <AvatarGroup
@@ -103,8 +103,8 @@ export const Navbar = ({ isBoards, username }: NavbarProps) => {
                     />
                   </div>
                 ) : null}
-              </Link>
-            </div>
+              </div>
+            </Link>
           ) : null}
 
           {window.localStorage.getItem('auth') == 'YES' ? (
