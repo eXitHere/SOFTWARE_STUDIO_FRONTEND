@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { login } from '../../api/user'
 import { getUserInfo } from '../../utils/user.utils'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import Lotus from '../../assets/images/lotus.png'
+import isValidHttpUrl from '../../utils/url.utils'
 
 function Login() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [nextPath, setNextPath] = useState(null)
+  const search = useLocation().search
   const navigateTo = useNavigate()
 
   const timeToHello = () => {
@@ -37,7 +40,8 @@ function Login() {
       if (userInfo.role !== 'admin') {
         return navigateTo('/logout')
       } else {
-        return navigateTo('/')
+        if (nextPath) return navigateTo(nextPath)
+        else return navigateTo('/')
       }
       // console.log(userInfo);
     } else {
@@ -53,6 +57,14 @@ function Login() {
       submit()
     }
   }
+
+  useEffect(() => {
+    const next = new URLSearchParams(search).get('next')
+    if (next && !isValidHttpUrl(next)) {
+      setNextPath(next)
+    }
+    // console.log(next)
+  }, [])
 
   return (
     <div className="h-screen w-screen bg-primary flex justify-center items-center">
