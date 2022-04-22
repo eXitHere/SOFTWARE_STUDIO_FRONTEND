@@ -20,8 +20,7 @@ const Blog = () => {
   const getBlogs = async () => {
     try {
       const response = await axios(`https://thammathip.exitguy.studio/api/Blog/${id}`)
-      console.log(response.data.created_date)
-      console.log()
+      console.log(response.data)
       setBlog(response.data)
     } catch (e) {
       console.log(e)
@@ -34,18 +33,18 @@ const Blog = () => {
       setDecoded(jwt_decode(token || '{}'))
     }
     getBlogs()
-  }, [updateContext.updateComment, updateContext.updateLikeComment])
+  }, [updateContext.update, updateContext.updateComment, updateContext.updateLikeComment])
 
   return (
     <Screen>
       <Navbar isBoards={false} username={decoded.display_name} />
       {blog ? (
         <Content
-          blog_id={blog.id}
+          blog_id={blog.blog_id}
           topic={blog.topic}
           content={blog.content}
           category={blog.category}
-          like_users={blog?.like_users}
+          like_users={blog.like_users}
           like={blog?.like}
           createdDate={dateRelative(blog.created_date)}
           // createdDate={blog?.created_date}
@@ -54,14 +53,14 @@ const Blog = () => {
           username={decoded.username}
         />
       ) : (
-        <div className=" mt-20 lg:w-4/5 md:mt-28">
+        <div className="mt-20 lg:w-4/5 md:mt-28">
           <Loader />
         </div>
       )}
 
       {window.localStorage.getItem('auth') == 'YES' ? (
         <>
-          <div className="flex flex-col w-4/5 mt-4 mb-4">
+          <div className="flex flex-col w-11/12 mt-4 mb-4 md:w-4/5">
             <p className="text-xl font-semibold text-white">เพิ่มความเห็น</p>
           </div>
           <PostComment
@@ -75,7 +74,7 @@ const Blog = () => {
           />
         </>
       ) : null}
-      <div className="flex flex-col w-4/5 mt-4 mb-4">
+      <div className="flex flex-col w-11/12 mt-4 mb-4 md:w-4/5">
         <p className="text-xl font-semibold text-white">{`ความเห็นทั้งหมด : ${blog.comments?.length}`}</p>
       </div>
       {blog.comments ? (
@@ -92,7 +91,7 @@ const Blog = () => {
                 comment={data.comment}
                 like={data.like}
                 like_users={data.like_users}
-                created_date={data.created_date.split('T')[0]}
+                created_date={data.created_date}
               />
             )
           })

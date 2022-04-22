@@ -1,11 +1,14 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { Editor } from 'react-draft-wysiwyg'
 import { EditorState, convertFromRaw } from 'draft-js'
 import AvatarGroup from 'react-avatar-group'
 import axios from 'pages/apiclient'
 
+import { UpdateContext } from 'contexts/store'
+
 import likeImg from 'assets/images/like.png'
 import unlikeImg from 'assets/images/unlike.png'
+import tagIcon from 'assets/icons/tagIcon.png'
 
 import { Detail } from 'types'
 
@@ -27,20 +30,17 @@ export const Content = ({
   blog_id,
   topic,
   content,
-  // category,
+  category,
   like_users,
   like,
   createdDate,
   author_name,
-}: // author_id,
-// username
-ContentProps) => {
-  // const [clickLike, setClickLike] = useState<boolean>(true)
-  // const [likePhoto, setLikePhoto] = useState<string>(unlikeImg)
-  const [editorState, setEditorState] = useState(() => EditorState.createEmpty())
-  const [likeData, setLikeData] = useState<number>(1)
-  const [listLikeData, setListLikeData] = useState<string[]>([])
+  username,
+}: 
 
+ContentProps) => {
+  const updateContext = useContext(UpdateContext)
+  const [editorState, setEditorState] = useState(() => EditorState.createEmpty())
   const sendLike = async () => {
     const response = await axios.patch(
       `https://thammathip.exitguy.studio/api/Blog/like/${blog_id}`,
@@ -52,18 +52,16 @@ ContentProps) => {
       },
     )
 
-    const updateData = await axios(`https://thammathip.exitguy.studio/api/Blog/${blog_id}`)
-    setLikeData(updateData.data.like)
-    setListLikeData(updateData.data.like_users)
-    console.log(updateData.data.like)
+    if (like_users.includes(username) == false) {
+      console.log('Like')
+      updateContext.setUpdate(`LIKE BLOG ${blog_id}`)
+    } else {
+      console.log('UnLike')
+      updateContext.setUpdate(`UNLIKE BLOG ${blog_id}`)
+    }
   }
 
   const handleLike = () => {
-    // if (like_users.includes(username) == false) {
-    //   console.log('Like')
-    // } else {
-    //   console.log('UnLike')
-    // }
     sendLike()
   }
 
@@ -73,16 +71,14 @@ ContentProps) => {
     }
   }, [content])
 
-  useEffect(() => {
-    setLikeData(like)
-    setListLikeData(like_users)
-    console.log(like_users)
-  }, [])
-
   return (
-    <div className="flex flex-col w-11/12 mt-20 lg:w-4/5 md:mt-28">
+    <div className="flex flex-col w-11/12 mt-36 lg:w-4/5 md:mt-28">
       <div className="p-4 mt-4 rounded-xl bg-primary-light ">
         <p className="p-4 text-3xl font-bold">{topic}</p>
+        <div className="flex flex-row items-center px-4 my-1 mt-2">
+          <img src={tagIcon} className="w-6 h-6 mr-2" />
+          <p className="px-2">{category?.join(', ')}</p>
+        </div>
         <div className="w-full p-5 mb-2 rounded-xl">
           <Editor
             editorState={editorState}
@@ -107,14 +103,24 @@ ContentProps) => {
               ) : null}
               <div className="ml-2">
                 <p className="text-md">{author_name}</p>
-                <p className="text-sm italic mt-1 opacity-70">{createdDate}</p>
+                <p className="mt-1 text-sm italic opacity-70">{createdDate}</p>
               </div>
             </div>
             <div className="flex items-center justify-center">
-              <button onClick={handleLike} className="w-12 h-8 mr-4 md:w-16 md:h-12">
-                <img src={likeImg} className="w-full h-full" />
-              </button>
-              <p className="pr-1 text-lg font-bold md:pr-3 md:text-xl">{like}</p>
+              {window.localStorage.getItem('auth') == 'YES' ? (
+                <button onClick={handleLike} className="h-10 w-14 md:w-20 md:h-12">
+                  {like_users?.includes(username) ? (
+                    <img src={likeImg} className="w-full h-full" />
+                  ) : (
+                    <img src={unlikeImg} className="w-full h-full" />
+                  )}
+                </button>
+              ) : (
+                <button className="w-12 h-8 md:w-16 md:h-12">
+                  <img src={likeImg} className="w-full h-full" />
+                </button>
+              )}
+              <p className="px-1 text-lg font-bold md:px-3 md:text-xl">{like}</p>
             </div>
           </div>
         </div>

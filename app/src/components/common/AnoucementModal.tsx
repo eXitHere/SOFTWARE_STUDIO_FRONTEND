@@ -33,9 +33,9 @@ export const AnoucementModal = ({ close }: AnoucementProps) => {
       <div className="relative flex flex-col items-center w-3/4 p-8 bg-white shadow rounded-2xl dark:bg-white">
         <Editor
           editorState={editorState}
-          toolbarClassName="toolbarClassName"
-          wrapperClassName="wrapperClassName"
-          editorClassName="editorClassName"
+          toolbarClassName="hidden"
+          // wrapperClassName="wrapperClassName"
+          // editorClassName="editorClassName"
           readOnly={true}
           toolbar={{
             options: [],

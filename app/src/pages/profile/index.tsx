@@ -12,6 +12,7 @@ import { UserContext } from 'contexts/store'
 import { Path } from 'routes'
 
 import { UpdateContext } from 'contexts/store'
+import { Footer } from 'components/common/Footer'
 
 export const Profile = () => {
 
@@ -55,7 +56,7 @@ export const Profile = () => {
   return (
     <Screen>
       <Navbar isBoards={false} username={decoded.display_name} />
-      <div className="flex flex-col items-center justify-center w-full mt-16">
+      <div className="flex flex-col items-center justify-center w-full mt-32 md:mt-20">
         {decoded.username ? (
           <div className="mt-10">
             <AvatarGroup
@@ -82,7 +83,7 @@ export const Profile = () => {
       {/* กระทู้ทั้งหมดของฉัน */}
       <div className="flex flex-col items-center w-full">
         <div className="flex justify-start w-11/12 my-4 lg:w-4/5">
-          <p className="text-xl text-white">กระทู้ทั้งหมดของฉัน</p>
+          <p className="text-xl font-bold text-white">กระทู้ทั้งหมดของฉัน</p>
         </div>
         {/* blogs list */}
         {globalBlogs.map((data) => {
@@ -103,6 +104,7 @@ export const Profile = () => {
           )
         })}
       </div>
+      <Footer/>
       {window.localStorage.getItem('anoucement') == 'FALSE' && (
         <AnoucementModal
           close={close}

@@ -123,14 +123,14 @@ export const CommentCard = ({
   // }
 
   return (
-    <div className="flex flex-col w-4/5 mb-4 h-68  bg-primary-lightest rounded-md">
+    <div className="flex flex-col w-11/12 mb-4 lg:w-4/5 rounded-2xl h-68 bg-primary-lightest">
       {/* profile picture + name */}
-      <div className="flex flex-row w-full rounded-md justify-end">
+      <div className="flex flex-row justify-end w-full rounded-md">
         {/* topic + preview */}
-        <div className="w-full py-6 pr-0">
-          <p className="py-2 mb-8 ml-4 text-sm">{comment}</p>
+        <div className="w-full py-1 pr-0 md:py-6">
+          <p className="py-2 mb-8 ml-4 text-sm md:text-lg">{comment}</p>
         </div>
-        <div className="flex w-20 m-2 justify-center">
+        <div className="flex justify-center w-20 m-2">
           {user_id == login_id && (
             <>
               <button
@@ -151,8 +151,8 @@ export const CommentCard = ({
       </div>
       <div className="flex flex-row p-4 rounded-2xl">
         {/* like + date */}
-        <div className="flex flex-row pt-2 border-r-2 item-center justify-center pr-4 mr-4">
-          <p className="my-2 font-semibold mr-2">{like}</p>
+        <div className="flex flex-row justify-center pt-2 pr-4 mr-4 border-r-2 item-center">
+          <p className="my-2 mr-2 font-semibold">{like}</p>
           {window.localStorage.getItem('auth') == 'YES' ? (
             <button onClick={handleLike} className="w-12 h-8">
               {like_users.includes(login_name) ? (
@@ -176,7 +176,7 @@ export const CommentCard = ({
           >
             <div className="flex flex-col items-center">
               <div className="flex items-center">
-                <div className=" w-12 h-12">
+                <div className="w-12 h-12 ">
                   {name ? (
                     <AvatarGroup
                       avatars={[name]}
@@ -190,7 +190,7 @@ export const CommentCard = ({
                 </div>
                 <div className="ml-2">
                   <p className="text-md">{name}</p>
-                  <p className="text-sm italic mt-1 opacity-70">{dateRelative(created_date)}</p>
+                  <p className="mt-1 text-sm italic opacity-70">{dateRelative(created_date)}</p>
                 </div>
               </div>
             </div>
@@ -199,7 +199,7 @@ export const CommentCard = ({
         </div>
       </div>
       {like_users.length > 0 ? (
-        <div className="flex flex-row border-t-2 p-2 text-sm">ถูกใจโดย {like_users.join(', ')}</div>
+        <div className="flex flex-row p-2 text-sm border-t-2">ถูกใจโดย {like_users.join(', ')}</div>
       ) : (
         <div></div>
       )}

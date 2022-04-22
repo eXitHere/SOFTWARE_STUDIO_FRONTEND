@@ -9,6 +9,7 @@ import { Navbar } from 'components/common/Navbar'
 import { Tag } from 'components/common/Tag'
 import { ImageShow } from 'components/common/ImageShow'
 import { BlogCard } from 'components/common/BlogCard'
+import { Footer } from 'components/common/Footer'
 
 // import searchIcon from 'assets/images/searchIcon.png'
 
@@ -78,7 +79,7 @@ export const MainBlogs = () => {
     getUserBlogs()
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [updateContext.update])
+  }, [])
 
   useEffect(
     () => {
@@ -102,7 +103,7 @@ export const MainBlogs = () => {
           <img onClick={handleSearch} src={searchIcon} className="w-8 h-8" />
         </div>
       </form> */}
-      <div className="md:mt-28 mt-40 justify-center w-full flex">
+      <div className="flex justify-center w-full mt-40 md:mt-28">
         {searchContext.keyword.length === 0 && <ImageShow />}
       </div>
 
@@ -125,6 +126,8 @@ export const MainBlogs = () => {
           />
         )
       })}
+
+      <Footer />
     </Screen>
   )
 }
