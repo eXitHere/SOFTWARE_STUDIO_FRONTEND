@@ -67,7 +67,7 @@ export const Navbar = ({ isBoards, username }: NavbarProps) => {
   }
 
   return (
-    <div className="fixed z-10 flex flex-col items-center w-full p-2 px-4 shadow-md md:h-24 h-36 md:px-8 bg-primary-main">
+    <div className="fixed flex flex-col items-center w-full p-2 px-4 shadow-md z-100 md:h-24 h-36 md:px-8 bg-primary-main">
       <div className="flex items-center justify-between w-full">
         <Link to={Path.MainBlogs}>
           <p className="text-lg font-bold text-white hover:text-gray-200 md:text-3xl">ThammaTip</p>

@@ -175,14 +175,12 @@ export const CommentCard = ({
               )}
             </button>
           ) : (
-            <button className="w-12 h-8">
+            <div className="w-12 h-8">
               <img
                 src={likeImg}
-                onMouseOver={(e) => (e.currentTarget.src = unlikeHover)}
-                onMouseOut={(e) => (e.currentTarget.src = unlikeImg)}
                 className="w-full h-full"
               />
-            </button>
+            </div>
           )}
         </div>
         {/* profile */}

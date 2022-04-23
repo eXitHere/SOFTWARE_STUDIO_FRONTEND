@@ -88,7 +88,7 @@ export const CreateBlog = () => {
   return (
     <Screen>
       <Navbar isBoards={false} username={decoded.display_name} />
-      <p className="mb-4 text-3xl font-bold text-white mt-28"> สร้างกระทู้ใหม่</p>
+      <p className="mb-4 text-3xl font-bold text-white mt-44 md:mt-28"> สร้างกระทู้ใหม่</p>
       <div className="flex flex-col items-center justify-center w-11/12 h-full md:w-3/4">
         <p className="w-full my-4 text-xl text-white">ชื่อกระทู้</p>
         <textarea
@@ -110,7 +110,7 @@ export const CreateBlog = () => {
             wrapperClassName="wrapperClassName"
             editorClassName="editorClassName"
             toolbar={{
-              options: ['inline', 'blockType', 'list', 'history', 'image'],
+              // options: ['inline', 'blockType', 'list', 'history', 'image'],
               inline: {
                 inDropdown: false,
                 options: ['bold', 'italic', 'underline'],

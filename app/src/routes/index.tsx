@@ -1,6 +1,6 @@
 import { BrowserRouter, RouteObject, useRoutes } from 'react-router-dom'
 
-import { Blog, MainBlogs, Home, EditProfile, CreateBlog, Profile, MockLogin } from 'routes/lazy'
+import { Blog, MainBlogs, Home, EditProfile, CreateBlog, Profile, Login, Register } from 'routes/lazy'
 import { Path } from 'routes/path'
 
 import NotFound from 'pages/404'
@@ -34,7 +34,11 @@ const routes: RouteObject[] = [
       },
       {
         path: Path.Login,
-        children: [{ index: true, element: <MockLogin /> }],
+        children: [{ index: true, element: <Login /> }],
+      },
+      {
+        path: Path.Register,
+        children: [{ index: true, element: <Register /> }],
       },
       { path: '*', element: <NotFound /> },
     ],

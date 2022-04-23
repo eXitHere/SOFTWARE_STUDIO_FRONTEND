@@ -13,7 +13,8 @@ const RawEditBlog= lazy(() => import('pages/editBlog'))
 const RawEditProfile = lazy(() => import('pages/editProfile'))
 const RawCreateBlog = lazy(() => import('pages/createBlog'))
 const RawProfile = lazy(() => import('pages/profile'))
-const RawLogin = lazy(() => import('pages/mocklogin'))
+const RawLogin = lazy(() => import('pages/login'))
+const RawRegister = lazy(() => import('pages/register'))
 
 export const Home = () => (
   <WrappedSuspense>
@@ -57,9 +58,15 @@ export const Profile = () => (
   </WrappedSuspense>
 )
 
-export const MockLogin = () => (
+export const Login = () => (
   <WrappedSuspense>
     <RawLogin />
+  </WrappedSuspense>
+)
+
+export const Register = () => (
+  <WrappedSuspense>
+    <RawRegister />
   </WrappedSuspense>
 )
 
