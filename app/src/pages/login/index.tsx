@@ -4,7 +4,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { Screen } from 'components/layouts/Screen'
 import { Path } from 'routes'
 
-export const MockLogin = () => {
+export const Login = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const navigateTo = useNavigate()
@@ -59,13 +59,16 @@ export const MockLogin = () => {
               </button>
 
               <Link to={Path.MainBlogs}>
-                <button
-                  className="flex items-center justify-center w-32 h-12 p-4 m-4 mt-32 text-white bg-blue-500 rounded-md"
-                >
+                <button className="flex items-center justify-center w-32 h-12 p-4 m-4 mt-32 text-white bg-blue-500 rounded-md">
                   No Account
                 </button>
               </Link>
             </div>
+            <Link to={Path.Register}>
+              <p className="flex items-center justify-center h-12 p-4 m-4 mt-4 text-white rounded-md">
+                ยังไม่มีบัญชี สมัครเลย
+              </p>
+            </Link>
           </div>
         </div>
       </div>
@@ -73,4 +76,4 @@ export const MockLogin = () => {
   )
 }
 
-export default MockLogin
+export default Login

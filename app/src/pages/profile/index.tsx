@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import classNames from 'classnames'
 import axios from 'axios'
 import jwt_decode from 'jwt-decode'
 import AvatarGroup from 'react-avatar-group'
@@ -8,11 +9,11 @@ import { Navbar } from 'components/common/Navbar'
 import { Screen } from 'components/layouts/Screen'
 import { AnoucementModal } from 'components/common/AnoucementModal'
 
-import { UserContext } from 'contexts/store'
 import { Path } from 'routes'
 
 import { SearchContext, UpdateContext } from 'contexts/store'
 import { Footer } from 'components/common/Footer'
+import { LoadIcon } from 'components/common/loadIcon'
 
 const blogsPerPage = 5
 
@@ -26,9 +27,15 @@ export const Profile = () => {
   const [decoded, setDecoded] = useState<any>({})
   const [globalBlogs, setGlobalBlogs] = useState<any[]>([])
   const [searchBlogs, setSearchBlogs] = useState<any[]>([])
+  const [sortDate, setSortDate] = useState<boolean>(true)
+  const [sortByDate, setSortByDate] = useState<boolean>(true)
+  const [sortLike, setSortLike] = useState<boolean>(false)
+  const [sortByLike, setSortByLike] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
 
   const getUserBlogs = async () => {
     try {
+      setLoading(true)
       const response = await axios('https://thammathip.exitguy.studio/api/Blog/list')
       const userBlog: object[] = []
       const token = window.localStorage.getItem('accessToken')
@@ -40,21 +47,17 @@ export const Profile = () => {
       }
       const blogsCount = userBlog?.length
       const page = Math.ceil(blogsCount / blogsPerPage)
-      if (page > 0){
+      if (page > 0) {
         setPageCount(Math.ceil(blogsCount / blogsPerPage))
-      }
-      else{
+      } else {
         setPageCount(1)
       }
       setGlobalBlogs(userBlog)
       setSearchBlogs(userBlog)
+      setLoading(false)
     } catch (e) {
       console.log(e)
     }
-  }
-
-  function findCommonElements(arr1: string[], arr2: string[]) {
-    return arr1.some((item) => arr2.includes(item))
   }
 
   const pageUp = () => {
@@ -87,10 +90,85 @@ export const Profile = () => {
     }
 
     if (keyword == '') {
-      setSearchBlogs(globalBlogs)
+      if (sortByLike) {
+        if (sortLike) {
+          let dataSort = [...globalBlogs]
+          dataSort = dataSort.sort((a: any, b: any) => a.like - b.like).reverse()
+          setSearchBlogs(dataSort)
+        } else {
+          let dataSort = [...globalBlogs]
+          dataSort = dataSort.sort((a: any, b: any) => a.like - b.like)
+          setSearchBlogs(dataSort)
+        }
+      } else if (sortByDate) {
+        if (!sortDate) {
+          let dataSort = [...globalBlogs]
+          dataSort = dataSort.reverse()
+          setSearchBlogs(dataSort)
+        } else {
+          setSearchBlogs(globalBlogs)
+        }
+      }
     } else {
-      setSearchBlogs(searchData)
+      if (sortByLike) {
+        if (sortLike) {
+          let dataSort = [...searchData]
+          dataSort = dataSort.sort((a: any, b: any) => a.like - b.like).reverse()
+          setSearchBlogs(dataSort)
+        } else {
+          let dataSort = [...searchData]
+          dataSort = dataSort.sort((a: any, b: any) => a.like - b.like)
+          setSearchBlogs(dataSort)
+        }
+      } else if (sortByDate) {
+        if (!sortDate) {
+          let dataSort = [...searchData]
+          dataSort = dataSort.reverse()
+          setSearchBlogs(dataSort)
+        } else {
+          setSearchBlogs(searchData)
+        }
+      }
     }
+  }
+
+  const FilterButton = () => {
+    return (
+      <div className="flex flex-row items-center justify-between w-11/12 mb-4 md:w-4/5">
+        <div className="flex justify-start w-11/12 my-4 lg:w-4/5">
+          <p className="text-xl font-bold text-white">กระทู้ทั้งหมดของฉัน</p>
+        </div>
+        <div className="flex flex-row">
+          <button
+            onClick={() => {
+              setSortByDate(true)
+              setSortByLike(false)
+              setSortDate(!sortDate)
+            }}
+            className={classNames('flex items-center justify-center h-12 p-4 font-semibold  rounded-xl mr-2', {
+              'bg-green-500 hover:bg-green-600 text-white': sortByDate == true,
+              'bg-primary-light hover:bg-white': sortByDate == false,
+            })}
+          >
+            เวลา {sortDate ? '▼' : '▲'}
+          </button>
+          <button
+            onClick={() => {
+              setSortByLike(true)
+              setSortByDate(false)
+              setSortLike(!sortLike)
+              console.log(!sortLike)
+            }}
+            className={classNames('flex items-center justify-center h-12 p-4 font-semibold rounded-xl', {
+              'bg-green-500 hover:bg-green-600 text-white': sortByLike == true,
+              'bg-primary-light hover:bg-white': sortByLike == false,
+            })}
+          >
+            ถูกใจ {sortLike ? '▼' : '▲'}
+          </button>
+        </div>
+      </div>
+    )
   }
 
   const close = () => {
@@ -112,7 +190,7 @@ export const Profile = () => {
 
   useEffect(() => {
     searchFilter(searchContext.keyword)
-  }, [searchContext.keyword, updateContext.update])
+  }, [searchContext.keyword, updateContext.update, sortDate, sortLike])
 
   return (
     <Screen>
@@ -147,9 +225,8 @@ export const Profile = () => {
       </div>
       {/* กระทู้ทั้งหมดของฉัน */}
       <div className="flex flex-col items-center w-full">
-        <div className="flex justify-start w-11/12 my-4 lg:w-4/5">
-          <p className="text-xl font-bold text-white">กระทู้ทั้งหมดของฉัน</p>
-        </div>
+        
+        <FilterButton />
         {/* blogs list */}
         {searchBlogs.length > 0 ? (
           searchBlogs.slice((currentPage - 1) * blogsPerPage, currentPage * blogsPerPage).map((data) => {
@@ -170,12 +247,17 @@ export const Profile = () => {
               />
             )
           })
+        ) : loading ? (
+          <div className="relative flex flex-col items-center justify-center w-11/12 h-24 mb-4 md:flex-row lg:w-4/5 rounded-2xl md:h-48">
+            <LoadIcon/>
+          </div>
         ) : (
           <div className="relative flex flex-col items-center justify-center w-11/12 h-24 mb-4 md:flex-row lg:w-4/5 bg-primary-lightest rounded-2xl md:h-48">
             <p>ไม่พบกระทู้ของคุณ</p>
           </div>
         )}
       </div>
+
       <div className="flex items-center justify-center w-3/4">
         <button
           onClick={pageDown}

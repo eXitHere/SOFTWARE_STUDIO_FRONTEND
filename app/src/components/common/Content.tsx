@@ -12,6 +12,7 @@ import likeHover from 'assets/images/likeHover.png'
 import unlikeHover from 'assets/images/unlikeHover.png'
 import tagIcon from 'assets/icons/tagIcon.png'
 
+
 import { Detail } from 'types'
 
 type ContentProps = Pick<
@@ -43,6 +44,7 @@ export const Content = ({
 ContentProps) => {
   const updateContext = useContext(UpdateContext)
   const [editorState, setEditorState] = useState(() => EditorState.createEmpty())
+ 
   const sendLike = async () => {
     const response = await axios.patch(
       `https://thammathip.exitguy.studio/api/Blog/like/${blog_id}`,
@@ -74,7 +76,7 @@ ContentProps) => {
   }, [content])
 
   return (
-    <div className="flex flex-col w-11/12 mt-36 lg:w-4/5 md:mt-28 drop-shadow-md">
+    <div className="z-10 flex flex-col w-11/12 mt-36 lg:w-4/5 md:mt-28 drop-shadow-md">
       <div className="p-4 mt-4 rounded-xl bg-primary-light ">
         <p className="p-4 text-3xl font-bold">{topic}</p>
         <div className="flex flex-row items-center px-4 my-1 mt-2">
@@ -128,9 +130,9 @@ ContentProps) => {
                   )}
                 </button>
               ) : (
-                <button className="w-12 h-8 md:w-16 md:h-12">
+                <div className="w-12 h-8 md:w-16 md:h-12">
                   <img src={likeImg} className="w-full h-full" />
-                </button>
+                </div>
               )}
               <p className="px-1 text-lg font-bold md:px-3 md:text-xl">{like}</p>
             </div>

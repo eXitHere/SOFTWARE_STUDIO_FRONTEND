@@ -180,9 +180,9 @@ export const BlogCard = ({
               )}
             </button>
           ) : (
-            <button className="w-12 h-8 md:w-16 md:h-12">
+            <div className="w-12 h-8 md:w-16 md:h-12">
               <img src={likeImg} className="w-full h-full" />
-            </button>
+            </div>
           )}
           <p className="my-2 text-xl font-semibold">{likeData}</p>
           <p className="text-sm md:text-sm opacity-70">

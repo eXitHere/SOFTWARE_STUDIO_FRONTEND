@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import axios from '../apiclient'
+import classNames from 'classnames'
 import { dateRelative } from 'utils/date'
 import { Screen } from 'components/layouts/Screen'
 import { Content } from 'components/common/Content'
@@ -10,21 +11,110 @@ import { CommentCard } from 'components/common/CommentCard'
 import { Navbar } from 'components/common/Navbar'
 import { UpdateContext } from 'contexts/store'
 import Loader from 'components/loader'
+import { Footer } from 'components/common/Footer'
+import { LoadIcon } from 'components/common/loadIcon'
 
+const commentsPerPage = 10
 const Blog = () => {
   const { id } = useParams()
+
   const updateContext = useContext(UpdateContext)
+  const [pageCount, setPageCount] = useState<number>(1)
+  const [currentPage, setCurrentPage] = useState<number>(1)
   const [blog, setBlog] = useState<any>({})
+  const [comment, setComment] = useState<any[]>([])
   const [decoded, setDecoded] = useState<any>({})
+  const [sortDate, setSortDate] = useState<boolean>(true)
+  const [sortByDate, setSortByDate] = useState<boolean>(true)
+  const [sortLike, setSortLike] = useState<boolean>(false)
+  const [sortByLike, setSortByLike] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
 
   const getBlogs = async () => {
     try {
+      setLoading(true)
       const response = await axios(`https://thammathip.exitguy.studio/api/Blog/${id}`)
-      console.log(response.data)
+      const commentsCount = response.data.comments?.length
+      const page = Math.ceil(commentsCount / commentsPerPage)
+      if (page > 0) {
+        setPageCount(Math.ceil(commentsCount / commentsPerPage))
+      } else {
+        setPageCount(1)
+      }
       setBlog(response.data)
+      setComment(response.data.comments)
+      setLoading(false)
     } catch (e) {
       console.log(e)
     }
+  }
+
+  const pageUp = () => {
+    if (currentPage + 1 <= pageCount) {
+      const newPageValue = currentPage + 1
+      setCurrentPage(newPageValue)
+    }
+  }
+
+  const pageDown = () => {
+    if (currentPage - 1 > 0) {
+      const newPageValue = currentPage - 1
+      setCurrentPage(newPageValue)
+    }
+  }
+
+  const FilterButton = () => {
+    return (
+      <div className="flex flex-row justify-end w-11/12 mb-4 md:w-4/5 ">
+        <button
+          onClick={() => {
+            setSortByDate(true)
+            setSortByLike(false)
+            setSortDate(!sortDate)
+          }}
+          className={classNames('flex items-center justify-center h-12 p-4 font-semibold  rounded-xl mr-2', {
+            'bg-green-500 hover:bg-green-600 text-white': sortByDate == true,
+            'bg-primary-light hover:bg-white': sortByDate == false,
+          })}
+        >
+          เวลา {sortDate ? '▼' : '▲'}
+        </button>
+        <button
+          onClick={() => {
+            setSortByLike(true)
+            setSortByDate(false)
+            setSortLike(!sortLike)
+            console.log(!sortLike)
+          }}
+          className={classNames('flex items-center justify-center h-12 p-4 font-semibold  rounded-xl', {
+            'bg-green-500 hover:bg-green-600 text-white': sortByLike == true,
+            'bg-primary-light hover:bg-white': sortByLike == false,
+          })}
+        >
+          ถูกใจ {sortLike ? '▼' : '▲'}
+        </button>
+      </div>
+    )
+  }
+
+  const Pagination = () => {
+    return (
+      <div className="flex items-center justify-center w-3/4">
+        <button
+          onClick={pageDown}
+          className="w-16 h-12 mx-4 bg-primary-light hover:bg-primary-lightest rounded-xl drop-shadow-md"
+        >
+          {'<'}
+        </button>
+        <p className="w-32 text-center text-white">{`หน้า ${currentPage} จาก ${pageCount}`}</p>
+        <button
+          onClick={pageUp}
+          className="w-16 h-12 mx-4 bg-primary-light hover:bg-primary-lightest rounded-xl drop-shadow-md"
+        >
+          {'>'}
+        </button>
+      </div>
+    )
   }
 
   useEffect(() => {
@@ -35,10 +125,32 @@ const Blog = () => {
     getBlogs()
   }, [updateContext.update, updateContext.updateComment, updateContext.updateLikeComment])
 
+  useEffect(() => {
+    if (sortByLike) {
+      if (sortLike) {
+        let dataSort = [...blog.comments]
+        dataSort = dataSort.sort((a: any, b: any) => a.like - b.like).reverse()
+        setComment(dataSort)
+      } else {
+        let dataSort = [...blog.comments]
+        dataSort = dataSort.sort((a: any, b: any) => a.like - b.like)
+        setComment(dataSort)
+      }
+    } else if (sortByDate) {
+      if (!sortDate) {
+        let dataSort = [...blog.comments]
+        dataSort = dataSort.reverse()
+        setComment(dataSort)
+      } else {
+        setComment(blog.comments)
+      }
+    }
+  }, [sortLike, sortDate])
+
   return (
     <Screen>
       <Navbar isBoards={false} username={decoded.display_name} />
-      {blog ? (
+      {blog && !loading ? (
         <Content
           blog_id={blog.blog_id}
           topic={blog.topic}
@@ -47,14 +159,13 @@ const Blog = () => {
           like_users={blog.like_users}
           like={blog?.like}
           createdDate={dateRelative(blog.created_date)}
-          // createdDate={blog?.created_date}
           author_name={blog.author?.name}
           author_id={blog.author?.user_id}
           username={decoded.username}
         />
       ) : (
-        <div className="mt-20 lg:w-4/5 md:mt-28">
-          <Loader />
+        <div className="flex flex-col items-center justify-center w-11/12 mt-36 lg:w-4/5 md:mt-28 drop-shadow-md h-96">
+          <LoadIcon />
         </div>
       )}
 
@@ -77,9 +188,10 @@ const Blog = () => {
       <div className="flex flex-col w-11/12 mt-4 mb-4 md:w-4/5">
         <p className="text-xl font-semibold text-white">{`ความเห็นทั้งหมด : ${blog.comments?.length}`}</p>
       </div>
+      <FilterButton />
       {blog.comments ? (
         blog.comments.length != 0 ? (
-          blog.comments.map((data: any) => {
+          comment?.slice((currentPage - 1) * commentsPerPage, currentPage * commentsPerPage).map((data: any) => {
             return (
               <CommentCard
                 key={data.comment_id}
@@ -101,6 +213,8 @@ const Blog = () => {
           </div>
         )
       ) : null}
+      <Pagination />
+      <Footer />
     </Screen>
   )
 }
