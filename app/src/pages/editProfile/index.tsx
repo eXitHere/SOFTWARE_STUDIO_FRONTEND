@@ -38,7 +38,25 @@ export const EditProfile = () => {
     open(<ModalConfirm warningText={'คุณแน่ใจใช่ไหมว่าต้องการลบบัญชีนี้'} close={close} agree={agree} />)
   }
 
+  const deleteUser = async () => {
+    try {
+      const response = await axios.delete(
+        `https://thammathip.exitguy.studio/api/Admin/manage/user/delete/${decoded.id}`,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          },
+        },
+      )
+      console.log(response)
+      return navigateTo(Path.Login)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   const open = (content: React.ReactNode) => {
+    deleteUser()
     setContent(content)
     setIsModalOpen(true)
   }
@@ -55,8 +73,8 @@ export const EditProfile = () => {
 
   useEffect(() => {
     const token = window.localStorage.getItem('accessToken')
-    const decodedToken:any = jwt_decode(token || '{}')
-    console.log(typeof(decodedToken))
+    const decodedToken: any = jwt_decode(token || '{}')
+    console.log(typeof decodedToken)
     setDecoded(decodedToken)
     setDisplayname(decodedToken.display_name)
   }, [])

@@ -1,13 +1,13 @@
 import React, { FormEvent, useState, useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import AvatarGroup from 'react-avatar-group'
-// import profile1 from 'assets/images/profile1.jpeg'
 import searchIcon from 'assets/images/searchIcon.png'
 import LoginIcon from 'assets/icons/loginIcon.png'
 import LogoutIcon from 'assets/icons/logoutIcon.png'
 
 import { Path } from 'routes'
 import { SearchContext, UserContext } from 'contexts/store'
+import axios from 'axios'
 
 type NavbarProps = {
   username: string
@@ -53,18 +53,29 @@ const SearchBox = ({ c, searchContext }: SearchBoxProps) => {
 export const Navbar = ({ isBoards, username }: NavbarProps) => {
   const userContext = useContext(UserContext)
   const searchContext = useContext(SearchContext)
+  const navigateTo = useNavigate()
 
-  // const [search, setSearch] = useState('')
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      const response = await axios.delete(`https://thammathip.exitguy.studio/auth/Session/logout`, {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      })
+      console.log(response)
+      return navigateTo(Path.Login)
+    } catch (e) {
+      console.log(e)
+    
+  }
     window.localStorage.clear()
     console.log('Log Out')
   }
 
-  const handleSearch = (e: FormEvent) => {
-    e.preventDefault()
-    // console.log(searchContext.keyword)
-  }
+  // const handleSearch = (e: FormEvent) => {
+  //   e.preventDefault()
+  // }
 
   return (
     <div className="fixed flex flex-col items-center w-full p-2 px-4 shadow-md z-100 md:h-24 h-36 md:px-8 bg-primary-main">
@@ -83,7 +94,7 @@ export const Navbar = ({ isBoards, username }: NavbarProps) => {
                 {username ? (
                   <div className="w-12 h-12">
                     <AvatarGroup
-                      avatars={[username /* or IAvatar objects */]}
+                      avatars={[username]}
                       initialCharacters={1}
                       max={1}
                       size={50}
@@ -97,15 +108,21 @@ export const Navbar = ({ isBoards, username }: NavbarProps) => {
           ) : null}
 
           {window.localStorage.getItem('auth') == 'YES' ? (
-            <Link to={Path.Login}>
-              <button className="flex items-center justify-center w-12 h-12 m-4 ml-2 mr-0 bg-red-400 hover:bg-red-500 md:w-12 md:h-12 rounded-xl">
-                <img src={LogoutIcon} onClick={handleLogout} className="w-6 h-6" />
+            // <Link to={Path.Login}>
+              <button
+                onClick={handleLogout}
+                className="flex items-center justify-center w-12 h-12 m-4 ml-2 mr-0 bg-red-400 hover:bg-red-500 md:w-12 md:h-12 rounded-xl"
+              >
+                <img src={LogoutIcon} className="w-6 h-6" />
               </button>
-            </Link>
+            // </Link>
           ) : (
             <Link to={Path.Login}>
-              <button className="flex items-center justify-center w-12 h-12 m-4 ml-2 mr-0 bg-green-500 hover:bg-green-600 rounded-xl">
-                <img src={LoginIcon} onClick={handleLogout} className="w-8 h-8" />
+              <button
+                onClick={handleLogout}
+                className="flex items-center justify-center w-12 h-12 m-4 ml-2 mr-0 bg-green-500 hover:bg-green-600 rounded-xl"
+              >
+                <img src={LoginIcon} className="w-8 h-8" />
               </button>
             </Link>
           )}
