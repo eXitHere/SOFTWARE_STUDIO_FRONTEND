@@ -107,8 +107,10 @@ function List({ columns, data, sortHandler, sortBy, fetchAll }) {
             <td className="px-6 py-4 text-center">
               <button
                 id={blog.blog_id}
-                onClick={(e) => handleHiding(e, blog.hide)}
-                className={`w-20 p-4 text-white ${!blog.hide ? 'bg-green-400' : 'bg-gray-400'} rounded-xl`}
+                onClick={(e) => !blog.deleted && handleHiding(e, blog.hide)}
+                className={`select-none w-20 p-4 text-white ${!blog.hide ? 'bg-green-400' : 'bg-gray-400'} rounded-xl ${
+                  blog.deleted && 'opacity-50'
+                }`}
               >
                 {!blog.hide ? 'Show' : 'Hide'}
               </button>
@@ -117,7 +119,7 @@ function List({ columns, data, sortHandler, sortBy, fetchAll }) {
             <td className="px-6 py-4 text-right">
               <button
                 id={blog.blog_id}
-                className={`w-20 p-4 text-white ${!blog.deleted ? 'bg-red-400' : 'bg-gray-400'} rounded-xl`}
+                className={`select-none w-20 p-4 text-white ${!blog.deleted ? 'bg-red-400' : 'bg-gray-400'} rounded-xl`}
                 onClick={(e) => handleDelete(e)}
                 disabled={blog.deleted === true}
               >

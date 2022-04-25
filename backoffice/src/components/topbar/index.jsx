@@ -23,7 +23,7 @@ function TopBar() {
           <div className="opacity-50">{user.role}</div>
         </div>
       </a>
-      <a className="p-4 cursor-pointer text-red-400" href="logout">
+      <a className="p-4 cursor-pointer text-red-400" href="/logout">
         <span className="mr-2">ออกจากระบบ</span>
         <i className="fa fa-sign-out" aria-hidden="true"></i>
       </a>
