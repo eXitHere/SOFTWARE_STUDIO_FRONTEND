@@ -157,7 +157,7 @@ function Editor() {
               className={`p-4 border w-36 h-14 text-center items-center font-bold rounded-md text-white bg-green-400`}
               onClick={handleSubmit}
             >
-              Save Changes
+              Save
             </button>
             <button
               className={`p-4 border w-36 h-14 text-center items-center font-bold rounded-md text-white bg-red-400`}
