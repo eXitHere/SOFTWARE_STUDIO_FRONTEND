@@ -6,5 +6,7 @@ export enum Path {
   CreateBlog = '/create-blog',
   Profile = '/profile',
   Login = '/login',
-  Register = '/register'
+  Register = '/register',
+  MapGoogle = '/map',
+  Moon = '/moon'
 }

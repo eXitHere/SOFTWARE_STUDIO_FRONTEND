@@ -15,6 +15,8 @@ const RawCreateBlog = lazy(() => import('pages/createBlog'))
 const RawProfile = lazy(() => import('pages/profile'))
 const RawLogin = lazy(() => import('pages/login'))
 const RawRegister = lazy(() => import('pages/register'))
+const RawMap = lazy(() => import('pages/map'))
+const RawMoon = lazy(() => import('pages/moon'))
 
 export const Home = () => (
   <WrappedSuspense>
@@ -67,6 +69,18 @@ export const Login = () => (
 export const Register = () => (
   <WrappedSuspense>
     <RawRegister />
+  </WrappedSuspense>
+)
+
+export const Map = () => (
+  <WrappedSuspense>
+    <RawMap />
+  </WrappedSuspense>
+)
+
+export const Moon = () => (
+  <WrappedSuspense>
+    <RawMoon />
   </WrappedSuspense>
 )
 

@@ -83,10 +83,10 @@ function Editor() {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="p-4 shadow-md flex flex-col justify-center items-center space-y-8">
-          <div className="flex w-full justify-center mb-10">
+        <div className="flex flex-col items-center justify-center p-4 space-y-8 shadow-md">
+          <div className="flex justify-center w-full mb-10">
             <Avatar size="16vh" className="p-2" name={user.name} />
-            <div className="p-8 flex flex-col justify-center">
+            <div className="flex flex-col justify-center p-8">
               <div className="text-2xl font-bold">{user.name}</div>
               <div>{user.role}</div>
             </div>
@@ -96,7 +96,7 @@ function Editor() {
               <div>
                 <label>Name</label>
               </div>
-              <input id="name" className="p-2 border w-3/4" value={user.name} onChange={handleChange} type="input" />
+              <input id="name" className="w-3/4 p-2 border" value={user.name} onChange={handleChange} type="input" />
             </div>
             <div className="w-1/2">
               <div>
@@ -104,7 +104,7 @@ function Editor() {
               </div>
               <input
                 id="username"
-                className="p-2 border w-3/4"
+                className="w-3/4 p-2 border"
                 value={user.username}
                 onChange={handleChange}
                 type="input"
@@ -118,7 +118,7 @@ function Editor() {
               </div>
               <input
                 id="password"
-                className="p-2 border w-3/4"
+                className="w-3/4 p-2 border"
                 value={user.password}
                 onChange={handleChange}
                 placeholder="********"
@@ -152,7 +152,7 @@ function Editor() {
               <span className="text-primary">{moment(user.updated_date).format('MMMM Do YYYY, h:mm:ss a')}</span>
             </div>
           </div>
-          <div className="flex flex-row justify-center space-x-4 w-full">
+          <div className="flex flex-row justify-center w-full space-x-4">
             <button
               className={`p-4 border w-36 h-14 text-center items-center font-bold rounded-md text-white bg-green-400`}
               onClick={handleSubmit}

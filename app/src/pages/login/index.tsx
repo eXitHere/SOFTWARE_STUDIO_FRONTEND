@@ -23,13 +23,19 @@ export const Login = () => {
   }
 
   const sendLogin = async () => {
-    const response = await axios.post('https://thammathip.exitguy.studio/auth/Session/login', userLogin)
+    try {
+      const response = await axios.post('https://thammathip.exitguy.studio/auth/Session/login', userLogin)
     window.localStorage.setItem('accessToken', response.data.accessToken)
     window.localStorage.setItem('refreshToken', response.data.refreshToken)
     window.localStorage.setItem('anoucement', 'FALSE')
     window.localStorage.setItem('auth', 'YES')
     console.log(response)
     return navigateTo(Path.Profile)
+    }catch(e){
+      alert("ชื่อผู้ใช้ หรือรหัสผ่านไม่ถูกต้อง")
+      console.log(e)
+    }
+    
   }
 
   return (
