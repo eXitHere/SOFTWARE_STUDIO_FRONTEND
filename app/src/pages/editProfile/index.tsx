@@ -41,7 +41,7 @@ export const EditProfile = () => {
   const deleteUser = async () => {
     try {
       const response = await axios.delete(
-        `https://thammathip.exitguy.studio/api/Admin/manage/user/delete/${decoded.id}`,
+        `https://thammathip.exitguy.studio/api/User/delete`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem('accessToken')}`,
@@ -56,7 +56,6 @@ export const EditProfile = () => {
   }
 
   const open = (content: React.ReactNode) => {
-    deleteUser()
     setContent(content)
     setIsModalOpen(true)
   }
@@ -67,6 +66,7 @@ export const EditProfile = () => {
   }
 
   const agree = () => {
+    deleteUser()
     setIsModalOpen(false)
     setContent(null)
   }

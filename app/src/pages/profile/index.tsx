@@ -8,6 +8,8 @@ import { BlogCard } from 'components/common/BlogCard'
 import { Navbar } from 'components/common/Navbar'
 import { Screen } from 'components/layouts/Screen'
 import { AnoucementModal } from 'components/common/AnoucementModal'
+import moonIcon from 'assets/icons/moonIcon.png'
+import templeMark from 'assets/images/templeMark.png'
 
 import { Path } from 'routes'
 
@@ -222,10 +224,22 @@ export const Profile = () => {
             </button>
           </Link>
         </div>
+
+        <div className="flex flex-row justify-center">
+          <Link to={Path.Moon}>
+            <button className="flex items-center justify-center w-16 h-16 my-2 mr-4 bg-black rounded-lg drop-shadow-lg">
+              <img src={moonIcon} />
+            </button>
+          </Link>
+          <Link to={Path.MapGoogle}>
+            <button className="flex items-center justify-center w-16 h-16 my-2 ml-4 bg-black rounded-lg drop-shadow-lg">
+              <img className="w-8 h-8" src={templeMark} />
+            </button>
+          </Link>
+        </div>
       </div>
       {/* กระทู้ทั้งหมดของฉัน */}
       <div className="flex flex-col items-center w-full">
-        
         <FilterButton />
         {/* blogs list */}
         {searchBlogs.length > 0 ? (
@@ -249,7 +263,7 @@ export const Profile = () => {
           })
         ) : loading ? (
           <div className="relative flex flex-col items-center justify-center w-11/12 h-24 mb-4 md:flex-row lg:w-4/5 rounded-2xl md:h-48">
-            <LoadIcon/>
+            <LoadIcon />
           </div>
         ) : (
           <div className="relative flex flex-col items-center justify-center w-11/12 h-24 mb-4 md:flex-row lg:w-4/5 bg-primary-lightest rounded-2xl md:h-48">

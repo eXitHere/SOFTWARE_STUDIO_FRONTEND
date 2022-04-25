@@ -1,6 +1,6 @@
 import { BrowserRouter, RouteObject, useRoutes } from 'react-router-dom'
 
-import { Blog, MainBlogs, Home, EditProfile, CreateBlog, Profile, Login, Register } from 'routes/lazy'
+import { Blog, MainBlogs, Home, EditProfile, CreateBlog, Profile, Login, Register, Map, Moon } from 'routes/lazy'
 import { Path } from 'routes/path'
 
 import NotFound from 'pages/404'
@@ -39,6 +39,14 @@ const routes: RouteObject[] = [
       {
         path: Path.Register,
         children: [{ index: true, element: <Register /> }],
+      },
+      {
+        path: Path.MapGoogle,
+        children: [{ index: true, element: <Map /> }],
+      },
+      {
+        path: Path.Moon,
+        children: [{ index: true, element: <Moon/> }],
       },
       { path: '*', element: <NotFound /> },
     ],
