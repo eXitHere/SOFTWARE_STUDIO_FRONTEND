@@ -16,7 +16,7 @@ function TopBar() {
 
   return (
     <div className="w-full flex justify-end items-center shadow-md divide-x-2">
-      <a href={`users/${user.id}`} className="flex flex-row p-4 cursor-pointer items-center">
+      <a href={`/users/${user.id}`} className="flex flex-row p-4 cursor-pointer items-center">
         <Avatar size="5vh" className="rounded" name={user.display_name} />
         <div className="flex flex-col pl-2">
           <div className="font-bold">{user.display_name}</div>
