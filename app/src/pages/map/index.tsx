@@ -56,7 +56,7 @@ export const MapTemple = () => {
     // zoomControl: true,
   }
   const {isLoaded, loadError} = useLoadScript({
-      googleMapsApiKey: "AIzaSyCD0nxja3MVVu2jxqaQDOKiAw33L2-T_IE",
+      googleMapsApiKey: "",
       libraries,
     })
   if (loadError) return <div>Error loading maps</div>
