@@ -118,8 +118,26 @@ const Blog = () => {
   }
 
   useEffect(() => {
+    if (window.localStorage.getItem('accessToken') == null) {
+      window.localStorage.setItem('auth', 'NO')
+      console.log('...')
+    } else {
+      const token = window.localStorage.getItem('accessToken')
+      const userData = JSON.parse(
+        JSON.stringify(jwt_decode(token || '{}')).replace(
+          'http://schemas.microsoft.com/ws/2008/06/identity/claims/role',
+          'role',
+        ),
+      )
+      console.log(userData)
+      setDecoded(userData)
+    }
+  }, [])
+
+  useEffect(() => {
     if (window.localStorage.getItem('auth') == 'YES') {
       const token = window.localStorage.getItem('accessToken')
+      console.log(token)
       setDecoded(jwt_decode(token || '{}'))
     }
     getBlogs()
@@ -186,20 +204,39 @@ const Blog = () => {
         </>
       ) : null}
       <div className="flex flex-col w-11/12 mt-4 mb-4 md:w-4/5">
-        <p className="text-xl font-semibold text-white">{`ความเห็นทั้งหมด : ${blog.comments?.length}`}</p>
+        <p className="text-xl font-semibold text-white">{`ความเห็นทั้งหมด : ${
+          decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === 'admin'
+            ? blog.comments?.length
+            : blog.comments?.filter((e: any) => e.author)?.length
+        }`}</p>
       </div>
       <FilterButton />
       {blog.comments ? (
         blog.comments.length != 0 ? (
           comment?.slice((currentPage - 1) * commentsPerPage, currentPage * commentsPerPage).map((data: any) => {
-            return (
+            return !data.author ? (
+              decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === 'admin' ? (
+                <CommentCard
+                  key={data.comment_id}
+                  login_id={decoded.id}
+                  login_name={decoded.username}
+                  comment_id={data.comment_id}
+                  user_id={data.author?.user_id}
+                  name={data.author?.name}
+                  comment={data.comment}
+                  like={data.like}
+                  like_users={data.like_users}
+                  created_date={data.created_date}
+                />
+              ) : null
+            ) : (
               <CommentCard
                 key={data.comment_id}
                 login_id={decoded.id}
                 login_name={decoded.username}
                 comment_id={data.comment_id}
-                user_id={data.author.user_id}
-                name={data.author.name}
+                user_id={data.author?.user_id}
+                name={data.author?.name}
                 comment={data.comment}
                 like={data.like}
                 like_users={data.like_users}

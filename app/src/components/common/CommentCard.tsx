@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { UpdateContext } from 'contexts/store'
 import AvatarGroup from 'react-avatar-group'
 import { dateRelative } from 'utils/date'
@@ -21,6 +21,8 @@ type CommentCardProps = Pick<
   Comment,
   'login_id' | 'login_name' | 'comment_id' | 'user_id' | 'name' | 'comment' | 'like' | 'like_users' | 'created_date'
 >
+
+const maxUserDisplayed = 3
 
 export const CommentCard = ({
   login_id,
@@ -120,12 +122,9 @@ export const CommentCard = ({
 
   return (
     <div
-      className={classNames(
-        'flex flex-col w-11/12 mb-4 lg:w-4/5 rounded-2xl min-h-68 bg-primary-lightest',
-        {
-          'drop-shadow-md': isModalOpen === false,
-        },
-      )}
+      className={classNames('flex flex-col w-11/12 mb-4 lg:w-4/5 rounded-2xl min-h-68 bg-primary-lightest', {
+        'drop-shadow-md': isModalOpen === false,
+      })}
     >
       {/* profile picture + name */}
       <div className="flex flex-row justify-end w-full rounded-md">
@@ -176,10 +175,7 @@ export const CommentCard = ({
             </button>
           ) : (
             <div className="w-12 h-8">
-              <img
-                src={likeImg}
-                className="w-full h-full"
-              />
+              <img src={likeImg} className="w-full h-full" />
             </div>
           )}
         </div>
@@ -205,7 +201,7 @@ export const CommentCard = ({
                   ) : null}
                 </div>
                 <div className="ml-2">
-                  <p className="text-md">{name}</p>
+                  <p className={`text-md ${!name && 'text-red-400'}`}>{name || 'Blocked User'}</p>
                   <p className="mt-1 text-sm italic opacity-70">{dateRelative(created_date)}</p>
                 </div>
               </div>
@@ -216,7 +212,8 @@ export const CommentCard = ({
       </div>
       {like_users.length > 0 ? (
         <div className="flex flex-row p-2 text-sm border-t-2">
-          ถูกใจโดย {like_users.join(', ')} {like_users.length > 1 ? 'และอีกหลายคน' : ''}
+          ถูกใจโดย {like_users.slice(0, maxUserDisplayed).join(', ')}{' '}
+          {like_users.length > maxUserDisplayed ? 'และอีกหลายคน' : ''}
         </div>
       ) : (
         <div></div>
