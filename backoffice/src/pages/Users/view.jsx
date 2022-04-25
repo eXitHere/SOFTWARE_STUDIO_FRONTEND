@@ -86,7 +86,7 @@ function Users() {
 
   useEffect(() => {
     if (filter.length) {
-      const filtered = users.filter((e) => e.name.includes(filter) || e.username.includes(filter))
+      const filtered = users.filter((e) => e.name?.includes(filter) || e.username?.includes(filter))
       setFocusUser(filtered)
     } else {
       setFocusUser(users.slice(perPage * (page - 1), perPage * page))

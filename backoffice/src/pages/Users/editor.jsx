@@ -4,6 +4,7 @@ import moment from 'moment'
 import { useNavigate, useParams } from 'react-router-dom'
 import { getUser, updateUser } from '../../api/user'
 import Loader from '../../components/loader'
+import { getUserInfo } from '../../utils/user.utils'
 
 function Editor() {
   const { id } = useParams()
@@ -18,6 +19,7 @@ function Editor() {
     deleted: false,
     created_date: '2022-04-18T14:12:42.152Z',
     updated_date: '2022-04-18T14:12:42.152Z',
+    password: '',
   })
   const [isLoading, setLoading] = useState(false)
 
@@ -26,9 +28,9 @@ function Editor() {
 
     let fetchUser = await getUser(id)
     if (fetchUser) {
-      setUser({ ...fetchUser })
+      setUser({ ...fetchUser, password: '' })
     }
-
+    console.log(getUserInfo())
     setLoading(false)
   }, [])
 
@@ -58,6 +60,8 @@ function Editor() {
     }).then(async (result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
+        console.log(user)
+        // const status = true
         const status = await updateUser(id, user)
         if (status) {
           Swal.fire({
@@ -130,6 +134,7 @@ function Editor() {
                 <label>Status</label>
               </div>
               <button
+                disabled={getUserInfo().id === user.id}
                 id="banned"
                 className={`p-2 border w-3/4 text-white ${user.banned ? 'bg-red-400' : 'bg-green-400'}`}
                 onClick={handleChange}

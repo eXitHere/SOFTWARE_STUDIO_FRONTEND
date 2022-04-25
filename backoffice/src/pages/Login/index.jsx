@@ -36,8 +36,8 @@ function Login() {
     const result = await login(username, password)
     if (result) {
       const userInfo = await getUserInfo()
-      console.log(userInfo)
       if (userInfo.role !== 'admin') {
+        alert(`Good bye~`)
         return navigateTo('/logout')
       } else {
         if (nextPath) return navigateTo(nextPath)
