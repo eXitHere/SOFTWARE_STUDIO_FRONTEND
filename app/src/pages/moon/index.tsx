@@ -2,7 +2,11 @@ import { Navbar } from 'components/common/Navbar'
 import { Screen } from 'components/layouts/Screen'
 import { useState, useContext, useEffect } from 'react'
 import jwt_decode from 'jwt-decode'
+
 import { Footer } from 'components/common/Footer'
+
+import { LoadIcon } from 'components/common/loadIcon'
+
 
 export const Moon = () => {
   const [decoded, setDecoded] = useState<any>({})
@@ -10,6 +14,8 @@ export const Moon = () => {
   const [thaiDate, setThaiDate] = useState<any>('')
   const [phaseName, setPhaseName] = useState<string>('')
   const [moonImage, setMoonImage] = useState<any>('')
+  const [loading, setLoading] = useState<boolean>(false)
+
   function load_moon_phases(obj: any, callback: any) {
     const gets = []
     for (const i in obj) {
@@ -25,6 +31,7 @@ export const Moon = () => {
     }
     xmlhttp.open('GET', url, true)
     xmlhttp.send()
+  
   }
 
   const configMoon = {
@@ -38,6 +45,7 @@ export const Moon = () => {
   }
 
   const example_1 = (moon: any) => {
+    setLoading(false)
     // const day = new Date().getDate()
     const day = new Date().getDate()
     const month = new Date().getMonth()
@@ -59,6 +67,7 @@ export const Moon = () => {
     } else if (p === 'Full moon') {
       setPhaseName('วันขึ้น 15 ค่ำ')
     }
+
 
     const str = String(month) as string
 
@@ -98,11 +107,10 @@ export const Moon = () => {
     if (moon.phase[day].svg) {
       document.getElementById('moonSVG')!.innerHTML = [moon.phase[day].svg!] as any
     }
-
-    
   }
 
   useEffect(() => {
+    setLoading(true)
     if (window.localStorage.getItem('accessToken') == null) {
       window.localStorage.setItem('auth', 'NO')
     } else {
@@ -116,6 +124,7 @@ export const Moon = () => {
       setDecoded(userData)
       console.log(userData)
       load_moon_phases(configMoon, example_1)
+      
     }
   }, [])
   
@@ -124,11 +133,17 @@ export const Moon = () => {
       <Navbar isBoards={false} username={decoded.display_name} />
       <div className="flex flex-col items-center w-screen h-screen ">
         <p className="pb-8 mt-32 text-3xl font-bold text-white">ปฏิธินจันทรคติ</p>
-        <div className="flex flex-col items-center justify-center w-full h-full">
-          <div id="moonSVG"></div>
-          <p className="mt-8 text-2xl text-white">{` ${thaiDate}`}</p>
-          <p className="mt-4 text-2xl text-white">{`${phaseName} ${thaiMonth}`}</p>
-        </div>
+        {loading ? (
+          <div className="flex flex-col items-center justify-center w-full h-full">
+            <LoadIcon />
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center w-full h-full">
+            <div id="moonSVG"></div>
+            <p className="mt-8 text-2xl text-white">{` ${thaiDate}`}</p>
+            <p className="mt-4 text-2xl text-white">{`${phaseName} ${thaiMonth}`}</p>
+          </div>
+        )}
         <Footer />
       </div>
     </Screen>
