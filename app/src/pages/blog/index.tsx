@@ -42,6 +42,7 @@ const Blog = () => {
         setPageCount(1)
       }
       setBlog(response.data)
+      console.log(response.data)
       setComment(response.data.comments)
       setLoading(false)
     } catch (e) {
@@ -176,10 +177,11 @@ const Blog = () => {
           category={blog.category}
           like_users={blog.like_users}
           like={blog?.like}
-          createdDate={dateRelative(blog.created_date)}
+          createdDate={blog.created_date}
           author_name={blog.author?.name}
           author_id={blog.author?.user_id}
           username={decoded.username}
+          updated_date={blog.updated_date}
         />
       ) : (
         <div className="flex flex-col items-center justify-center w-11/12 mt-36 lg:w-4/5 md:mt-28 drop-shadow-md h-96">
@@ -227,6 +229,7 @@ const Blog = () => {
                   like={data.like}
                   like_users={data.like_users}
                   created_date={data.created_date}
+                  updated_date={data.updated_date}
                 />
               ) : null
             ) : (
@@ -241,6 +244,7 @@ const Blog = () => {
                 like={data.like}
                 like_users={data.like_users}
                 created_date={data.created_date}
+                updated_date={data.updated_date}
               />
             )
           })

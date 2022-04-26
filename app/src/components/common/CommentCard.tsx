@@ -19,7 +19,16 @@ import { Comment } from 'types'
 
 type CommentCardProps = Pick<
   Comment,
-  'login_id' | 'login_name' | 'comment_id' | 'user_id' | 'name' | 'comment' | 'like' | 'like_users' | 'created_date'
+  | 'login_id'
+  | 'login_name'
+  | 'comment_id'
+  | 'user_id'
+  | 'name'
+  | 'comment'
+  | 'like'
+  | 'like_users'
+  | 'created_date'
+  | 'updated_date'
 >
 
 const maxUserDisplayed = 3
@@ -34,6 +43,7 @@ export const CommentCard = ({
   like,
   like_users,
   created_date,
+  updated_date,
 }: CommentCardProps) => {
   const updateContext = useContext(UpdateContext)
   const [content, setContent] = useState<React.ReactNode>(null)
@@ -60,7 +70,7 @@ export const CommentCard = ({
   }
 
   const handleLike = () => {
-    if (like_users.includes(login_name) == false) {
+    if (like_users.map((e) => e.username).includes(login_name) == false) {
       console.log('Like')
     } else {
       console.log('UnLike')
@@ -131,6 +141,9 @@ export const CommentCard = ({
         {/* topic + preview */}
         <div className="w-full py-1 pr-0 md:py-6">
           <p className="py-2 mb-8 ml-4 text-sm md:text-lg">{comment}</p>
+          <p className="ml-4 mt-1 text-sm italic opacity-60">
+            {created_date !== updated_date && <div>แก้ไขเมื่อ {dateRelative(updated_date)}</div>}
+          </p>
         </div>
         <div className="flex justify-center w-20 m-2">
           {user_id == login_id && (
@@ -157,7 +170,7 @@ export const CommentCard = ({
           <p className="my-2 mr-2 font-semibold">{like}</p>
           {window.localStorage.getItem('auth') == 'YES' ? (
             <button onClick={handleLike} className="w-12 h-8 drop-shadow-md">
-              {like_users.includes(login_name) ? (
+              {like_users.map((e) => e.username).includes(login_name) ? (
                 <img
                   src={likeImg}
                   onMouseOver={(e) => (e.currentTarget.src = likeHover)}
@@ -211,13 +224,23 @@ export const CommentCard = ({
         </div>
       </div>
       {like_users.length > 0 ? (
-        <div className="flex flex-row p-2 text-sm border-t-2">
-          ถูกใจโดย {like_users.slice(0, maxUserDisplayed).join(', ')}{' '}
+        <div
+          className="flex flex-row p-2 text-sm border-t-2 cursor-pointer"
+          onClick={() => {
+            console.log('Hello World')
+          }}
+        >
+          ถูกใจโดย{' '}
+          {like_users
+            .slice(0, maxUserDisplayed)
+            .map((e) => e.name)
+            .join(', ')}{' '}
           {like_users.length > maxUserDisplayed ? 'และอีกหลายคน' : ''}
         </div>
       ) : (
         <div></div>
       )}
+
       {content}
       {updateCommentContent}
     </div>

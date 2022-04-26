@@ -3,6 +3,7 @@ import { Editor } from 'react-draft-wysiwyg'
 import { EditorState, convertFromRaw } from 'draft-js'
 import AvatarGroup from 'react-avatar-group'
 import axios from 'pages/apiclient'
+import { dateRelative } from 'utils/date'
 
 import { UpdateContext } from 'contexts/store'
 
@@ -11,7 +12,6 @@ import unlikeImg from 'assets/images/unlike.png'
 import likeHover from 'assets/images/likeHover.png'
 import unlikeHover from 'assets/images/unlikeHover.png'
 import tagIcon from 'assets/icons/tagIcon.png'
-
 
 import { Detail } from 'types'
 
@@ -27,7 +27,10 @@ type ContentProps = Pick<
   | 'author_name'
   | 'author_id'
   | 'username'
+  | 'updated_date'
 >
+
+const maxUserDisplayed = 3
 
 export const Content = ({
   blog_id,
@@ -39,12 +42,11 @@ export const Content = ({
   createdDate,
   author_name,
   username,
-}: 
-
-ContentProps) => {
+  updated_date,
+}: ContentProps) => {
   const updateContext = useContext(UpdateContext)
   const [editorState, setEditorState] = useState(() => EditorState.createEmpty())
- 
+
   const sendLike = async () => {
     const response = await axios.patch(
       `https://thammathip.exitguy.studio/api/Blog/like/${blog_id}`,
@@ -56,7 +58,7 @@ ContentProps) => {
       },
     )
 
-    if (like_users.includes(username) == false) {
+    if (like_users.map((e) => e.username).includes(username) == false) {
       console.log('Like')
       updateContext.setUpdate(`LIKE BLOG ${blog_id}`)
     } else {
@@ -93,6 +95,9 @@ ContentProps) => {
           />
         </div>
         <div className="flex flex-col w-full">
+          <p className="ml-4 mt-1 text-sm italic opacity-60">
+            {createdDate !== updated_date && <div>แก้ไขเมื่อ {dateRelative(updated_date)}</div>}
+          </p>
           <div className="flex items-center justify-between">
             <div className="flex items-center p-1 py-1 md:p-4">
               {author_name ? (
@@ -107,13 +112,13 @@ ContentProps) => {
               ) : null}
               <div className="ml-2">
                 <p className="text-md">{author_name}</p>
-                <p className="mt-1 text-sm italic opacity-70">{createdDate}</p>
+                <p className="mt-1 text-sm italic opacity-70">{dateRelative(createdDate)}</p>
               </div>
             </div>
             <div className="flex items-center justify-center">
               {window.localStorage.getItem('auth') == 'YES' ? (
                 <button onClick={handleLike} className="h-10 w-14 md:w-20 md:h-12 drop-shadow-md">
-                  {like_users?.includes(username) ? (
+                  {like_users?.map((e) => e.username)?.includes(username) ? (
                     <img
                       src={likeImg}
                       onMouseOver={(e) => (e.currentTarget.src = likeHover)}
@@ -137,6 +142,18 @@ ContentProps) => {
               <p className="px-1 text-lg font-bold md:px-3 md:text-xl">{like}</p>
             </div>
           </div>
+          {like_users?.length > 0 ? (
+            <div className="flex flex-row p-2 pt-4 text-sm border-t-2">
+              ถูกใจโดย{' '}
+              {like_users
+                .slice(0, maxUserDisplayed)
+                .map((e) => e.name)
+                .join(', ')}{' '}
+              {like_users?.length > maxUserDisplayed ? 'และอีกหลายคน' : ''}
+            </div>
+          ) : (
+            <div></div>
+          )}
         </div>
       </div>
     </div>
