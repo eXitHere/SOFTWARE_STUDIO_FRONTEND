@@ -39,7 +39,7 @@ export const CommentCard = ({
   const [content, setContent] = useState<React.ReactNode>(null)
   const [updateCommentContent, setUpdateCommentContent] = useState<React.ReactNode>(null)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
-  const [, setIsUpdateCommentModalOpen] = useState<boolean>(false)
+  const [isUpdateCommentModalOpen, setIsUpdateCommentModalOpen] = useState<boolean>(false)
 
   const sendLike = async () => {
     const response = await axios.patch(
@@ -95,8 +95,8 @@ export const CommentCard = ({
   }
 
   const open = (content: React.ReactNode) => {
-    setContent(content)
     setIsModalOpen(true)
+    setContent(content)
   }
 
   const openUpdateComment = (updateCommentContent: React.ReactNode) => {
@@ -123,7 +123,7 @@ export const CommentCard = ({
   return (
     <div
       className={classNames('flex flex-col w-11/12 mb-4 lg:w-4/5 rounded-2xl min-h-68 bg-primary-lightest', {
-        'drop-shadow-md': isModalOpen === false,
+        'drop-shadow-md': isUpdateCommentModalOpen === false,
       })}
     >
       {/* profile picture + name */}

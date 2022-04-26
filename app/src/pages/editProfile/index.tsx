@@ -156,12 +156,14 @@ export const EditProfile = () => {
           <p className="pb-3 text-lg text-white">รหัสผ่าน</p>
           <input
             value={password}
+            type="password"
             onChange={handlePasswordChange}
             className="w-full h-8 p-2 mb-5 rounded-lg drop-shadow-md"
           />
           <p className="pb-3 text-lg text-white">ยืนยันรหัสผ่าน</p>
           <input
             value={confirmpassword}
+            type="password"
             onChange={handleConfirmpassword}
             className="w-full h-8 p-2 mb-5 rounded-lg drop-shadow-md"
           />

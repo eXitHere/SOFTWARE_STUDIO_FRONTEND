@@ -4,7 +4,7 @@ import AvatarGroup from 'react-avatar-group'
 import searchIcon from 'assets/images/searchIcon.png'
 import LoginIcon from 'assets/icons/loginIcon.png'
 import LogoutIcon from 'assets/icons/logoutIcon.png'
-
+import classNames from 'classnames'
 import { Path } from 'routes'
 import { SearchContext, UserContext } from 'contexts/store'
 import axios from 'axios'
@@ -78,7 +78,15 @@ export const Navbar = ({ isBoards, username }: NavbarProps) => {
   // }
 
   return (
-    <div className="fixed flex flex-col items-center w-full p-2 px-4 shadow-md z-100 md:h-24 h-36 md:px-8 bg-primary-main">
+    <div
+      className={classNames(
+        'fixed flex flex-col items-center w-full p-2 px-4 shadow-md z-100 md:h-24 md:px-8 bg-primary-main',
+        {
+          'h-36': isBoards,
+          'h-24' : !isBoards
+        },
+      )}
+    >
       <div className="flex items-center justify-between w-full">
         <Link to={Path.MainBlogs}>
           <p className="text-lg font-bold text-white hover:text-gray-200 md:text-3xl">ThammaTip</p>
@@ -109,14 +117,14 @@ export const Navbar = ({ isBoards, username }: NavbarProps) => {
 
           {window.localStorage.getItem('auth') == 'YES' ? (
             // <Link to={Path.Login}>
-              <button
-                onClick={handleLogout}
-                className="flex items-center justify-center w-12 h-12 m-4 ml-2 mr-0 bg-red-400 hover:bg-red-500 md:w-12 md:h-12 rounded-xl"
-              >
-                <img src={LogoutIcon} className="w-6 h-6" />
-              </button>
-            // </Link>
+            <button
+              onClick={handleLogout}
+              className="flex items-center justify-center w-12 h-12 m-4 ml-2 mr-0 bg-red-400 hover:bg-red-500 md:w-12 md:h-12 rounded-xl"
+            >
+              <img src={LogoutIcon} className="w-6 h-6" />
+            </button>
           ) : (
+            // </Link>
             <Link to={Path.Login}>
               <button
                 onClick={handleLogout}
@@ -128,9 +136,11 @@ export const Navbar = ({ isBoards, username }: NavbarProps) => {
           )}
         </div>
       </div>
-      <div className="w-full">
-        <SearchBox searchContext={searchContext} c="md:hidden" />
-      </div>
+      {isBoards && (
+        <div className="w-full">
+          <SearchBox searchContext={searchContext} c="md:hidden" />
+        </div>
+      )}
     </div>
   )
 }
