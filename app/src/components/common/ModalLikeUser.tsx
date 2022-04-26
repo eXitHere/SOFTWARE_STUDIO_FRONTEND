@@ -6,7 +6,7 @@ export const ModalLikeUsers = ({ like_users, close }: ModalLikeUserProp) => {
   return (
     <div
       id="popup-modal"
-      className="fixed top-0 bottom-0 left-0 right-0 z-50 flex flex-col items-center justify-center w-screen h-screen backdrop-blur-lg"
+      className="fixed top-0 bottom-0 left-0 right-0 z-100 flex flex-col items-center justify-center w-screen h-screen backdrop-blur-lg"
     >
       <div className="flex flex-col items-center justify-center w-11/12 bg-white shadow h-3/6 rounded-2xl dark:bg-gray-700">
         <p className="p-4 mb-6 text-3xl font-bold text-white">แก้ไขความคิดเห็น</p>

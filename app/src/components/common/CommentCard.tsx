@@ -241,7 +241,7 @@ export const CommentCard = ({
             openLikeUser()
           }}
         >
-          ถูกใจโดยอิอิ{' '}
+          ถูกใจโดย{' '}
           {like_users
             .slice(0, maxUserDisplayed)
             .map((e) => e.name)
