@@ -205,17 +205,17 @@ export const MainBlogs = () => {
         searchBlogs.slice((currentPage - 1) * blogsPerPage, currentPage * blogsPerPage).map((data) => {
           return (
             <BlogCard
-              key={data.blog_id}
-              blog_id={data.blog_id}
-              author_name={data.author.name}
-              topic={data.topic}
-              content={data.content}
-              category={data.category}
-              like={data.like}
-              like_users={data.like_users}
-              date={data.created_date.split('T')[0]}
-              username={decoded.username}
-              user_role={decoded.role}
+              key={data?.blog_id}
+              blog_id={data?.blog_id}
+              author_name={data?.author?.name}
+              topic={data?.topic}
+              content={data?.content}
+              category={data?.category}
+              like={data?.like}
+              like_users={data?.like_users}
+              date={data?.created_date.split('T')[0]}
+              username={decoded?.username}
+              user_role={decoded?.role}
               profile_page={false}
             />
           )
