@@ -30,17 +30,16 @@ export const AnoucementModal = ({ close }: AnoucementProps) => {
       id="popup-anoucement"
       className="fixed z-50 flex flex-col items-center justify-center w-screen h-screen backdrop-blur-lg"
     >
-      <div className="relative flex flex-col items-center w-8/12 p-8 overflow-y-scroll bg-white shadow mt-28 rounded-2xl max-h-an">
-        <Editor
-          editorState={editorState}
-          toolbarClassName="hidden"
-          // wrapperClassName="wrapperClassName"
-          // editorClassName="editorClassName"
-          readOnly={true}
-          toolbar={{
-            options: [],
-          }}
-        />
+      <div className="relative flex flex-col items-center w-8/12 p-4 overflow-y-scroll bg-white shadow mt-28 rounded-2xl max-h-an">
+        <div className="w-full">
+          <Editor
+            editorState={editorState}
+            toolbarClassName="hidden"
+            // wrapperClassName="wrapperClassName"
+            // editorClassName="editorClassName"
+            readOnly={true}
+          />
+        </div>
 
         <div className="flex items-center justify-between w-full pt-2">
           <p className="left-0 font-normal text-md bottom-1 opacity-70">

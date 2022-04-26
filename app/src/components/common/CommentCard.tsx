@@ -187,7 +187,7 @@ export const CommentCard = ({
           </p>
         </div>
         <div className="flex justify-center w-20 m-2">
-          {user_id == login_id && user_role == 'admin' && (
+          {user_id == login_id && user_role != 'admin' && (
             <>
               <button
                 onClick={handleModal}
@@ -213,6 +213,16 @@ export const CommentCard = ({
               </button>
             </>
           )}
+          {(user_id == login_id && user_role == 'admin') && 
+            <>
+              <button
+                onClick={handleModal}
+                className="flex items-center justify-center w-8 h-8 mr-0 bg-red-400 hover:bg-red-500 left-4 bottom-3 rounded-xl"
+              >
+                <img src={trash} className="w-4 h-4"></img>
+              </button>
+            </>
+          }
         </div>
       </div>
       <div className="flex flex-row p-4 rounded-2xl">

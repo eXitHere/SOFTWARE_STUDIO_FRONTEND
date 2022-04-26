@@ -64,13 +64,12 @@ export const Navbar = ({ isBoards, username }: NavbarProps) => {
         },
       })
       console.log(response)
+      window.localStorage.clear()
+      console.log('Log Out')
       return navigateTo(Path.Login)
     } catch (e) {
       console.log(e)
-    
   }
-    window.localStorage.clear()
-    console.log('Log Out')
   }
 
   // const handleSearch = (e: FormEvent) => {
