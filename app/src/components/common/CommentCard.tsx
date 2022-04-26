@@ -30,6 +30,7 @@ type CommentCardProps = Pick<
   | 'like_users'
   | 'created_date'
   | 'updated_date'
+  | 'user_role'
 >
 
 const maxUserDisplayed = 3
@@ -45,6 +46,7 @@ export const CommentCard = ({
   like_users,
   created_date,
   updated_date,
+  user_role,
 }: CommentCardProps) => {
   const updateContext = useContext(UpdateContext)
   const [content, setContent] = useState<React.ReactNode>(null)
@@ -89,6 +91,34 @@ export const CommentCard = ({
     })
     updateContext.setUpdateComment(`DELETE ${comment_id}`)
     console.log(response)
+  }
+
+  const adminDeleteComment = async () => {
+    // const response = await axios.patch(
+    //   `https://thammathip.exitguy.studio/api/Admin/manage/comment/delete/${comment_id}`,{},
+    //   {
+    //     headers: {
+    //       authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+    //     },
+    //   },
+    // )
+    await axios({
+      url: `https://thammathip.exitguy.studio/api/Admin/manage/comment/delete/${comment_id}`,
+      method: "PATCH",
+      headers: {
+          authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      },
+    })
+    updateContext.setUpdateComment(`DELETE ${comment_id}`)
+  }
+  
+  const handleDelete = () => {
+    if (user_role == 'admin'){
+      adminDeleteComment()
+    }
+    else{
+      deleteComment()
+    }
   }
 
   const handleModal = () => {
@@ -142,7 +172,7 @@ export const CommentCard = ({
   }
 
   const agree = () => {
-    deleteComment()
+    handleDelete()
     setIsModalOpen(false)
     setContent(null)
   }
@@ -164,22 +194,34 @@ export const CommentCard = ({
           </p>
         </div>
         <div className="flex justify-center w-20 m-2">
-          {user_id == login_id && (
-            <>
-              <button
-                onClick={handleModal}
-                className="flex items-center justify-center w-8 h-8 mr-2 bg-red-400 hover:bg-red-500 left-4 bottom-3 rounded-xl"
-              >
-                <img src={trash} className="w-4 h-4"></img>
-              </button>
-              <button
-                onClick={handleUpdateCommentModal}
-                className="flex items-center justify-center w-8 h-8 mr-2 bg-blue-400 hover:bg-blue-500 left-14 bottom-3 rounded-xl"
-              >
-                <img src={edit} className="w-4 h-4"></img>
-              </button>
-            </>
-          )}
+          {(user_id == login_id &&
+            user_role == 'admin') && (
+              <>
+                <button
+                  onClick={handleModal}
+                  className="flex items-center justify-center w-8 h-8 mr-2 bg-red-400 hover:bg-red-500 left-4 bottom-3 rounded-xl"
+                >
+                  <img src={trash} className="w-4 h-4"></img>
+                </button>
+                <button
+                  onClick={handleUpdateCommentModal}
+                  className="flex items-center justify-center w-8 h-8 mr-2 bg-blue-400 hover:bg-blue-500 left-14 bottom-3 rounded-xl"
+                >
+                  <img src={edit} className="w-4 h-4"></img>
+                </button>
+              </>
+            )}
+          {(user_id != login_id &&
+            user_role == 'admin') && (
+              <>
+                <button
+                  onClick={handleModal}
+                  className="flex items-center justify-center w-8 h-8 mr-0 bg-red-400 hover:bg-red-500 left-4 bottom-3 rounded-xl"
+                >
+                  <img src={trash} className="w-4 h-4"></img>
+                </button>
+              </>
+            )}
         </div>
       </div>
       <div className="flex flex-row p-4 rounded-2xl">
