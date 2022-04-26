@@ -72,8 +72,9 @@ export type ModalEditCommentType = {
   close: () => void
 }
 
-export type ModalLikeUser = {
+export type ModalLikeUserType = {
   like_users: [{ username: string; name: string }]
+  close: () => void
 }
 
 export type Announcement = {

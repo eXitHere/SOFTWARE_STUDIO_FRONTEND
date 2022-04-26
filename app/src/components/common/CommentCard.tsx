@@ -16,6 +16,7 @@ import trash from 'assets/icons/trash.png'
 import edit from 'assets/icons/edit.png'
 
 import { Comment } from 'types'
+import { ModalLikeUser } from './modalLikeUser'
 
 type CommentCardProps = Pick<
   Comment,
@@ -48,8 +49,10 @@ export const CommentCard = ({
   const updateContext = useContext(UpdateContext)
   const [content, setContent] = useState<React.ReactNode>(null)
   const [updateCommentContent, setUpdateCommentContent] = useState<React.ReactNode>(null)
+  const [likeUserContent, setLikeUserContent] = useState<React.ReactNode>(null)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [isUpdateCommentModalOpen, setIsUpdateCommentModalOpen] = useState<boolean>(false)
+  const [isLikeUserModalOpen, setIsLikeUserModalOpen] = useState<boolean>(false)
 
   const sendLike = async () => {
     const response = await axios.patch(
@@ -104,6 +107,10 @@ export const CommentCard = ({
     )
   }
 
+  const handleLikeUserModal = () => {
+    openLikeUser(<ModalLikeUser like_users={[{username:"a",name:"b"}]} close={closeLikeUser}/>)
+  }
+
   const open = (content: React.ReactNode) => {
     setIsModalOpen(true)
     setContent(content)
@@ -112,6 +119,11 @@ export const CommentCard = ({
   const openUpdateComment = (updateCommentContent: React.ReactNode) => {
     setUpdateCommentContent(updateCommentContent)
     setIsUpdateCommentModalOpen(true)
+  }
+
+  const openLikeUser = (likeUserContent: React.ReactNode) => {
+    setLikeUserContent(likeUserContent)
+    setIsLikeUserModalOpen(true)
   }
 
   const close = () => {
@@ -123,6 +135,11 @@ export const CommentCard = ({
     setIsUpdateCommentModalOpen(false)
     setUpdateCommentContent(null)
   }
+  
+  const closeLikeUser = () => {
+    setIsLikeUserModalOpen(false)
+    setLikeUserContent(null)
+  }
 
   const agree = () => {
     deleteComment()
@@ -133,7 +150,8 @@ export const CommentCard = ({
   return (
     <div
       className={classNames('flex flex-col w-11/12 mb-4 lg:w-4/5 rounded-2xl min-h-68 bg-primary-lightest', {
-        'drop-shadow-md': isUpdateCommentModalOpen === false,
+        // 'drop-shadow-md': isUpdateCommentModalOpen === false,
+        // 'drop-shadow-lg': isLikeUserModalOpen === false,
       })}
     >
       {/* profile picture + name */}
@@ -141,7 +159,7 @@ export const CommentCard = ({
         {/* topic + preview */}
         <div className="w-full py-1 pr-0 md:py-6">
           <p className="py-2 mb-8 ml-4 text-sm md:text-lg">{comment}</p>
-          <p className="ml-4 mt-1 text-sm italic opacity-60">
+          <p className="mt-1 ml-4 text-sm italic opacity-60">
             {created_date !== updated_date && <div>แก้ไขเมื่อ {dateRelative(updated_date)}</div>}
           </p>
         </div>
@@ -227,7 +245,7 @@ export const CommentCard = ({
         <div
           className="flex flex-row p-2 text-sm border-t-2 cursor-pointer"
           onClick={() => {
-            console.log('Hello World')
+            handleLikeUserModal()
           }}
         >
           ถูกใจโดย{' '}
@@ -240,9 +258,9 @@ export const CommentCard = ({
       ) : (
         <div></div>
       )}
-
       {content}
       {updateCommentContent}
+      {likeUserContent}
     </div>
   )
 }
