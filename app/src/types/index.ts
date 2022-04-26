@@ -30,9 +30,10 @@ export type Detail = {
   topic: string
   content: string
   category: string[]
-  like_users: string[]
+  like_users: [{ username: string; name: string }]
   like: number
   createdDate: string
+  updated_date: string
   author_name: string
   author_id: string
   username: string
@@ -46,8 +47,9 @@ export type Comment = {
   name: string
   comment: string
   like: number
-  like_users: [string]
+  like_users: [{ username: string; name: string }]
   created_date: string
+  updated_date: string
 }
 
 export type Category = {
@@ -67,6 +69,11 @@ export type ModalEditCommentType = {
   blog_id: string
   comment_id: string
   comment: string
+  close: () => void
+}
+
+export type ModalLikeUser = {
+  like_users: [{ username: string; name: string }]
   close: () => void
 }
 

@@ -7,6 +7,7 @@ import classNames from 'classnames'
 
 import { ModalConfirm } from 'components/common/ModalConfirm'
 import { ModalEditComment } from 'components/common/ModalEditComment'
+import { ModalLikeUsers } from 'components/common/ModalLikeUser'
 
 import likeImg from 'assets/images/like.png'
 import unlikeImg from 'assets/images/unlike.png'
@@ -19,7 +20,16 @@ import { Comment } from 'types'
 
 type CommentCardProps = Pick<
   Comment,
-  'login_id' | 'login_name' | 'comment_id' | 'user_id' | 'name' | 'comment' | 'like' | 'like_users' | 'created_date'
+  | 'login_id'
+  | 'login_name'
+  | 'comment_id'
+  | 'user_id'
+  | 'name'
+  | 'comment'
+  | 'like'
+  | 'like_users'
+  | 'created_date'
+  | 'updated_date'
 >
 
 const maxUserDisplayed = 3
@@ -34,11 +44,13 @@ export const CommentCard = ({
   like,
   like_users,
   created_date,
+  updated_date,
 }: CommentCardProps) => {
   const updateContext = useContext(UpdateContext)
   const [content, setContent] = useState<React.ReactNode>(null)
   const [updateCommentContent, setUpdateCommentContent] = useState<React.ReactNode>(null)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+  const [isModalLikeUserOpen, setIsModalLikeUserOpen] = useState<boolean>(false)
   const [, setIsUpdateCommentModalOpen] = useState<boolean>(false)
 
   const sendLike = async () => {
@@ -60,7 +72,7 @@ export const CommentCard = ({
   }
 
   const handleLike = () => {
-    if (like_users.includes(login_name) == false) {
+    if (like_users.map((e) => e.username).includes(login_name) == false) {
       console.log('Like')
     } else {
       console.log('UnLike')
@@ -120,6 +132,14 @@ export const CommentCard = ({
     setContent(null)
   }
 
+  const closeLikeUser = () => {
+    setIsModalLikeUserOpen(false)
+  }
+
+  const openLikeUser = () => {
+    setIsModalLikeUserOpen(true)
+  }
+
   return (
     <div
       className={classNames('flex flex-col w-11/12 mb-4 lg:w-4/5 rounded-2xl min-h-68 bg-primary-lightest', {
@@ -131,6 +151,9 @@ export const CommentCard = ({
         {/* topic + preview */}
         <div className="w-full py-1 pr-0 md:py-6">
           <p className="py-2 mb-8 ml-4 text-sm md:text-lg">{comment}</p>
+          <p className="ml-4 mt-1 text-sm italic opacity-60">
+            {created_date !== updated_date && <div>แก้ไขเมื่อ {dateRelative(updated_date)}</div>}
+          </p>
         </div>
         <div className="flex justify-center w-20 m-2">
           {user_id == login_id && (
@@ -157,7 +180,7 @@ export const CommentCard = ({
           <p className="my-2 mr-2 font-semibold">{like}</p>
           {window.localStorage.getItem('auth') == 'YES' ? (
             <button onClick={handleLike} className="w-12 h-8 drop-shadow-md">
-              {like_users.includes(login_name) ? (
+              {like_users.map((e) => e.username).includes(login_name) ? (
                 <img
                   src={likeImg}
                   onMouseOver={(e) => (e.currentTarget.src = likeHover)}
@@ -211,8 +234,18 @@ export const CommentCard = ({
         </div>
       </div>
       {like_users.length > 0 ? (
-        <div className="flex flex-row p-2 text-sm border-t-2">
-          ถูกใจโดย {like_users.slice(0, maxUserDisplayed).join(', ')}{' '}
+        <div
+          className="flex flex-row p-2 text-sm border-t-2 cursor-pointer"
+          onClick={() => {
+            console.log('Hello World')
+            openLikeUser()
+          }}
+        >
+          ถูกใจโดยอิอิ{' '}
+          {like_users
+            .slice(0, maxUserDisplayed)
+            .map((e) => e.name)
+            .join(', ')}{' '}
           {like_users.length > maxUserDisplayed ? 'และอีกหลายคน' : ''}
         </div>
       ) : (
@@ -220,6 +253,7 @@ export const CommentCard = ({
       )}
       {content}
       {updateCommentContent}
+      {isModalLikeUserOpen && <ModalLikeUsers close={closeLikeUser} like_users={[{ username: '1', name: '1' }]} />}
     </div>
   )
 }
