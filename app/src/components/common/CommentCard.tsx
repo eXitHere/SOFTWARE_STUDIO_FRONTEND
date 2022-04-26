@@ -7,7 +7,6 @@ import classNames from 'classnames'
 
 import { ModalConfirm } from 'components/common/ModalConfirm'
 import { ModalEditComment } from 'components/common/ModalEditComment'
-import { ModalLikeUsers } from 'components/common/ModalLikeUser'
 
 import likeImg from 'assets/images/like.png'
 import unlikeImg from 'assets/images/unlike.png'
@@ -50,8 +49,7 @@ export const CommentCard = ({
   const [content, setContent] = useState<React.ReactNode>(null)
   const [updateCommentContent, setUpdateCommentContent] = useState<React.ReactNode>(null)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
-  const [isModalLikeUserOpen, setIsModalLikeUserOpen] = useState<boolean>(false)
-  const [, setIsUpdateCommentModalOpen] = useState<boolean>(false)
+  const [isUpdateCommentModalOpen, setIsUpdateCommentModalOpen] = useState<boolean>(false)
 
   const sendLike = async () => {
     const response = await axios.patch(
@@ -107,8 +105,8 @@ export const CommentCard = ({
   }
 
   const open = (content: React.ReactNode) => {
-    setContent(content)
     setIsModalOpen(true)
+    setContent(content)
   }
 
   const openUpdateComment = (updateCommentContent: React.ReactNode) => {
@@ -132,18 +130,10 @@ export const CommentCard = ({
     setContent(null)
   }
 
-  const closeLikeUser = () => {
-    setIsModalLikeUserOpen(false)
-  }
-
-  const openLikeUser = () => {
-    setIsModalLikeUserOpen(true)
-  }
-
   return (
     <div
       className={classNames('flex flex-col w-11/12 mb-4 lg:w-4/5 rounded-2xl min-h-68 bg-primary-lightest', {
-        'drop-shadow-md': isModalOpen === false,
+        'drop-shadow-md': isUpdateCommentModalOpen === false,
       })}
     >
       {/* profile picture + name */}
@@ -238,7 +228,6 @@ export const CommentCard = ({
           className="flex flex-row p-2 text-sm border-t-2 cursor-pointer"
           onClick={() => {
             console.log('Hello World')
-            openLikeUser()
           }}
         >
           ถูกใจโดย{' '}
@@ -251,9 +240,9 @@ export const CommentCard = ({
       ) : (
         <div></div>
       )}
+
       {content}
       {updateCommentContent}
-      {isModalLikeUserOpen && <ModalLikeUsers close={closeLikeUser} like_users={[{ username: '1', name: '1' }]} />}
     </div>
   )
 }
