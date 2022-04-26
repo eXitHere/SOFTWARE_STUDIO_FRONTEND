@@ -10,12 +10,24 @@ import mapStyles from './mapStyles'
 import templeMark from 'assets/images/templeMark.png'
 
 const libraries: any = ['places']
-let lat = 0
-let lng = 0
 export const MapTemple = () => {
+  const [lat, setLat] = useState<number>(0)
+  const [lng, setLng] = useState<number>(0)
+  // let lat = 0
+  // let lng = 0
+
+  // navigator.geolocation.getCurrentPosition(function (position) {
+  //   console.log('Latitude is :', position.coords.latitude)
+  //   console.log('Longitude is :', position.coords.longitude)
+  //   // setLat(position.coords.latitude)
+  //   // setLng(position.coords.longitude)
+  //   lat = position.coords.latitude
+  //   lng = position.coords.longitude
+  //  })
   const [decoded, setDecoded] = useState<any>({})
   const [markers, setMarkers] = useState(templeList)
   const [selected, setSelected] = useState<any>(null)
+ 
   useEffect(() => {
     if (window.localStorage.getItem('accessToken') == null) {
       window.localStorage.setItem('auth', 'NO')
@@ -33,20 +45,21 @@ export const MapTemple = () => {
     navigator.geolocation.getCurrentPosition(function (position) {
       console.log('Latitude is :', position.coords.latitude)
       console.log('Longitude is :', position.coords.longitude)
-      lat = position.coords.latitude
-      lng = position.coords.longitude
+      // lat = position.coords.latitude
+      // lng = position.coords.longitude
+      setLat(position.coords.latitude)
+      setLng(position.coords.longitude)
     })
   }, [])
   const mapContainerStyle = {
     width: '100vw',
-    height: '60vw',
+    height: '50.25vw',
   }
 
-  const center = {
-    
-    lat: lat,
-    lng: lng,
-  }
+  // const center = {
+  //   lat: lat,
+  //   lng: lng,
+  // }
 
   const options = {
     styles: mapStyles,
@@ -70,8 +83,8 @@ export const MapTemple = () => {
   return (
     <Screen>
       <Navbar isBoards={false} username={decoded.display_name} />
-      <div className="mt-24">
-        <GoogleMap mapContainerStyle={mapContainerStyle} zoom={8} center={center} options={options} onLoad={onMapLoad}>
+      <div className="md:mt-24">
+        <GoogleMap mapContainerStyle={mapContainerStyle} zoom={8} center={{lat: lat, lng: lng}} options={options} onLoad={onMapLoad}>
           {markers.map((marker, index) => (
             <Marker
               key={index}
