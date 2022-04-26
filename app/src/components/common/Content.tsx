@@ -4,8 +4,10 @@ import { EditorState, convertFromRaw } from 'draft-js'
 import AvatarGroup from 'react-avatar-group'
 import axios from 'pages/apiclient'
 import { dateRelative } from 'utils/date'
+import classNames from 'classnames'
 
 import { UpdateContext } from 'contexts/store'
+import { ModalLikeUser } from './modalLikeUser'
 
 import likeImg from 'assets/images/like.png'
 import unlikeImg from 'assets/images/unlike.png'
@@ -46,6 +48,8 @@ export const Content = ({
 }: ContentProps) => {
   const updateContext = useContext(UpdateContext)
   const [editorState, setEditorState] = useState(() => EditorState.createEmpty())
+  const [isLikeUserModalOpen, setIsLikeUserModalOpen] = useState<boolean>(false)
+  const [likeUserContent, setLikeUserContent] = useState<React.ReactNode>(null)
 
   const sendLike = async () => {
     const response = await axios.patch(
@@ -71,6 +75,20 @@ export const Content = ({
     sendLike()
   }
 
+  const handleLikeUserModal = () => {
+    openLikeUser(<ModalLikeUser like_users={like_users} close={closeLikeUser} />)
+  }
+
+  const openLikeUser = (likeUserContent: React.ReactNode) => {
+    setLikeUserContent(likeUserContent)
+    setIsLikeUserModalOpen(true)
+  }
+
+    const closeLikeUser = () => {
+      setIsLikeUserModalOpen(false)
+      setLikeUserContent(null)
+    }
+
   useEffect(() => {
     if (content) {
       setEditorState(EditorState.createWithContent(convertFromRaw(JSON.parse(content))))
@@ -78,7 +96,7 @@ export const Content = ({
   }, [content])
 
   return (
-    <div className="z-10 flex flex-col w-11/12 mt-36 lg:w-4/5 md:mt-28 drop-shadow-md">
+    <div className={classNames("z-10 flex flex-col w-11/12 mt-36 lg:w-4/5 md:mt-28",{"drop-shadow-md" : isLikeUserModalOpen === false})}>
       <div className="p-4 mt-4 rounded-xl bg-primary-light ">
         <p className="p-4 text-3xl font-bold">{topic}</p>
         <div className="flex flex-row items-center px-4 my-1 mt-2">
@@ -95,7 +113,7 @@ export const Content = ({
           />
         </div>
         <div className="flex flex-col w-full">
-          <p className="ml-4 mt-1 text-sm italic opacity-60">
+          <p className="mt-1 ml-4 text-sm italic opacity-60">
             {createdDate !== updated_date && <div>แก้ไขเมื่อ {dateRelative(updated_date)}</div>}
           </p>
           <div className="flex items-center justify-between">
@@ -143,7 +161,10 @@ export const Content = ({
             </div>
           </div>
           {like_users?.length > 0 ? (
-            <div className="flex flex-row p-2 pt-4 text-sm border-t-2">
+            <div
+              onClick={() => handleLikeUserModal()}
+              className="flex flex-row p-2 pt-4 text-sm border-t-2 cursor-pointer"
+            >
               ถูกใจโดย{' '}
               {like_users
                 .slice(0, maxUserDisplayed)
@@ -156,6 +177,8 @@ export const Content = ({
           )}
         </div>
       </div>
+      {likeUserContent}
     </div>
   )
+  
 }
