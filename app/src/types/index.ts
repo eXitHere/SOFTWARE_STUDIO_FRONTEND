@@ -18,7 +18,7 @@ export type Blog = {
   content: any
   category: string[]
   like: number
-  like_users: string[]
+  like_users: [{ username: string; name: string }]
   date: string
   username: string
   user_role: string

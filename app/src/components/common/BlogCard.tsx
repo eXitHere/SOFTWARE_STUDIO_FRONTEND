@@ -53,7 +53,7 @@ export const BlogCard = ({
   const [data, setData] = useState<any>()
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [likeData, setLikeData] = useState<number>(0)
-  const [listLikeData, setListLikeData] = useState<string[]>([])
+  const [listLikeData, setListLikeData] = useState<any>([])
 
   const handleLike = async () => {
     const response = await axios.patch(
@@ -131,7 +131,7 @@ export const BlogCard = ({
         {
           'relative min-h-80': profile_page === true,
           'sm:min-h-96 md:min-h-60': profile_page === false,
-          'drop-shadow-md' : isModalOpen === false
+          'drop-shadow-md': isModalOpen === false,
         },
       )}
     >
@@ -151,7 +151,7 @@ export const BlogCard = ({
             <p className="p-4 text-xl font-bold md:text-2xl">{topic}</p>
           </div>
           <div className="flex flex-row items-center my-1 mt-2">
-            <img src={tagIcon} className="w-6 h-6 mr-2" />
+            <img src={tagIcon} className="h-6 mr-2 wany6" />
             <p className="px-2">{category.join(', ')}</p>
           </div>
           <p className="py-2 mb-4 text-sm overflow: hidden; white-space: nowrap; opacity-70">
@@ -163,7 +163,7 @@ export const BlogCard = ({
         <div className="flex flex-col items-center justify-center w-2/6 h-full mt-4 md:mt-0 md:w-1/4 rounded-2xl">
           {window.localStorage.getItem('auth') == 'YES' ? (
             <button onClick={handleLike} className="w-12 h-8 md:w-20 md:h-12 drop-shadow-md">
-              {listLikeData.includes(username) ? (
+              {listLikeData?.map((e: { username: any }) => e.username)?.includes(username) ? (
                 <img
                   src={likeImg}
                   onMouseOver={(e) => (e.currentTarget.src = likeHover)}
