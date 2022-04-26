@@ -75,7 +75,7 @@ export const CommentCard = ({
   }
 
   const handleLike = () => {
-    if (like_users.map((e) => e.username).includes(login_name) == false) {
+    if (like_users.map((e: { username: any }) => e.username).includes(login_name) == false) {
       console.log('Like')
     } else {
       console.log('UnLike')
@@ -94,14 +94,6 @@ export const CommentCard = ({
   }
 
   const adminDeleteComment = async () => {
-    // const response = await axios.patch(
-    //   `https://thammathip.exitguy.studio/api/Admin/manage/comment/delete/${comment_id}`,{},
-    //   {
-    //     headers: {
-    //       authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-    //     },
-    //   },
-    // )
     await axios({
       url: `https://thammathip.exitguy.studio/api/Admin/manage/comment/delete/${comment_id}`,
       method: "PATCH",
@@ -138,7 +130,8 @@ export const CommentCard = ({
   }
 
   const handleLikeUserModal = () => {
-    openLikeUser(<ModalLikeUser like_users={like_users} close={closeLikeUser} />)
+    const like = like_users.slice().reverse()
+    openLikeUser(<ModalLikeUser like_users={like} close={closeLikeUser} />)
   }
 
   const open = (content: React.ReactNode) => {
@@ -194,34 +187,32 @@ export const CommentCard = ({
           </p>
         </div>
         <div className="flex justify-center w-20 m-2">
-          {(user_id == login_id &&
-            user_role == 'admin') && (
-              <>
-                <button
-                  onClick={handleModal}
-                  className="flex items-center justify-center w-8 h-8 mr-2 bg-red-400 hover:bg-red-500 left-4 bottom-3 rounded-xl"
-                >
-                  <img src={trash} className="w-4 h-4"></img>
-                </button>
-                <button
-                  onClick={handleUpdateCommentModal}
-                  className="flex items-center justify-center w-8 h-8 mr-2 bg-blue-400 hover:bg-blue-500 left-14 bottom-3 rounded-xl"
-                >
-                  <img src={edit} className="w-4 h-4"></img>
-                </button>
-              </>
-            )}
-          {(user_id != login_id &&
-            user_role == 'admin') && (
-              <>
-                <button
-                  onClick={handleModal}
-                  className="flex items-center justify-center w-8 h-8 mr-0 bg-red-400 hover:bg-red-500 left-4 bottom-3 rounded-xl"
-                >
-                  <img src={trash} className="w-4 h-4"></img>
-                </button>
-              </>
-            )}
+          {user_id == login_id && user_role == 'admin' && (
+            <>
+              <button
+                onClick={handleModal}
+                className="flex items-center justify-center w-8 h-8 mr-2 bg-red-400 hover:bg-red-500 left-4 bottom-3 rounded-xl"
+              >
+                <img src={trash} className="w-4 h-4"></img>
+              </button>
+              <button
+                onClick={handleUpdateCommentModal}
+                className="flex items-center justify-center w-8 h-8 mr-2 bg-blue-400 hover:bg-blue-500 left-14 bottom-3 rounded-xl"
+              >
+                <img src={edit} className="w-4 h-4"></img>
+              </button>
+            </>
+          )}
+          {user_id != login_id && user_role == 'admin' && (
+            <>
+              <button
+                onClick={handleModal}
+                className="flex items-center justify-center w-8 h-8 mr-0 bg-red-400 hover:bg-red-500 left-4 bottom-3 rounded-xl"
+              >
+                <img src={trash} className="w-4 h-4"></img>
+              </button>
+            </>
+          )}
         </div>
       </div>
       <div className="flex flex-row p-4 rounded-2xl">
@@ -230,7 +221,7 @@ export const CommentCard = ({
           <p className="my-2 mr-2 font-semibold">{like}</p>
           {window.localStorage.getItem('auth') == 'YES' ? (
             <button onClick={handleLike} className="w-12 h-8 drop-shadow-md">
-              {like_users.map((e) => e.username).includes(login_name) ? (
+              {like_users.map((e: { username: any }) => e.username).includes(login_name) ? (
                 <img
                   src={likeImg}
                   onMouseOver={(e) => (e.currentTarget.src = likeHover)}
@@ -292,8 +283,10 @@ export const CommentCard = ({
         >
           ถูกใจโดย{' '}
           {like_users
+            .slice()
+            .reverse()
             .slice(0, maxUserDisplayed)
-            .map((e) => e.name)
+            .map((e: { name: any }) => e.name)
             .join(', ')}{' '}
           {like_users.length > maxUserDisplayed ? 'และอีกหลายคน' : ''}
         </div>

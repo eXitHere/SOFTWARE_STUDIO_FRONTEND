@@ -62,7 +62,7 @@ export const Content = ({
       },
     )
 
-    if (like_users.map((e) => e.username).includes(username) == false) {
+    if (like_users.map((e: { username: any }) => e.username).includes(username) == false) {
       console.log('Like')
       updateContext.setUpdate(`LIKE BLOG ${blog_id}`)
     } else {
@@ -76,7 +76,8 @@ export const Content = ({
   }
 
   const handleLikeUserModal = () => {
-    openLikeUser(<ModalLikeUser like_users={like_users} close={closeLikeUser} />)
+    const like = like_users.slice().reverse()
+    openLikeUser(<ModalLikeUser like_users={like} close={closeLikeUser} />)
   }
 
   const openLikeUser = (likeUserContent: React.ReactNode) => {
@@ -96,7 +97,11 @@ export const Content = ({
   }, [content])
 
   return (
-    <div className={classNames("z-10 flex flex-col w-11/12 mt-36 lg:w-4/5 md:mt-28",{"drop-shadow-md" : isLikeUserModalOpen === false})}>
+    <div
+      className={classNames('z-10 flex flex-col w-11/12 mt-36 lg:w-4/5 md:mt-28', {
+        'drop-shadow-md': isLikeUserModalOpen === false,
+      })}
+    >
       <div className="p-4 mt-4 rounded-xl bg-primary-light ">
         <p className="p-4 text-3xl font-bold">{topic}</p>
         <div className="flex flex-row items-center px-4 my-1 mt-2">
@@ -136,7 +141,7 @@ export const Content = ({
             <div className="flex items-center justify-center">
               {window.localStorage.getItem('auth') == 'YES' ? (
                 <button onClick={handleLike} className="h-10 w-14 md:w-20 md:h-12 drop-shadow-md">
-                  {like_users?.map((e) => e.username)?.includes(username) ? (
+                  {like_users?.map((e: { username: any }) => e.username)?.includes(username) ? (
                     <img
                       src={likeImg}
                       onMouseOver={(e) => (e.currentTarget.src = likeHover)}
@@ -166,9 +171,9 @@ export const Content = ({
               className="flex flex-row p-2 pt-4 text-sm border-t-2 cursor-pointer"
             >
               ถูกใจโดย{' '}
-              {like_users
+              {like_users.slice().reverse()
                 .slice(0, maxUserDisplayed)
-                .map((e) => e.name)
+                .map((e: { name: any }) => e.name)
                 .join(', ')}{' '}
               {like_users?.length > maxUserDisplayed ? 'และอีกหลายคน' : ''}
             </div>

@@ -13,17 +13,6 @@ const libraries: any = ['places']
 export const MapTemple = () => {
   const [lat, setLat] = useState<number>(0)
   const [lng, setLng] = useState<number>(0)
-  // let lat = 0
-  // let lng = 0
-
-  // navigator.geolocation.getCurrentPosition(function (position) {
-  //   console.log('Latitude is :', position.coords.latitude)
-  //   console.log('Longitude is :', position.coords.longitude)
-  //   // setLat(position.coords.latitude)
-  //   // setLng(position.coords.longitude)
-  //   lat = position.coords.latitude
-  //   lng = position.coords.longitude
-  //  })
   const [decoded, setDecoded] = useState<any>({})
   const [markers, setMarkers] = useState(templeList)
   const [selected, setSelected] = useState<any>(null)
@@ -45,8 +34,6 @@ export const MapTemple = () => {
     navigator.geolocation.getCurrentPosition(function (position) {
       console.log('Latitude is :', position.coords.latitude)
       console.log('Longitude is :', position.coords.longitude)
-      // lat = position.coords.latitude
-      // lng = position.coords.longitude
       setLat(position.coords.latitude)
       setLng(position.coords.longitude)
     })
@@ -56,10 +43,6 @@ export const MapTemple = () => {
     height: '100vw',
   }
 
-  // const center = {
-  //   lat: lat,
-  //   lng: lng,
-  // }
 
   const options = {
     styles: mapStyles,
@@ -83,7 +66,7 @@ export const MapTemple = () => {
   return (
     <Screen>
       <Navbar isBoards={false} username={decoded.display_name} />
-      <div className="md:mt-24">
+      <div className="min-h-screen md:mt-24">
         <GoogleMap mapContainerStyle={mapContainerStyle} zoom={8} center={{lat: lat, lng: lng}} options={options} onLoad={onMapLoad}>
           {markers.map((marker, index) => (
             <Marker

@@ -30,7 +30,7 @@ export type Detail = {
   topic: string
   content: string
   category: string[]
-  like_users: [{ username: string; name: string }]
+  like_users: any
   like: number
   createdDate: string
   updated_date: string
@@ -47,7 +47,7 @@ export type Comment = {
   name: string
   comment: string
   like: number
-  like_users: [{ username: string; name: string }]
+  like_users: any
   created_date: string
   updated_date: string
   user_role: string
