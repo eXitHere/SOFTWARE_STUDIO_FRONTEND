@@ -50,6 +50,7 @@ export type Comment = {
   like_users: [{ username: string; name: string }]
   created_date: string
   updated_date: string
+  user_role: string
 }
 
 export type Category = {

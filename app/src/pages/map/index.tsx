@@ -53,7 +53,7 @@ export const MapTemple = () => {
   }, [])
   const mapContainerStyle = {
     width: '100vw',
-    height: '50.25vw',
+    height: '100vw',
   }
 
   // const center = {

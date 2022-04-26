@@ -230,6 +230,7 @@ const Blog = () => {
                   like_users={data.like_users}
                   created_date={data.created_date}
                   updated_date={data.updated_date}
+                  user_role={decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']}
                 />
               ) : null
             ) : (
@@ -245,6 +246,7 @@ const Blog = () => {
                 like_users={data.like_users}
                 created_date={data.created_date}
                 updated_date={data.updated_date}
+                user_role={decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']}
               />
             )
           })
