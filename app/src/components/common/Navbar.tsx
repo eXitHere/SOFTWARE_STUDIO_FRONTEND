@@ -89,7 +89,7 @@ export const Navbar = ({ isBoards, username }: NavbarProps) => {
     >
       <div className="flex items-center justify-between w-full">
         <Link to={Path.MainBlogs}>
-          <p className="text-lg font-bold text-white hover:text-gray-200 md:text-3xl">ThammaTip</p>
+          <p className="text-lg font-bold text-white hover:text-gray-200 md:text-3xl">ThammaThip</p>
         </Link>
 
         {isBoards && <SearchBox searchContext={searchContext} c="w-2/4 hidden md:block" />}
