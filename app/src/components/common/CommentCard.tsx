@@ -194,34 +194,32 @@ export const CommentCard = ({
           </p>
         </div>
         <div className="flex justify-center w-20 m-2">
-          {(user_id == login_id &&
-            user_role == 'admin') && (
-              <>
-                <button
-                  onClick={handleModal}
-                  className="flex items-center justify-center w-8 h-8 mr-2 bg-red-400 hover:bg-red-500 left-4 bottom-3 rounded-xl"
-                >
-                  <img src={trash} className="w-4 h-4"></img>
-                </button>
-                <button
-                  onClick={handleUpdateCommentModal}
-                  className="flex items-center justify-center w-8 h-8 mr-2 bg-blue-400 hover:bg-blue-500 left-14 bottom-3 rounded-xl"
-                >
-                  <img src={edit} className="w-4 h-4"></img>
-                </button>
-              </>
-            )}
-          {(user_id != login_id &&
-            user_role == 'admin') && (
-              <>
-                <button
-                  onClick={handleModal}
-                  className="flex items-center justify-center w-8 h-8 mr-0 bg-red-400 hover:bg-red-500 left-4 bottom-3 rounded-xl"
-                >
-                  <img src={trash} className="w-4 h-4"></img>
-                </button>
-              </>
-            )}
+          {user_id == login_id && user_role == 'admin' && (
+            <>
+              <button
+                onClick={handleModal}
+                className="flex items-center justify-center w-8 h-8 mr-2 bg-red-400 hover:bg-red-500 left-4 bottom-3 rounded-xl"
+              >
+                <img src={trash} className="w-4 h-4"></img>
+              </button>
+              <button
+                onClick={handleUpdateCommentModal}
+                className="flex items-center justify-center w-8 h-8 mr-2 bg-blue-400 hover:bg-blue-500 left-14 bottom-3 rounded-xl"
+              >
+                <img src={edit} className="w-4 h-4"></img>
+              </button>
+            </>
+          )}
+          {user_id != login_id && user_role == 'admin' && (
+            <>
+              <button
+                onClick={handleModal}
+                className="flex items-center justify-center w-8 h-8 mr-0 bg-red-400 hover:bg-red-500 left-4 bottom-3 rounded-xl"
+              >
+                <img src={trash} className="w-4 h-4"></img>
+              </button>
+            </>
+          )}
         </div>
       </div>
       <div className="flex flex-row p-4 rounded-2xl">
@@ -292,6 +290,8 @@ export const CommentCard = ({
         >
           ถูกใจโดย{' '}
           {like_users
+            .slice()
+            .reverse()
             .slice(0, maxUserDisplayed)
             .map((e) => e.name)
             .join(', ')}{' '}
