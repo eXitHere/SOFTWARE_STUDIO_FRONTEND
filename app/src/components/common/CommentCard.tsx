@@ -108,7 +108,7 @@ export const CommentCard = ({
   }
 
   const handleLikeUserModal = () => {
-    openLikeUser(<ModalLikeUser like_users={[{username:"a",name:"b"}]} close={closeLikeUser}/>)
+    openLikeUser(<ModalLikeUser like_users={like_users} close={closeLikeUser} />)
   }
 
   const open = (content: React.ReactNode) => {
@@ -135,7 +135,7 @@ export const CommentCard = ({
     setIsUpdateCommentModalOpen(false)
     setUpdateCommentContent(null)
   }
-  
+
   const closeLikeUser = () => {
     setIsLikeUserModalOpen(false)
     setLikeUserContent(null)
