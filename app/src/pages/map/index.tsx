@@ -40,7 +40,7 @@ export const MapTemple = () => {
   }, [])
   const mapContainerStyle = {
     width: '100vw',
-    height: '100vw',
+    height: '60vw',
   }
 
 
@@ -66,8 +66,8 @@ export const MapTemple = () => {
   return (
     <Screen>
       <Navbar isBoards={false} username={decoded.display_name} />
-      <div className="min-h-screen md:mt-24">
-        <GoogleMap mapContainerStyle={mapContainerStyle} zoom={8} center={{lat: lat, lng: lng}} options={options} onLoad={onMapLoad}>
+      <div className=" md:mt-24">
+        <GoogleMap mapContainerStyle={mapContainerStyle} zoom={14} center={{lat: lat, lng: lng}} options={options} onLoad={onMapLoad}>
           {markers.map((marker, index) => (
             <Marker
               key={index}

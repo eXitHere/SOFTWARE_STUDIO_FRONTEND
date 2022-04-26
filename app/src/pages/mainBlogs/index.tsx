@@ -93,18 +93,46 @@ export const MainBlogs = () => {
           let dataSort = [...globalBlogs]
           dataSort = dataSort.sort((a: any, b: any) => a.like - b.like).reverse()
           setSearchBlogs(dataSort)
+          const blogsCount = dataSort?.length
+          const page = Math.ceil(blogsCount / blogsPerPage)
+          if (page > 0) {
+            setPageCount(Math.ceil(blogsCount / blogsPerPage))
+          } else {
+            setPageCount(1)
+          }
         } else {
           let dataSort = [...globalBlogs]
           dataSort = dataSort.sort((a: any, b: any) => a.like - b.like)
           setSearchBlogs(dataSort)
+          const blogsCount = dataSort?.length
+          const page = Math.ceil(blogsCount / blogsPerPage)
+          if (page > 0) {
+            setPageCount(Math.ceil(blogsCount / blogsPerPage))
+          } else {
+            setPageCount(1)
+          }
         }
       } else if (sortByDate) {
         if (!sortDate) {
           let dataSort = [...globalBlogs]
           dataSort = dataSort.reverse()
           setSearchBlogs(dataSort)
+          const blogsCount = dataSort?.length
+          const page = Math.ceil(blogsCount / blogsPerPage)
+          if (page > 0) {
+            setPageCount(Math.ceil(blogsCount / blogsPerPage))
+          } else {
+            setPageCount(1)
+          }
         } else {
           setSearchBlogs(globalBlogs)
+          const blogsCount = globalBlogs?.length
+          const page = Math.ceil(blogsCount / blogsPerPage)
+          if (page > 0) {
+            setPageCount(Math.ceil(blogsCount / blogsPerPage))
+          } else {
+            setPageCount(1)
+          }
         }
       }
     } else {
@@ -113,18 +141,46 @@ export const MainBlogs = () => {
           let dataSort = [...searchData]
           dataSort = dataSort.sort((a: any, b: any) => a.like - b.like).reverse()
           setSearchBlogs(dataSort)
+          const blogsCount = dataSort?.length
+          const page = Math.ceil(blogsCount / blogsPerPage)
+          if (page > 0) {
+            setPageCount(Math.ceil(blogsCount / blogsPerPage))
+          } else {
+            setPageCount(1)
+          }
         } else {
           let dataSort = [...searchData]
           dataSort = dataSort.sort((a: any, b: any) => a.like - b.like)
           setSearchBlogs(dataSort)
+          const blogsCount = dataSort?.length
+          const page = Math.ceil(blogsCount / blogsPerPage)
+          if (page > 0) {
+            setPageCount(Math.ceil(blogsCount / blogsPerPage))
+          } else {
+            setPageCount(1)
+          }
         }
       } else if (sortByDate) {
         if (!sortDate) {
           let dataSort = [...searchData]
           dataSort = dataSort.reverse()
           setSearchBlogs(dataSort)
+          const blogsCount = dataSort?.length
+          const page = Math.ceil(blogsCount / blogsPerPage)
+          if (page > 0) {
+            setPageCount(Math.ceil(blogsCount / blogsPerPage))
+          } else {
+            setPageCount(1)
+          }
         } else {
           setSearchBlogs(searchData)
+          const blogsCount = searchData?.length
+          const page = Math.ceil(blogsCount / blogsPerPage)
+          if (page > 0) {
+            setPageCount(Math.ceil(blogsCount / blogsPerPage))
+          } else {
+            setPageCount(1)
+          }
         }
       }
     }
@@ -203,7 +259,7 @@ export const MainBlogs = () => {
 
       {searchBlogs.length > 0 ? (
         searchBlogs.slice((currentPage - 1) * blogsPerPage, currentPage * blogsPerPage).map((data) => {
-          return (
+          return data?.author?.name !== undefined ? (
             <BlogCard
               key={data?.blog_id}
               blog_id={data?.blog_id}
@@ -218,7 +274,7 @@ export const MainBlogs = () => {
               user_role={decoded?.role}
               profile_page={false}
             />
-          )
+          ) : null
         })
       ) : loading ? (
         <div className="relative flex flex-col items-center justify-center w-11/12 h-24 mb-4 md:flex-row lg:w-4/5 rounded-2xl md:h-48">
