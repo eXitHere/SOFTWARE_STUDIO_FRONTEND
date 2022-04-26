@@ -96,19 +96,18 @@ export const CommentCard = ({
   const adminDeleteComment = async () => {
     await axios({
       url: `https://thammathip.exitguy.studio/api/Admin/manage/comment/delete/${comment_id}`,
-      method: "PATCH",
+      method: 'PATCH',
       headers: {
-          authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
     })
     updateContext.setUpdateComment(`DELETE ${comment_id}`)
   }
-  
+
   const handleDelete = () => {
-    if (user_role == 'admin'){
+    if (user_role == 'admin') {
       adminDeleteComment()
-    }
-    else{
+    } else {
       deleteComment()
     }
   }
@@ -213,16 +212,22 @@ export const CommentCard = ({
               </button>
             </>
           )}
-          {(user_id == login_id && user_role == 'admin') && 
+          {user_id == login_id && user_role == 'admin' && (
             <>
               <button
                 onClick={handleModal}
-                className="flex items-center justify-center w-8 h-8 mr-0 bg-red-400 hover:bg-red-500 left-4 bottom-3 rounded-xl"
+                className="flex items-center justify-center w-8 h-8 mr-2 bg-red-400 hover:bg-red-500 left-4 bottom-3 rounded-xl"
               >
                 <img src={trash} className="w-4 h-4"></img>
               </button>
+              <button
+                onClick={handleUpdateCommentModal}
+                className="flex items-center justify-center w-8 h-8 mr-2 bg-blue-400 hover:bg-blue-500 left-14 bottom-3 rounded-xl"
+              >
+                <img src={edit} className="w-4 h-4"></img>
+              </button>
             </>
-          }
+          )}
         </div>
       </div>
       <div className="flex flex-row p-4 rounded-2xl">
